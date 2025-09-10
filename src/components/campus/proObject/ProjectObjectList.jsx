@@ -1,26 +1,16 @@
-import React, { useRef, useState } from 'react'
-import styled from 'styled-components'
-import dropdownArrow from '../img/dropdownArrow.png'
-import searchIcon from '../img/searchIcon.png'
-import pageArrow1 from '../img/pageArrow1.png'
-import pageArrow2 from '../img/pageArrow2.png'
-import pageArrow3 from '../img/pageArrow3.png'
-import pageArrow4 from '../img/pageArrow4.png'
-import calender from '../img/calender.png'
-
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import React, { useRef, useState } from 'react'
+import DatePicker from "react-datepicker";
+import { dropdownArrow, searchIcon, calender, pageArrow1, pageArrow2, pageArrow3,
+        pageArrow4 } from '../img'
 import { 
     ListHeader, CatTitle, FlexDiv, Writer,
     SearchBar, SearchDrop, SearchText,
     DropHeader, DropList, DropOption,
-    Container, Date, Title, Button, OkButton, NonButton,
+    WHContainer, DateBox, Title, Button, CheckButton, 
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText,
     CustomInput, CheckContainer, CheckBox, CheckMark, CheckText }
     from '../commons/ListComponent'
-
-
-
 
 function ProjectObjectList() {
     const [open, setOpen] = useState(false);
@@ -42,23 +32,23 @@ function ProjectObjectList() {
   return (
     
     <>
-        <div style={{width:"100%", minHeight:"731px", backgroundColor:"#f7f7f7"}}>
-            <ListHeader style={{height:'146px'}}>
+        <div style={{width:"100%", minHeight:"100vh", backgroundColor:"#f7f7f7"}}>
+            <ListHeader style={{height:'156px'}}>
                 <FlexDiv>
                     <CatTitle>결과물</CatTitle>
                     <Button style={{width:'65px'}}>자료제출</Button>
                 </FlexDiv>
                 <FlexDiv style={{marginTop:'8px'}} >
-                    <div style={{ display: "flex", alignItems: "center", width: "152px", height: "36px" }} >
+                    <div style={{ display: "flex", alignItems: "center", width: "110px", height: "36px" }} >
                         <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} placeholderText="시작일"
                             dateFormat="yyyy-MM-dd" customInput={<CustomInput ref={startInputRef}/>}
                         />
                         <img src={calender} style={{width:'25px', marginLeft:'-35px', position:'relative'}} alt="calendar"/>
                     </div>
-                    <div style={{marginLeft:'33px', marginTop:'5px'}}>
+                    <div style={{marginLeft:'65px', marginTop:'5px'}}>
                         ~
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", width: "152px", height: "36px", marginLeft:'7px'}}>
+                    <div style={{ display: "flex", alignItems: "center", width: "110px", height: "36px", marginLeft:'12px'}}>
                         <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} placeholderText="마감일"
                             dateFormat="yyyy-MM-dd" customInput={<CustomInput ref={endInputRef}/>}
                         />
@@ -93,7 +83,7 @@ function ProjectObjectList() {
                     <CheckText>미완료 (1)</CheckText>
                 </label>
             </CheckContainer>
-            <Container>
+            <WHContainer>
                 <div style={{width:'37px', lineHeight:'35px'}}>
                     1
                 </div>
@@ -102,11 +92,11 @@ function ProjectObjectList() {
                     <Writer>김원희</Writer>
                 </div>
                 <div style={{width:'100px'}}>
-                    <Date style={{textAlign:'end', marginTop:'-3px'}}>2025-09-22</Date>
-                    <OkButton style={{height:'21px', marginTop:'2px', lineHeight:'19px'}}>완료</OkButton>
+                    <DateBox style={{textAlign:'end', marginTop:'-3px'}}>2025-09-22</DateBox>
+                    <CheckButton style={{height:'21px', marginTop:'2px', lineHeight:'19px',border:'1px solid #2EC4B6', color:'#2EC4B6'}}>완료</CheckButton>
                 </div>
-            </Container>
-            <Container>
+            </WHContainer>
+            <WHContainer>
                 <div style={{width:'37px', lineHeight:'35px'}}>
                     1
                 </div>
@@ -115,10 +105,10 @@ function ProjectObjectList() {
                     <Writer>김원희</Writer>
                 </div>
                 <div style={{width:'100px'}}>
-                    <Date style={{textAlign:'end', marginTop:'-3px'}}>2025-09-22</Date>
-                    <NonButton style={{height:'21px', marginTop:'2px', lineHeight:'19px'}}>미완료</NonButton>
+                    <DateBox style={{textAlign:'end', marginTop:'-3px'}}>2025-09-22</DateBox>
+                    <CheckButton style={{height:'21px', marginTop:'2px', lineHeight:'19px'}}>미완료</CheckButton>
                 </div>
-            </Container>
+            </WHContainer>
             <nav>
                 <PageNation>
                     <PageArrowButton>

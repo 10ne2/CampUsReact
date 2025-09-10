@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import menuBar from '../img/menuBar.png';
-import logoRow from '../img/logoRow.png';
-import mail from '../img/mail.png';
+import {menuBar, logoRow, mail} from '../img'
 
 export const Container = styled.div`
   width: 100%;

@@ -2,18 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import checkBox from '../img/checkBox.png'
 import attenPass from '../img/attenPass.png'
+import profile from '../img/profile.jpg'
 
 export const ListHeader = styled.div`
     width: 100%;
     height: 110px;
     background-color: #fff;
-    padding: 17px 15px 15px 15px;
+    padding: 17px 25px 15px 25px;
     box-sizing: border-box;
 `
 export const CatTitle = styled.div`
     font-size: 18px;
     font-weight: 500;
-    
 `
 export const SearchDrop = styled.div`
     position: relative;
@@ -54,7 +54,7 @@ export const DropOption = styled.li`
     }
 `
 export const SearchBar = styled.div`
-    width: 287px;
+    width: 267px;
     height: 36px;
     color: white;
     background-color: white;
@@ -78,7 +78,7 @@ export const SearchText = styled.input`
         outline: none;
     }
 `
-export const Container = styled.div`
+export const WHContainer = styled.div`
     width: 100%;
     height: 65px;
     margin-top: 9px;
@@ -88,7 +88,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
 `
-export const Date = styled.span`
+export const DateBox = styled.span`
     display: block;
     font-size: 12px;
     color: #aaa;
@@ -163,7 +163,7 @@ export const Writer = styled.span`
     font-size: 12px;
     color: #212121;
 `
-export const NonButton = styled.div`
+export const CheckButton = styled.div`
     width: 60px;
     height: 26px;
     border: 1px solid #E25C5C;
@@ -177,20 +177,6 @@ export const NonButton = styled.div`
     line-height: 24px;
     margin-top: 5px;
 `
-export const OkButton = styled.div`
-    width: 60px;
-    height: 26px;
-    border: 1px solid #2EC4B6;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-left: auto;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    color: #2EC4B6;
-    line-height: 24px;
-    margin-top: 5px;
-`
 export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) => 
     <input
         value={value}
@@ -199,7 +185,7 @@ export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeho
         ref={ref}
         placeholder={placeholder}
         style={{
-        width: "178.5px",
+        width: "165px",
         height: "36px",
         fontSize: "16px",
         border: "1px solid #bbb",
@@ -242,7 +228,7 @@ export const CheckText = styled.span`
     margin-left: 8px;
     line-height: 16px;
 `
-export const AttenBox1 = styled.div`
+export const AttenBox = styled.div`
     width: 99px;
     height: 44px;
     background-color: #C2E8B7;
@@ -250,27 +236,7 @@ export const AttenBox1 = styled.div`
     margin-top: 3px;
     margin-left: auto;
 `
-export const AttenBox2 = styled.div`
-    width: 99px;
-    height: 44px;
-    background-color: #FFF2B7;
-    border-radius: 5px;
-    margin-top: 3px;
-    margin-left: auto;
-`
-export const AttenBox3 = styled.div`
-    width: 99px;
-    height: 44px;
-    background-color: #FFB8B8;
-    border-radius: 5px;
-    margin-top: 3px;
-    margin-left: auto;
-`
-export const AttenDate = styled.div`
-    font-size: 12px;
-    text-align: center;
-    margin-top: 3.2px;
-`
+
 export const AttenText = styled.div`
     font-size: 14px;
     font-weight: 700;
@@ -313,10 +279,35 @@ export const AttenPass = styled.div`
     background-repeat: no-repeat;
     background-position: center;
 `
-
-
-
-
+export const NumberContainer = styled.div`
+    width: 368px;
+    height: 140px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 24px 20px 24px 20px;
+`
+export const Profile = styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-image: url(${profile});
+`
+export const RegistButton = styled.button`
+    width: 69px;
+    height: 29px;
+    background-color: #2ec4b6;
+    color: #ffffff;
+    border-radius: 5px;
+    border: #2ec4b6;
+    font-size: 13px;
+    font-weight: bold;
+`
+export const MailView = styled.div`
+    width: 25px;
+    height: 100%;
+    ;
+`
 
 
 

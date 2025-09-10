@@ -1,32 +1,35 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import dropdownArrow from '../img/dropdownArrow.png'
-import searchIcon from '../img/searchIcon.png'
-import listArrow from '../img/listArrow.png'
 import pageArrow1 from '../img/pageArrow1.png'
 import pageArrow2 from '../img/pageArrow2.png'
 import pageArrow3 from '../img/pageArrow3.png'
 import pageArrow4 from '../img/pageArrow4.png'
-import clip from '../img/clip.png'
 import { 
     ListHeader, CatTitle, FlexDiv,
-    Container, Date, Title, Button,
-    AttenBox1, AttenBox2, AttenBox3, AttenDate, AttenText, AttenChangeIng, AttenChange, AttenPass,
+    WHContainer, DateBox, Title, Button, NumberContainer,
+    AttenBox, AttenText, AttenChangeIng, AttenChange, AttenPass,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
     from '../commons/ListComponent'
 
+const AttenDate = styled.div`
+    font-size: 12px;
+    text-align: center;
+    margin-top: 3.2px;
+`
+const NumberInput = styled.input`
+    width: 319px;
+    height: 37px;
+    border: 2px solid #2EC4B6;
+    border-radius: 0px;
+    outline: none;
+    text-align: center;
+    font-size: 14px;
+    margin-left: 23px;
+    margin-top: 12px;
+    
+`
 
 function LectureAttendenceList() {
-    const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState("전체");
-
-    const toggleOpen = () => setOpen(!open);
-
-    // 옵션 선택
-    const handleSelect = (value) => {
-        setSelected(value);
-        setOpen(false);
-  };
 
   return (
     <>
@@ -36,76 +39,81 @@ function LectureAttendenceList() {
                     <CatTitle>출결</CatTitle>
                 </FlexDiv>
             </ListHeader>
-            <Container style={{height:'76px'}}>
+            <NumberContainer>
+                <Title style={{textAlign:'center', marginTop:'13px'}}>05-01 8주차 출석</Title>
+                <NumberInput placeholder='숫자를 입력해주세요'></NumberInput>
+                <Button style={{width:'84px', height:'30px', lineHeight:'20px', marginLeft:'142px', marginTop:'10px'}}>출석하기</Button>
+            </NumberContainer>
+            <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
                         <Title>1주차</Title>
-                        <Date style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</Date>
+                        <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</DateBox>
                     </FlexDiv>
                     <AttenChange>이의신청</AttenChange>
                 </div>
-                <AttenBox1>
+                <AttenBox>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>출석</AttenText>
-                </AttenBox1>
-                <AttenBox2>
+                </AttenBox>
+                <AttenBox style={{backgroundColor:'#FFF2B7'}}>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>지각</AttenText>
-                </AttenBox2>
-            </Container>
-            <Container style={{height:'76px'}}>
+                </AttenBox>
+            </WHContainer>
+            <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
                         <Title>1주차</Title>
-                        <Date style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</Date>
+                        <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</DateBox>
                     </FlexDiv>
                 </div>
-                <AttenBox1>
+                <AttenBox>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>출석</AttenText>
-                </AttenBox1>
-                <AttenBox1>
+                </AttenBox>
+                <AttenBox>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>출석</AttenText>
-                </AttenBox1>
-            </Container>
-            <Container style={{height:'76px'}}>
+                </AttenBox>
+            </WHContainer>
+            <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
                         <Title>1주차</Title>
-                        <Date style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</Date>
+                        <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</DateBox>
                     </FlexDiv>
                     <FlexDiv>
                         <AttenChange>이의신청</AttenChange>
                         <AttenPass></AttenPass>
                     </FlexDiv>
                 </div>
-                <AttenBox3>
+                <AttenBox style={{backgroundColor:'#FFB8B8'}}>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>결석</AttenText>
-                </AttenBox3>
-                <AttenBox1>
+                </AttenBox>
+                <AttenBox>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>출석</AttenText>
-                </AttenBox1>
-            </Container>
-            <Container style={{height:'76px'}}>
+                </AttenBox>
+            </WHContainer>
+            <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
                         <Title>1주차</Title>
-                        <Date style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</Date>
+                        <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(03-03 ~ 03-08)</DateBox>
                     </FlexDiv>
                     <AttenChangeIng>대기중</AttenChangeIng>
                 </div>
-                <AttenBox3>
+                <AttenBox style={{backgroundColor:'#FFB8B8'}}>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>결석</AttenText>
-                </AttenBox3>
-                <AttenBox1>
+                </AttenBox>
+                <AttenBox>
                     <AttenDate>03-05 (수)</AttenDate>
                     <AttenText>출석</AttenText>
-                </AttenBox1>
-            </Container>
+                </AttenBox>
+            </WHContainer>
             <nav>
                 <PageNation>
                     <PageArrowButton>

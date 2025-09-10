@@ -1,17 +1,12 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import dropdownArrow from '../img/dropdownArrow.png'
-import searchIcon from '../img/searchIcon.png'
-import pageArrow1 from '../img/pageArrow1.png'
-import pageArrow2 from '../img/pageArrow2.png'
-import pageArrow3 from '../img/pageArrow3.png'
-import pageArrow4 from '../img/pageArrow4.png'
-import clip from '../img/clip.png'
+import {dropdownArrow, searchIcon, pageArrow1, pageArrow2, pageArrow3,
+        pageArrow4, clip
+} from '../img'
 import { 
     ListHeader, CatTitle, FlexDiv, Writer,
     SearchBar, SearchDrop, SearchText,
     DropHeader, DropList, DropOption,
-    Container, Date, Title, Button,
+    WHContainer, DateBox, Title, Button,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
     from '../commons/ListComponent'
 
@@ -38,7 +33,7 @@ function BoardList() {
 
   return (
     <>
-        <div style={{width:"100%", minHeight:"731px", backgroundColor:"#f7f7f7"}}>
+        <div style={{width:"100%", minHeight:"100vh", backgroundColor:"#f7f7f7"}}>
             <ListHeader style={{height:'146px'}}>
                 <FlexDiv>
                     <CatTitle>게시판</CatTitle>
@@ -86,9 +81,9 @@ function BoardList() {
                     </SearchDrop>
                 </FlexDiv>
             </ListHeader>
-            <Container style={{height:"83px"}}>
+            <WHContainer style={{height:"83px"}}>
                 <div style={{width:'350px'}}>
-                    <Date>2025-09-01</Date>
+                    <DateBox>2025-09-01</DateBox>
                     <FlexDiv>
                         <Title>[자유] 실습자료 제공</Title>
                         <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
@@ -100,7 +95,7 @@ function BoardList() {
                         <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
                     </div>
                 </div>
-            </Container>
+            </WHContainer>
             <nav>
                 <PageNation>
                     <PageArrowButton>

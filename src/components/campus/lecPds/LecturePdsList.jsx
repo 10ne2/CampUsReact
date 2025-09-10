@@ -1,18 +1,11 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import dropdownArrow from '../img/dropdownArrow.png'
-import searchIcon from '../img/searchIcon.png'
-import listArrow from '../img/listArrow.png'
-import pageArrow1 from '../img/pageArrow1.png'
-import pageArrow2 from '../img/pageArrow2.png'
-import pageArrow3 from '../img/pageArrow3.png'
-import pageArrow4 from '../img/pageArrow4.png'
-import clip from '../img/clip.png'
+import { dropdownArrow, searchIcon, listArrow, pageArrow1, pageArrow2, pageArrow3,
+        pageArrow4, clip } from '../img'
 import { 
     ListHeader, CatTitle, FlexDiv,
     SearchBar, SearchDrop, SearchText,
     DropHeader, DropList, DropOption,
-    Container, Date, Title, Button,
+    WHContainer, DateBox, Title, Button,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
     from '../commons/ListComponent'
 
@@ -31,7 +24,7 @@ function LecturePdsList() {
 
   return (
     <>
-        <div style={{width:"100%", minHeight:"731px", backgroundColor:"#f7f7f7"}}>
+        <div style={{width:"100%", minHeight:"100vh", backgroundColor:"#f7f7f7"}}>
             <ListHeader>
                 <FlexDiv>
                     <CatTitle>자료실</CatTitle>
@@ -59,16 +52,16 @@ function LecturePdsList() {
                     </SearchBar>
                 </FlexDiv>
             </ListHeader>
-            <Container>
+            <WHContainer>
                 <div style={{width:'350px'}}>
-                    <Date>2025-09-01</Date>
+                    <DateBox>2025-09-01</DateBox>
                     <FlexDiv>
                         <Title>실습자료 제공</Title>
                         <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
                     </FlexDiv>
                 </div>
                 <img src={listArrow} style={{height:'20px', marginTop:'6px'}}></img>
-            </Container>
+            </WHContainer>
             <nav>
                 <PageNation>
                     <PageArrowButton>
