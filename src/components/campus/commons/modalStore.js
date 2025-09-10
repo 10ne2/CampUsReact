@@ -35,4 +35,27 @@ export const useAttendanceModalStore = create((set) => ({
   hideModal: () =>
     set({ visible: false, message: "", onCancel: null }),
 }));
+
+export const useProjectFeedbackModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+
+export const useMypageModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+export const useSideMenuModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+export const useSideMenuStore = create((set) => ({
+  isOpen: false,
+  openMenu: () => set({ isOpen: true }),
+  closeMenu: () => set({ isOpen: false }),
+  toggleMenu: () => set((state) => ({ isOpen: !state.isOpen })),
+}));
 export default useModalStore;

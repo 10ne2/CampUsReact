@@ -1,28 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import $ from "jquery";
+window.$ = window.jQuery = $;              
+import "summernote/dist/summernote-lite.css";
+import "summernote/dist/summernote-lite.js";
 
-const Phone = styled.div`
-  width: 412px;
-  height: 800px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
-  box-sizing: border-box;
-`;
-
-const Screen = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background: #e9eff6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 0;
-  box-sizing: border-box;
-`;
-
+import { Cancle } from "../img";
 
 const TopBar = styled.div`
   height: 56px;
@@ -42,46 +26,49 @@ const CloseArea = styled.div`
 `;
 
 const CloseBtn = styled.button`
-  border: 0;
-  background: transparent;
-  font-size: 24px;
-  line-height: 1;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
   cursor: pointer;
-  color: #707070;
+ margin-top: 15px;
+  font-size: 0;   
+  color: transparent;
 `;
 
 const Spacer = styled.div` flex: 1; `;
 
 const SendBtn = styled.button`
+width:62px;
+height:26px;
+
   background: #2EC4B6;
   color: #fff;
   border: 0;
   border-radius: 5px;
-  padding: 8px 14px;
-  font-weight: 700;
+  
+  font-weight:500;
   cursor: pointer;
 `;
-
 
 const Body = styled.div`
   padding: 0 16px 16px;
   box-sizing: border-box;
 `;
 
-
 const ReceiverField = styled.div`
-  margin-top: 20px;              
+  margin-top: 20px;
   padding-bottom: 10px;
   font-size: 14px;
   color: #606060;
   border-bottom: 1px solid #909090;
 `;
 
-
 const TitleInput = styled.input`
   width: 100%;
-  border: none;                        
-  border-bottom: 1px solid #909090;  
+  border: none;
+  border-bottom: 1px solid #909090;
   padding: 14px 2px 12px;
   font-size: 14px;
   outline: none;
@@ -94,18 +81,19 @@ const Divider = styled.div`
   margin: 12px 0;
 `;
 
-const ContentArea = styled.textarea`
-  width: 100%;
-  height: 305px;
-  border: 0;
-  padding: 12px 2px 14px;
-  font-size: 14px;
-  outline: none;
-  resize: none;
-  line-height: 1.5;
-  ::placeholder { color: #BDBDBD; }
+const EditorWrap = styled.div`
+  .note-editor.note-frame {
+    border: 0;
+    box-shadow: none;
+    font-family: 'Noto Sans KR','Noto Sans',sans-serif;
+  }
+  .note-toolbar { border: 0; padding: 6px 0; }
+  .note-statusbar { display: none; }    
+  .note-editable {
+    min-height: 305px;                 
+    line-height: 1.5;
+  }
 `;
-
 
 const FileRow = styled.div`
   margin-top: 16px;
@@ -123,7 +111,10 @@ const HiddenFile = styled.input.attrs({ type: "file", id: "mailFile" })`
 
 const FileLabel = styled.label`
   display: inline-block;
-  padding: 6px 10px;
+  width: 74px;
+  height: 25px;
+  text-align: center;
+  align-content: center;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 12px;
@@ -140,43 +131,66 @@ const FileText = styled.span`
 
 export default function MailWrite() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
+  const [html, setHtml] = useState("");
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    const $el = $(editorRef.current);
+    $el.summernote({
+      placeholder: "내용을 입력해주세요.",
+      height: 305,
+      minHeight: 305,
+      toolbar: [
+        ["style", ["bold", "underline", "clear"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["insert", ["picture", "link"]],
+        ["view", ["codeview"]],
+      ],
+      callbacks: {
+        onChange: (contents) => setHtml(contents),
+      },
+    });
+
+    return () => { try { $el.summernote("destroy"); } catch (_) {} };
+  }, []);
+
+  const handleSend = () => {
+    const current = $(editorRef.current).summernote("code");
+    console.log("메일 본문 HTML:", current);
+  };
 
   return (
-    <Screen>
-      <Phone>
-        <TopBar>
-          <CloseArea>
-            <CloseBtn aria-label="닫기">×</CloseBtn>
-          </CloseArea>
-          <Spacer />
-          <SendBtn>보내기</SendBtn>
-        </TopBar>
+    <div>
+      <TopBar>
+        <CloseArea>
+          <CloseBtn aria-label="닫기" />
+        </CloseArea>
+        <Spacer />
+        <SendBtn onClick={handleSend}>보내기</SendBtn>
+      </TopBar>
 
-        <Body>
-          
-          <ReceiverField>받는 사람</ReceiverField>
+      <Body>
+        <ReceiverField>받는 사람</ReceiverField>
 
-          
-          <TitleInput placeholder="제목을 입력해주세요." />
+        <TitleInput placeholder="제목을 입력해주세요." />
 
-       
-  
-          <ContentArea placeholder="내용을 입력해주세요." />
+        <Divider />
+        <EditorWrap>
+          <div ref={editorRef} />
+        </EditorWrap>
 
-          
-          <FileRow>
-            <FileDivider />
-            <HiddenFile
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                setFileName(f ? f.name : "선택된 파일이 없습니다.");
-              }}
-            />
-            <FileLabel htmlFor="mailFile">파일선택</FileLabel>
-            <FileText>{fileName}</FileText>
-          </FileRow>
-        </Body>
-      </Phone>
-    </Screen>
+        <FileRow>
+          <FileDivider />
+          <HiddenFile
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              setFileName(f ? f.name : "선택된 파일이 없습니다.");
+            }}
+          />
+          <FileLabel htmlFor="mailFile">파일선택</FileLabel>
+          <FileText>{fileName}</FileText>
+        </FileRow>
+      </Body>
+    </div>
   );
 }

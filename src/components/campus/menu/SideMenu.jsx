@@ -3,6 +3,19 @@ import styled from 'styled-components'
 import { user1, home, homehv, lecture, lecturehv, project, projecthv,
         post, posthv, mypage
 } from '../img'
+import { useMypageModalStore, useSideMenuStore } from '../commons/modalStore'
+
+const Overlay = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 900;
+`
+
 
 const Container = styled.div`
   font-size: 1rem;
@@ -26,6 +39,10 @@ const Container = styled.div`
   top: 0;
   border: 1px solid #dedede;
   background-color: #ffffff;
+  transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  overflow-y: auto;
 `
 
 const UserImage = styled.img`
@@ -94,22 +111,32 @@ const MypageIcon = styled.i`
   background-size: contain;
   background-repeat: no-repeat; 
 `
+export const Nonebutton = styled.button`
+  border: none;
+  background: none;
+`
 function SideMenu() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [homeHover, setHomeHover] = useState(false)
   const [lectureHover, setLectureHover] = useState(false)
   const [projectHover, setProjectHover] = useState(false)
   const [postHover, setPostHover] = useState(false)
-
+  const { showModal } = useMypageModalStore();
+  const { isOpen, closeMenu } = useSideMenuStore();
+  
   return (
-    <Container>
+    <>
+    <Overlay isOpen={isOpen} onClick={closeMenu} />
+    <Container  $isOpen={isOpen}>
       <div style={{ display: 'flex' }}>
         <Profile>
           <div style={{ width: "100%", height: "25px" }}></div>
           <UserImage src={user1} className="img-circle img-md" alt="User Image" />
           <div style={{ marginTop: "10px", display: "flex" }}>
             <Text>&nbsp;&nbsp;&nbsp;&nbsp;김민준&nbsp;&nbsp;</Text>
+            <Nonebutton onClick={showModal}>
             <MypageIcon style={{marginTop:'8px'}}></MypageIcon>
+            </Nonebutton>
           </div>
           <Text style={{ fontSize: "15px", color: "#909090", fontWeight: "500" }}>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20220001
@@ -194,6 +221,7 @@ function SideMenu() {
         </li>
       </ul>
     </Container>
+    </>
   )
 }
 

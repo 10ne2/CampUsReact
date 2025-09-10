@@ -1,37 +1,16 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { TopBar } from "../Project/ProjectTeamModify";
 
 
-const Phone = styled.div`
-  width: 412px;
-  height: 800px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
-  box-sizing: border-box;
-`;
-const Screen = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background: #e9eff6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 0;
-  box-sizing: border-box;
-`;
+import $ from "jquery";
+window.$ = window.jQuery = $;
+import "summernote/dist/summernote-lite.css";
+import "summernote/dist/summernote-lite.js";
 
+import { Cancle } from "../img";
 
-const TopBar = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  box-sizing: border-box;
-  gap: 16px;
-`;
 const CloseArea = styled.div`
   width: 54px;
   height: 45px;
@@ -40,22 +19,28 @@ const CloseArea = styled.div`
   justify-content: center;
 `;
 const CloseBtn = styled.button`
-  border: 0;
-  background: transparent;
-  font-size: 24px;
-  line-height: 1;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
   cursor: pointer;
-  color: #707070;
+  margin-top: 25px;
+  font-size: 0;
+  color: transparent;
 `;
+
 const Spacer = styled.div` flex: 1; `;
 const SubmitBtn = styled.button`
+width: 48px;
+height: 26px;   
   background: #2EC4B6;
   color: #fff;
   border: 0;
   border-radius: 5px;
-  padding: 8px 14px;
   font-weight: 700;
   cursor: pointer;
+  margin-top: 20px;
 `;
 
 const Body = styled.div`
@@ -92,7 +77,7 @@ const Arrow = styled.span`
   color: #999999;
 `;
 
-
+/* 제목 */
 const TitleInput = styled.input`
   width: 100%;
   border: none;
@@ -103,16 +88,21 @@ const TitleInput = styled.input`
   ::placeholder { color: #BDBDBD; }
 `;
 
-const ContentArea = styled.textarea`
-  width: 100%;
-  height: 305px;
-  border: 0;
-  padding: 12px 2px 14px;
-  font-size: 14px;
-  outline: none;
-  resize: none;
-  line-height: 1.5;
-  ::placeholder { color: #BDBDBD; }
+
+const EditorWrap = styled.div`
+  margin-top: 8px;
+  .note-editor.note-frame {
+    border: 0;
+    box-shadow: none;
+    font-family: 'Noto Sans KR','Noto Sans',sans-serif;
+  }
+  .note-toolbar { border: 0; padding: 6px 0; }
+  .note-statusbar { display: none; }           
+  .note-editable {
+    min-height: 305px;                         
+    font-size: 14px;
+    line-height: 1.5;
+  }
 `;
 
 
@@ -121,15 +111,18 @@ const FileRow = styled.div`
 `;
 const FileDivider = styled.div`
   height: 1px;
-  background: #D9D9D9;
+  background: #D9D9D9;   
   margin-bottom: 14px;
 `;
 const HiddenFile = styled.input.attrs({ type: "file", id: "attFile" })`
   display: none;
 `;
 const FileLabel = styled.label`
+  width: 74px;
+  height: 25px;
+  text-align: center;
+  align-content: center;
   display: inline-block;
-  padding: 6px 10px;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
   font-size: 12px;
@@ -145,49 +138,78 @@ const FileText = styled.span`
 
 export default function LectureAttendanceChange() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
+  const editorRef = useRef(null);     
+  const [html, setHtml] = useState(""); 
+
+  useEffect(() => {
+    const $el = $(editorRef.current);
+    $el.summernote({
+      placeholder: "내용을 입력해주세요.",
+      height: 305,
+      minHeight: 305,
+      toolbar: [
+        ["style", ["bold", "underline", "clear"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["insert", ["picture", "link"]],
+        ["view", ["codeview"]]
+      ],
+      callbacks: {
+        onChange: (contents) => setHtml(contents),
+      },
+    });
+
+    return () => {
+      try { $el.summernote("destroy"); } catch (_) {}
+    };
+  }, []);
+
+  const handleSubmit = () => {
+   
+    const current = $(editorRef.current).summernote("code");
+    console.log("제출 HTML:", current);
+   
+  };
 
   return (
-    <Screen>
-      <Phone>
-        <TopBar>
-          <CloseArea><CloseBtn aria-label="닫기">×</CloseBtn></CloseArea>
-          <Spacer />
-          <SubmitBtn>등록</SubmitBtn>
-        </TopBar>
+    <div>
+       <TopBar>
+        <CloseBtn aria-label="닫기" />
+        <Spacer />
+        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
+      </TopBar>
 
-        
+      <Body>
+       
+        <SelectWrap>
+          <Select defaultValue="2025-04-11">
+            <option value="2025-04-11">2025-04-11</option>
+            <option value="2025-04-12">2025-04-12</option>
+            <option value="2025-04-13">2025-04-13</option>
+          </Select>
+          <Arrow>▾</Arrow>
+        </SelectWrap>
 
-        <Body>
-          {/* 드롭다운 */}
-          <SelectWrap>
-            <Select defaultValue="2025-04-11">
-              <option value="2025-04-11">2025-04-11</option>
-              <option value="2025-04-12">2025-04-12</option>
-              <option value="2025-04-13">2025-04-13</option>
-            </Select>
-            <Arrow>▾</Arrow>
-          </SelectWrap>
 
-    
-          <TitleInput placeholder="제목을 입력해주세요." />
-
-   
-          <ContentArea placeholder="내용을 입력해주세요." />
+        <TitleInput placeholder="제목을 입력해주세요." />
 
        
-          <FileRow>
-            <FileDivider />
-            <HiddenFile
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                setFileName(f ? f.name : "선택된 파일이 없습니다.");
-              }}
-            />
-            <FileLabel htmlFor="attFile">파일선택</FileLabel>
-            <FileText>{fileName}</FileText>
-          </FileRow>
-        </Body>
-      </Phone>
-    </Screen>
+        <EditorWrap>
+          <div ref={editorRef} />
+        </EditorWrap>
+
+     
+        <FileRow>
+          <FileDivider />
+          <HiddenFile
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              setFileName(f ? f.name : "선택된 파일이 없습니다.");
+            }}
+          />
+          <FileLabel htmlFor="attFile">파일선택</FileLabel>
+          <FileText>{fileName}</FileText>
+        </FileRow>
+      </Body>
+    </div>
   );
 }

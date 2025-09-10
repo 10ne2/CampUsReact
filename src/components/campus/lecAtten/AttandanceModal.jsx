@@ -22,14 +22,13 @@ const Overlay = styled.div`
 
 const ModalBox = styled.div`
   background: white;
-  padding: 20px;
   border-radius: 12px;
   width: 346px;
   height: 170px;
   text-align: center;
     margin-bottom: 50px;
 `;
-const Button = styled.button`
+export const ExitButton = styled.button`
     border: none;
     font-size: 12px;
     width: 30px;
@@ -38,6 +37,7 @@ const Button = styled.button`
     background:none;
     margin-left: auto;
     padding-bottom: 5px;
+    
 `
 const Line = styled.div`
     width: 1px;
@@ -83,16 +83,16 @@ function AttandanceModal() {
     <>
         <Overlay>
       <ModalBox>
-        <Flex>
-          <p>이의 신청이 반려되었습니다.</p>
+        <Flex style={{padding:'0 20px 0 20px', height:'48px',alignItems:'center'}}>
+          <span style={{fontSize:'14px'}}>이의 신청이 반려되었습니다.</span>
         
-        <Button onClick={handleCancel}>
+        <ExitButton onClick={handleCancel}>
           <img src={Cancle} style={{width:'100%', height:'100%', objectFit:'contain'}} />
-        </Button>
+        </ExitButton>
         </Flex>
         <GrayHr style={{width: '319px', margin:'0 auto'}}></GrayHr>
-        <Flex style={{justifyContent:'start', marginTop:'17px'}}>
-        {message && <p>{message}</p>}
+        <Flex style={{justifyContent:'start', marginTop:'17px', marginLeft:'20px'}}>
+        {message && <p style={{fontSize:'13px'}}>{message}</p>}
         </Flex>
       </ModalBox>
     </Overlay>

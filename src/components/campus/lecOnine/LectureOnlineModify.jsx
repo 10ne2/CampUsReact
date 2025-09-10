@@ -21,7 +21,6 @@ function LectureOnlineModify() {
     const toggleOpen = () => setOpen(!open);
     const { showConfirm } = useModalStore();
     const [toastMsg, setToastMsg] = useState("");
-    const { viewModal } = useAttendanceModalStore();
     // 옵션 선택
     const handleSelect = (value) => {
         setSelected(value);
@@ -60,16 +59,12 @@ const handleRegister = () => {
     setToastMsg("강의가 수정되었습니다!");
   });
 };
-const testConfirms = () => {
-    viewModal("테스트");
-}
 
     return (
         <>
             <Container style={{ backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <img src={Cancle} style={{ width: '19px', height: '19px' }}></img>
                 <RegistButton style={{ width: '48px', height: '26px', marginTop:'5px' }} onClick={handleRegister} >수정</RegistButton>
-                <RegistButton style={{ width: '48px', height: '26px', marginTop:'5px' }} onClick={testConfirms} >Test</RegistButton>
             </Container>
                 <Wrap>
                     <ContentBox style={{ height: '255px' , marginBottom:'10px', padding:'0 20px'}}>

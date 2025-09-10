@@ -40,6 +40,10 @@ import posthv from './post_hv.png'
 import mypage from './right.png'
 import pictureMdfBtn from './PictureModifyBtn.png'
 import user11 from './user1.jpg'
+import right from './right.png'
+
+
+import campus from "./campus.png";
 
 
 
@@ -49,6 +53,7 @@ export {dropdownArrow, searchIcon, listArrow, pageArrow1, pageArrow2, pageArrow3
         checkBox, attenPass, profile,
         
         logo, Cancle, user1, home, homehv, lecture, lecturehv, project, projecthv,
-        post, posthv, mypage, pictureMdfBtn, user11,
+        post, posthv, mypage, pictureMdfBtn, user11, right,
 
+        campus, 
 };

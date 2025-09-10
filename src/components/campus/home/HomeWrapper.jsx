@@ -88,7 +88,7 @@ const Status = styled.div`
 function HomeWrapper() {
   return (
     <Container>
-        <ContentBox>
+        <ContentBox style={{marginTop:'15px'}}>
             <Header>
                 <HeadText>예정 강의</HeadText>
             </Header>

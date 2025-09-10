@@ -3,25 +3,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 
-const Phone = styled.div`
-  width: 412px;
-  height: 800px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
-  box-sizing: border-box;
-`;
-const Screen = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background: #e9eff6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 0;
-  box-sizing: border-box;
-`;
 
 
 const TopBar = styled.div`
@@ -119,8 +100,7 @@ export default function LecturePlanModify() {
   };
 
   return (
-    <Screen>
-      <Phone>
+    <div>
         <TopBar>
           <CloseArea><CloseBtn aria-label="닫기">×</CloseBtn></CloseArea>
           <Spacer />
@@ -163,7 +143,6 @@ export default function LecturePlanModify() {
             </FileList>
           </UploadSection>
         </Body>
-      </Phone>
-    </Screen>
+    </div>
   );
 }

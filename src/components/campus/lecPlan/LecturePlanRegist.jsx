@@ -2,26 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-
-const Phone = styled.div`
-  width: 412px;
-  height: 800px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
-  box-sizing: border-box;
-`;
-const Screen = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background: #e9eff6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 0;
-  box-sizing: border-box;
-`;
+import { Cancle } from "../img";
 
 
 const TopBar = styled.div`
@@ -39,23 +20,30 @@ const CloseArea = styled.div`
   justify-content: center;
 `;
 const CloseBtn = styled.button`
-  border: 0;
-  background: transparent;
-  font-size: 24px;
-  line-height: 1;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
   cursor: pointer;
-  color: #707070;
+  margin-top: 25px;
+  font-size: 0;
+  color: transparent;
 `;
+
 const Spacer = styled.div` flex: 1; `;
 const SubmitBtn = styled.button`
+width: 48px;
+height: 26px;   
   background: #2EC4B6;
   color: #fff;
   border: 0;
   border-radius: 5px;
-  padding: 8px 14px;
   font-weight: 700;
   cursor: pointer;
+  margin-top: 20px;
 `;
+
 
 
 const Body = styled.div`
@@ -132,11 +120,14 @@ const HiddenFile = styled.input.attrs({ type: "file", id: "planFile" })`
   display: none;
 `;
 const FileLabel = styled.label`
+  width: 74px;
+  height: 25px;
+  text-align: center;
+  align-content: center;
   display: inline-block;
-  padding: 6px 10px;
   border: 1px solid #bdbdbd;
   border-radius: 5px;
-  font-size: 12px;                
+  font-size: 12px;
   cursor: pointer;
   user-select: none;
   background: #f4f4f4;
@@ -151,13 +142,12 @@ export default function LecturePlanRegist() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
 
   return (
-    <Screen>
-      <Phone>
-        <TopBar>
-          <CloseArea><CloseBtn aria-label="닫기">×</CloseBtn></CloseArea>
-          <Spacer />
-          <SubmitBtn>등록</SubmitBtn>
-        </TopBar>
+    <div>
+          <TopBar>
+        <CloseBtn aria-label="닫기" />
+        <Spacer />
+        <SubmitBtn>등록</SubmitBtn>
+      </TopBar>
 
         <Body>
 
@@ -194,7 +184,6 @@ export default function LecturePlanRegist() {
             </FileArea>
           </UploadSection>
         </Body>
-      </Phone>
-    </Screen>
+    </div>
   );
 }
