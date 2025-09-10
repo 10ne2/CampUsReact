@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import checkBox from '../img/checkBox.png'
-import attenPass from '../img/attenPass.png'
-import profile from '../img/profile.jpg'
+import { profile, attenPass, checkBox } from '../img'
+
 
 export const ListHeader = styled.div`
     width: 100%;
@@ -321,8 +320,7 @@ export const MailView = styled.div`
 
 
 
-
-function ListComponent() {
+function WHComponent() {
   return (
     <>
       <div></div>
@@ -330,4 +328,4 @@ function ListComponent() {
   )
 }
 
-export default ListComponent
+export default WHComponent

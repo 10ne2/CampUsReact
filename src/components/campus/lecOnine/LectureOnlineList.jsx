@@ -6,7 +6,7 @@ import {
     ListHeader, CatTitle, FlexDiv,
     WHContainer, DateBox, Title, Button, SearchDrop, DropHeader, DropList, DropOption,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText}
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
 
 export const Thumnail = styled.div`
     width: 106px;

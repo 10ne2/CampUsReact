@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import {dropdownArrow, searchIcon, pageArrow1, pageArrow2, pageArrow3,
-        pageArrow4, clip
-} from '../img'
-import { 
-    ListHeader, CatTitle, FlexDiv, Writer,
-    SearchBar, SearchDrop, SearchText,
-    DropHeader, DropList, DropOption,
-    WHContainer, DateBox, Title, Button,
-    PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
-    from '../commons/ListComponent'
+        pageArrow4, clip,
+        } from '../img'
+import { ListHeader, CatTitle, FlexDiv, Writer,
+        SearchBar, SearchDrop, SearchText,
+        DropHeader, DropList, DropOption,
+        WHContainer, DateBox, Title, Button,
+        PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText,
+        } from '../commons/WHComponent'
 
 
 

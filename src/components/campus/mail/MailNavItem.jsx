@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { LecText } from '../home/HomeWrapper'
 
 const Text = styled.h3`
     font-size: 15px;

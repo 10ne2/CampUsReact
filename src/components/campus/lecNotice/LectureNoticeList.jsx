@@ -7,7 +7,7 @@ import {
     DropHeader, DropList, DropOption,
     WHContainer, DateBox, Title, Button,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
 
 
 function LectureNoticeList() {

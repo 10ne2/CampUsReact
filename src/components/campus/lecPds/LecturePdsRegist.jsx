@@ -23,22 +23,12 @@ const Screen = styled.div`
   box-sizing: border-box;
 `;
 
-
 const TopBar = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
   padding: 0 16px;
   box-sizing: border-box;
-  gap: 16px;
-`;
-
-const CloseArea = styled.div`
-  width: 54px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const CloseBtn = styled.button`
@@ -49,10 +39,8 @@ const CloseBtn = styled.button`
   cursor: pointer;
   color: #707070;
 `;
-
 const Spacer = styled.div` flex: 1; `;
-
-const SendBtn = styled.button`
+const SubmitBtn = styled.button`
   background: #2EC4B6;
   color: #fff;
   border: 0;
@@ -62,42 +50,26 @@ const SendBtn = styled.button`
   cursor: pointer;
 `;
 
-
 const Body = styled.div`
-  padding: 0 16px 16px;
+  padding: 16px;
   box-sizing: border-box;
 `;
 
-
-const ReceiverField = styled.div`
-  margin-top: 20px;              
-  padding-bottom: 10px;
-  font-size: 14px;
-  color: #606060;
-  border-bottom: 1px solid #909090;
-`;
-
-
 const TitleInput = styled.input`
   width: 100%;
-  border: none;                        
-  border-bottom: 1px solid #909090;  
-  padding: 14px 2px 12px;
+  border: 0;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 10px 2px;
   font-size: 14px;
   outline: none;
   ::placeholder { color: #BDBDBD; }
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: #e5e5e5;
-  margin: 12px 0;
 `;
 
 const ContentArea = styled.textarea`
   width: 100%;
   height: 305px;
   border: 0;
+  border-bottom: 1px solid #dcdcdc;
   padding: 12px 2px 14px;
   font-size: 14px;
   outline: none;
@@ -106,18 +78,11 @@ const ContentArea = styled.textarea`
   ::placeholder { color: #BDBDBD; }
 `;
 
-
 const FileRow = styled.div`
   margin-top: 16px;
 `;
 
-const FileDivider = styled.div`
-  height: 1px;
-  background: #D9D9D9;
-  margin-bottom: 14px;
-`;
-
-const HiddenFile = styled.input.attrs({ type: "file", id: "mailFile" })`
+const HiddenFile = styled.input.attrs({ type: "file", id: "boardFile" })`
   display: none;
 `;
 
@@ -138,41 +103,31 @@ const FileText = styled.span`
   color: #707070;
 `;
 
-export default function MailWrite() {
+export default function BoardRegist() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
 
   return (
     <Screen>
       <Phone>
         <TopBar>
-          <CloseArea>
-            <CloseBtn aria-label="닫기">×</CloseBtn>
-          </CloseArea>
+          <CloseBtn aria-label="닫기">×</CloseBtn>
           <Spacer />
-          <SendBtn>보내기</SendBtn>
+          <SubmitBtn>등록</SubmitBtn>
         </TopBar>
 
         <Body>
-          
-          <ReceiverField>받는 사람</ReceiverField>
-
-          
           <TitleInput placeholder="제목을 입력해주세요." />
-
-       
-  
+          <div style={{ height: 16 }} />
           <ContentArea placeholder="내용을 입력해주세요." />
 
-          
           <FileRow>
-            <FileDivider />
             <HiddenFile
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 setFileName(f ? f.name : "선택된 파일이 없습니다.");
               }}
             />
-            <FileLabel htmlFor="mailFile">파일선택</FileLabel>
+            <FileLabel htmlFor="boardFile">파일선택</FileLabel>
             <FileText>{fileName}</FileText>
           </FileRow>
         </Body>

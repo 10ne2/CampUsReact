@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, ContentBox, Header, HeadText,        
          Content, Contents, CirCle, Days, Day, Times, Lecture, LecText, IconBox
 } from '../home/HomeWrapper'
-import go from '../img/go.png'
+import { go } from '../img'
 import styled from 'styled-components'
 import { Hr } from '../menu/SideMenu'
 

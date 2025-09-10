@@ -7,7 +7,7 @@ import {
     SearchBar, SearchText,
     WHContainer, DateBox, Title, Button, CheckButton,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
 
 
 

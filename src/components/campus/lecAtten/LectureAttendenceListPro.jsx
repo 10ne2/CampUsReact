@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import dropdownArrow from '../img/dropdownArrow.png'
-import pageArrow1 from '../img/pageArrow1.png'
-import pageArrow2 from '../img/pageArrow2.png'
-import pageArrow3 from '../img/pageArrow3.png'
-import pageArrow4 from '../img/pageArrow4.png'
 import { 
     ListHeader, CatTitle, FlexDiv, Profile,
     WHContainer, DateBox, Title, Button, SearchDrop, DropHeader, DropList, DropOption,
     AttenBox, AttenText, AttenChange, NumberContainer,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText,
     CheckContainer, CheckBox, CheckMark, CheckText }
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
+import { dropdownArrow, pageArrow1, pageArrow2, pageArrow3, pageArrow4 } from '../img'
 
 const AttenNum = styled.div`
     font-size: 60px;

@@ -30,15 +30,6 @@ const TopBar = styled.div`
   align-items: center;
   padding: 0 16px;
   box-sizing: border-box;
-  gap: 16px;
-`;
-
-const CloseArea = styled.div`
-  width: 54px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const CloseBtn = styled.button`
@@ -52,7 +43,7 @@ const CloseBtn = styled.button`
 
 const Spacer = styled.div` flex: 1; `;
 
-const SendBtn = styled.button`
+const SubmitBtn = styled.button`
   background: #2EC4B6;
   color: #fff;
   border: 0;
@@ -63,41 +54,60 @@ const SendBtn = styled.button`
 `;
 
 
-const Body = styled.div`
-  padding: 0 16px 16px;
+const ToolsArea = styled.div`
+  width: 115px;   
+  height: 76px;  
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
   box-sizing: border-box;
 `;
 
-
-const ReceiverField = styled.div`
-  margin-top: 20px;              
-  padding-bottom: 10px;
-  font-size: 14px;
-  color: #606060;
-  border-bottom: 1px solid #909090;
+const ToolBtn = styled.button`
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b6b6b;
 `;
 
 
-const TitleInput = styled.input`
-  width: 100%;
-  border: none;                        
-  border-bottom: 1px solid #909090;  
-  padding: 14px 2px 12px;
-  font-size: 14px;
-  outline: none;
-  ::placeholder { color: #BDBDBD; }
+const AccentLine = styled.div`
+  height: 2px;
+  background: #2EC4B6;
+margin: 0 16px; 
 `;
+
+const Body = styled.div`
+  padding: 16px;
+  box-sizing: border-box;
+`;
+
+const Title = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  color: #212121;
+`;
+
+const Period = styled.div`
+  margin-top: 6px;
+  font-size: 12px;
+  color: #9e9e9e;
+`;
+
 
 const Divider = styled.div`
   height: 1px;
   background: #e5e5e5;
-  margin: 12px 0;
+  margin: 12px 0;          
 `;
 
 const ContentArea = styled.textarea`
   width: 100%;
-  height: 305px;
-  border: 0;
+  height: 305px;            
+  border: 0;                
   padding: 12px 2px 14px;
   font-size: 14px;
   outline: none;
@@ -113,11 +123,11 @@ const FileRow = styled.div`
 
 const FileDivider = styled.div`
   height: 1px;
-  background: #D9D9D9;
+  background: #e5e5e5;
   margin-bottom: 14px;
 `;
 
-const HiddenFile = styled.input.attrs({ type: "file", id: "mailFile" })`
+const HiddenFile = styled.input.attrs({ type: "file", id: "hwFile" })`
   display: none;
 `;
 
@@ -138,33 +148,33 @@ const FileText = styled.span`
   color: #707070;
 `;
 
-export default function MailWrite() {
+export default function LectureHomeworkSubmit() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
 
   return (
     <Screen>
       <Phone>
         <TopBar>
-          <CloseArea>
-            <CloseBtn aria-label="닫기">×</CloseBtn>
-          </CloseArea>
+          <CloseBtn aria-label="닫기">×</CloseBtn>
           <Spacer />
-          <SendBtn>보내기</SendBtn>
+          <SubmitBtn>등록</SubmitBtn>
         </TopBar>
 
+        
+
+        <AccentLine />
+
         <Body>
-          
-          <ReceiverField>받는 사람</ReceiverField>
+          <Title>7주차 과제 입니다.</Title>
+          <Period>2025-08-05 16:00 ~ 2025-08-11 23:59</Period>
 
-          
-          <TitleInput placeholder="제목을 입력해주세요." />
+          {/* 내용 위의 선 */}
+          <Divider />
 
-       
-  
           <ContentArea placeholder="내용을 입력해주세요." />
 
-          
           <FileRow>
+            {/* 파일 영역 위 한 줄 */}
             <FileDivider />
             <HiddenFile
               onChange={(e) => {
@@ -172,7 +182,7 @@ export default function MailWrite() {
                 setFileName(f ? f.name : "선택된 파일이 없습니다.");
               }}
             />
-            <FileLabel htmlFor="mailFile">파일선택</FileLabel>
+            <FileLabel htmlFor="hwFile">파일선택</FileLabel>
             <FileText>{fileName}</FileText>
           </FileRow>
         </Body>

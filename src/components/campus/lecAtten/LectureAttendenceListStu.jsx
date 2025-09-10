@@ -1,15 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import pageArrow1 from '../img/pageArrow1.png'
-import pageArrow2 from '../img/pageArrow2.png'
-import pageArrow3 from '../img/pageArrow3.png'
-import pageArrow4 from '../img/pageArrow4.png'
+import { pageArrow1, pageArrow2, pageArrow3, pageArrow4 } from '../img'
 import { 
     ListHeader, CatTitle, FlexDiv,
     WHContainer, DateBox, Title, Button, NumberContainer,
     AttenBox, AttenText, AttenChangeIng, AttenChange, AttenPass,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
 
 const AttenDate = styled.div`
     font-size: 12px;

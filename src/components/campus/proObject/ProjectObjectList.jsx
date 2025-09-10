@@ -10,7 +10,7 @@ import {
     WHContainer, DateBox, Title, Button, CheckButton, 
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText,
     CustomInput, CheckContainer, CheckBox, CheckMark, CheckText }
-    from '../commons/ListComponent'
+    from '../commons/WHComponent'
 
 function ProjectObjectList() {
     const [open, setOpen] = useState(false);

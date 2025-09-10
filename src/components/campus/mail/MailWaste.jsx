@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
 import MailNavBar from './MailNavBar'
 import { Container } from '../topNav/TopNav'
-import { searchIcon, listArrow, pageArrow1, pageArrow2, pageArrow3,
-        pageArrow4, allSelect, trash, radioCheck, replace, read, unRead, unImp, imp,
-        unLock, lock } from '../img'
+import { searchIcon, pageArrow1, pageArrow2, pageArrow3,
+        pageArrow4, allSelect, radioCheck, replace, read, unRead, unImp, imp,
+        unLock, lock, Cancle } from '../img'
 import { 
     ListHeader, FlexDiv, SearchBar, SearchText,
     DateBox, Title, Button,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText, 
     WHContainer, RegistButton,
-    CheckText, MailView, CheckBox, CheckMark
+    CheckBox, CheckMark
     }
-    from '../commons/ListComponent'
-import Cancle from '../img/Cancle.png'
+    from '../commons/WHComponent'
 import { GrayHr } from '../home/HomeWrapperPro'
 import styled from 'styled-components'
 

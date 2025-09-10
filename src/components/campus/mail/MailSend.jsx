@@ -3,7 +3,7 @@ import MailNavBar from './MailNavBar'
 import { Container } from '../topNav/TopNav'
 import { searchIcon, listArrow, pageArrow1, pageArrow2, pageArrow3,
         pageArrow4, allSelect, trash, radioCheck, replace, read, unRead, unImp, imp,
-        unLock, lock } from '../img'
+        unLock, lock, Cancle } from '../img'
 import { 
     ListHeader, FlexDiv, SearchBar, SearchText,
     DateBox, Title, Button,
@@ -11,8 +11,7 @@ import {
     WHContainer, RegistButton,
     CheckText, MailView, CheckBox, CheckMark
     }
-    from '../commons/ListComponent'
-import Cancle from '../img/Cancle.png'
+    from '../commons/WHComponent'
 import { GrayHr } from '../home/HomeWrapperPro'
 import styled from 'styled-components'
 

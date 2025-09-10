@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import go from '../img/go.png';
 import { Hr } from '../menu/SideMenu';
+import { go } from '../img';
 
 export const Container = styled.div`
     margin: 0 auto;

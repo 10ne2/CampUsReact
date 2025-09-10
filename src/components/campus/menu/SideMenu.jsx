@@ -1,15 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import user1 from '../img/user1-128x128.jpg'
-import home from '../img/CPhome.png'
-import homehv from '../img/home_hv.png'
-import lecture from '../img/gang.png'
-import lecturehv from '../img/gang_hv.png'
-import project from '../img/pro.png'
-import projecthv from '../img/pro_hv.png'
-import post from '../img/post.png'
-import posthv from '../img/post_hv.png'
-import mypage from '../img/right.png'
+import { user1, home, homehv, lecture, lecturehv, project, projecthv,
+        post, posthv, mypage
+} from '../img'
 
 const Container = styled.div`
   font-size: 1rem;
