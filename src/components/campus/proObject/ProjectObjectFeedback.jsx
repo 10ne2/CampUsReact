@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Container } from '../topNav/TopNav'
 import { RegistButton } from '../commons/WHComponent'
-import { Head, RegistTextarea, Title, Wrap } from '../lecOnine/LectureOnlineRegist'
+import { Head, RegistTextarea, Title, Wrap } from '../lecOnline/LectureOnlineRegist'
 import { ContentBox, HeadText } from '../home/HomeWrapper'
 import { Hr } from '../menu/SideMenu'
 import { Cancle, right } from '../img'

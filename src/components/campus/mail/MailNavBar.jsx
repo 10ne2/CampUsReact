@@ -7,7 +7,9 @@ import MailNavItem from '../mail/MailNavItem'
 const Container = styled.div`
     height: 48px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    background-color: #fff;
+    gap: 40px;
 `
 
 const StyleLink = styled(Link)`

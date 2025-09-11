@@ -6,7 +6,7 @@ import { Content, ContentBox, Header, HeadText, } from '../home/HomeWrapper'
 import { Button, CatTitle, CheckBox, CheckContainer, CheckMark, CheckText, CustomInput,
         DropHeader, DropList, DropOption, FlexDiv, ListHeader, PageArrowButton, PageNation,
         PageNumberButton, PageNumText, PageText, SearchBar, SearchDrop, SearchText
-} from '../commons/WHComponents';
+} from '../commons/WHComponent';
 import { Hr } from '../menu/SideMenu';
 import { dropdownArrow, searchIcon, pageArrow1, pageArrow2, pageArrow3, pageArrow4,
         calender, 

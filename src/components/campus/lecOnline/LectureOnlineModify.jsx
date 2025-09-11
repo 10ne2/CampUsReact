@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react'
-import { Container } from '../menu/TopNav'
+import { Container } from '../topNav/TopNav'
 import { Flex, GrayHr } from '../home/HomeWrapperPro'
 import { Cancle, dropdownArrow } from '../img'
 import { ContentBox, Header } from '../home/HomeWrapper'
 import { Hr } from '../menu/SideMenu'
-import { DropHeader, DropList, DropOption, SearchDrop, RegistButton } from '../commons/WHComponents'
+import { DropHeader, DropList, DropOption, SearchDrop, RegistButton } from '../commons/WHComponent'
 import useModalStore, { useAttendanceModalStore } from '../commons/modalStore'
 import { FileBtn, Filefont, Head, Headtext, RegistInput, RegistTextarea, Title, Wrap
-    } from '../lecOnine/LectureOnlineRegist'
+    } from '../lecOnline/LectureOnlineRegist'
 import Toast from '../commons/Toast'
 
 

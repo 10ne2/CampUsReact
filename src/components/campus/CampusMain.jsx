@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TopNav from './topNav/TopNav'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -28,11 +28,11 @@ import LectureNoticeRegist from './lecNotice/LectureNoticeRegist'
 import LectureNoticeList from './lecNotice/LectureNoticeList'
 import LectureNoticeModify from './lecNotice/LectureNoticeModify'
 
-import LectureOnlineWrapper from './lecOnine/LectureOnlineWrapper'
-import LectureOnlineDetail from './lecOnine/LectureOnlineDetail'
-import LectureOnlineModify from './lecOnine/LectureOnlineModify'
-import LectureOnlineList from './lecOnine/LectureOnlineList'
-import LectureOnlineRegist from './lecOnine/LectureOnlineRegist'
+import LectureOnlineWrapper from './lecOnline/LectureOnlineWrapper'
+import LectureOnlineDetail from './lecOnline/LectureOnlineDetail'
+import LectureOnlineModify from './lecOnline/LectureOnlineModify'
+import LectureOnlineList from './lecOnline/LectureOnlineList'
+import LectureOnlineRegist from './lecOnline/LectureOnlineRegist'
 
 import LecturePlanWrapper from './lecPlan/LecturePlanWrapper'
 import LecturePlanModify from './lecPlan/LecturePlanModify'
@@ -85,68 +85,77 @@ import BoardModify from './board/BoardModify'
 import BoardRegist from './board/BoardRegist'
 
 function CampusMain() {
+
   return (
     <>
     <BrowserRouter>
       <TopNav />
+      <MailDashBoard/>
       <SideMenu/>
+
       <Routes>
         <Route path='/' element={<HomeWrapper />}></Route>
-        <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}></Route>
+        <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
           <Route index element={<LecturePlanDetail />}></Route>
-        <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}></Route>
+        </Route>
+        <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}>
           <Route index element={<LectureNoticeList />}></Route>
           <Route path=':id' element={<LectureNoticeDetail />}></Route>
-        <Route path='/' element={<LectureOnlineWrapper />}></Route>
-          <Route path='/' element={<LectureOnlineList />}></Route>
-          <Route path='/' element={<LectureOnlineDetail />}></Route>
-        <Route path='/' element={<LecturePdsWrapper />}></Route>
-          <Route path='/' element={<LecturePdsDetail />}></Route>
-          <Route path='/' element={<LecturePdsList />}></Route>
-        <Route path='/' element={<LectureAttendanceWrapper />}></Route>
-          <Route path='/' element={<LectureAttendanceListStu />}></Route>
-        <Route path='/' element={<LectureHomeworkWrapper />}></Route>
-          <Route path='/' element={<LectureHomeworkDetailFeedback />}></Route>
-          <Route path='/' element={<LectureHomeworkList />}></Route>
-        <Route path='/' element={<ProjectObjectWrapper />}></Route>
-          <Route path='/' element={<ProjectObjectList />}></Route>
-          <Route path='/' element={<ProjectObjectDetailFeedback />}></Route>
-          <Route path='/' element={<ProjectObjectProjectList />}></Route>
-        <Route path='/' element={<ProjectTeamWrapper />}></Route>
-          <Route path='/' element={<ProjectTeamDetail />}></Route>
-          <Route path='/' element={<ProjectTeamList />}></Route>
-        <Route path='/' element={<BoardWrapper />}></Route>
-          <Route path='/' element={<BoardDetail />}></Route>
-          <Route path='/' element={<BoardList />}></Route>
+        </Route>
+        <Route path='/JAVA101/online' element={<LectureOnlineWrapper />}>
+          <Route index element={<LectureOnlineList />}></Route>
+          <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
+        </Route>
+        <Route path='/JAVA101/atten' element={<LectureAttendanceWrapper />}>
+          <Route index element={<LectureAttendanceListStu />}></Route>
+        </Route>
+        <Route path='/JAVA101/homework' element={<LectureHomeworkWrapper />}>
+          <Route index element={<LectureHomeworkList />}></Route>
+          <Route path=':hw_no' element={<LectureHomeworkDetailFeedback />}></Route>
+        </Route>
+        <Route path='/JAVA101/pds' element={<LecturePdsWrapper />}>
+          <Route index element={<LecturePdsList />}></Route>
+          <Route path=':cf_no' element={<LecturePdsDetail />}></Route>
+        </Route>
+        <Route path='/project/team' element={<ProjectTeamWrapper />}>
+          <Route index element={<ProjectTeamList />}></Route>
+          <Route path=':team_id' element={<ProjectTeamDetail />}></Route>
+        </Route>
+        <Route path='/project/object' element={<ProjectObjectWrapper />}>
+          <Route index element={<ProjectObjectProjectList />}></Route>
+          <Route path=':project_id/list' element={<ProjectObjectList />}>
+            <Route path=':rm_id' element={<ProjectObjectDetailFeedback />}></Route>
+          </Route>
+        </Route>
+        <Route path='/board' element={<BoardWrapper />}>
+          <Route index element={<BoardList />}></Route>
+          <Route path=':board_id' element={<BoardDetail />}></Route>
+        </Route>
       </Routes>
 
-      <Mypage />
-      <MailDashBoard />
+      <Mypage/>
+      <LecturePlanRegist/>
+      <LecturePlanModify/>
+      <LectureNoticeRegist/>
+      <LectureNoticeModify/>
+      <LectureOnlineRegist/>
+      <LectureOnlineModify/>
+      <LectureHomeworkRegist/>
+      <LectureHomeworkStuDetail/>
+      <LectureHomeworkStuDetailFeedbackSubmit/>
+      <LectureHomeworkSubmit/>
+      <LecturePdsRegist/>
+      <LecturePdsModify/>
+      <LectureAttendanceChange/>
+      <LectureAttendanceModify/>
+      <ProjectObjectFeedback/>
+      <ProjectObjectRegist/>
+      <ProjectTeamModify/>
+      <ProjectTeamRegist/>
+      <ProjectTeamModifyCheck/>
+      <BoardModify/>
+      <BoardRegist/>
 
-      <LecturePlanModify />
-      <LecturePlanRegist />
-      <LectureNoticeRegist />
-      <LectureNoticeModify />
-      <LectureOnlineModify />
-      <LectureOnlineRegist />
-      <LectureHomeworkRegist />
-      <LectureHomeworkStuDetail />
-      <LectureHomeworkStuDetailFeedbackSubmit />
-      <LectureHomeworkSubmit />
-      <LecturePdsRegist />
-      <LecturePdsModify />
-      <LectureAttendanceChange />
-      <LectureAttendanceModify />
-
-      <ProjectObjectFeedback />
-      <ProjectObjectRegist />
-      <ProjectTeamModify />
-      <ProjectTeamRegist />
-      <ProjectTeamModifyCheck />
-
-      <BoardModify />
-      <BoardRegist />
-      
     </BrowserRouter>
     </>
   )

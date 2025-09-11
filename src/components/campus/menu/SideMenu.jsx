@@ -5,7 +5,7 @@ import { user1, home, homehv, lecture, lecturehv, project, projecthv,
 } from '../img'
 import { useMypageModalStore, useSideMenuStore } from '../commons/modalStore'
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   position: fixed;
   top: 0;

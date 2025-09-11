@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import dd from "./video/Lecture1.mp4";
+import dd from "../video/Lecture1.mp4";
 
 const PageWrap = styled.div`
   display: flex;

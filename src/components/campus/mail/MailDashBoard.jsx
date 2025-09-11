@@ -3,16 +3,22 @@ import styled from 'styled-components'
 import {Content, ContentBox, Contents, Header, HeadText, IconBox, LecText } from '../home/HomeWrapper'
 import { Flex, GrayHr } from '../home/HomeWrapperPro'
 import { Hr } from '../menu/SideMenu'
-import { unRead, read, go } from '../img'
+import { unRead, read, go, Cancle } from '../img'
+import { useMailModalStore } from '../commons/modalStore'
+import { Button, MailDashBox, RegistButton } from '../commons/WHComponent'
+import { Container } from '../topNav/TopNav'
+import MailNavBar from './MailNavBar'
 
-const Container = styled.div`
-    width: 100%;
+const MainContainer = styled.div`
+    width: 412px;
     height: 100%;
+    top: 0;
+    left: 0;
     margin: 0 auto;
-    padding: 4px 21px 0 21px;
     background-color: #f7f7f7;
     min-height: calc(100vh - 119px);
-    position: relative;
+    position: fixed;
+    z-index: 999; 
 `
 
 const MiniIconBox = styled.div`
@@ -33,9 +39,21 @@ const Post = styled.div`
     align-items: center; 
 `
 function MailDashBoard() {
+    const visible = useMailModalStore((state) => state.visible);
+    const hideModal = useMailModalStore((state) => state.hideModal);
+
+    if (!visible) return null;
   return (
-     <Container style={{height:'100%'}}>
-      <ContentBox style={{marginTop:'13px', height:'308px'}}>
+    <>        
+     <MainContainer style={{height:'100%'}}>
+        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={hideModal}></img>
+            <Button style={{width:'65px'}}>메일 작성</Button>
+        </Container>
+        <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
+        <MailNavBar/>
+
+      <MailDashBox style={{marginTop:'13px', height:'308px'}}>
         <Header>
             <HeadText>
                 받은 메일함
@@ -121,8 +139,9 @@ function MailDashBoard() {
             </div>
         </Contents>
         <GrayHr style={{margin:'0 auto', width:'344px'}}></GrayHr>
-      </ContentBox>
-      <ContentBox style={{marginTop:'13px', height:'308px'}}>
+      </MailDashBox>
+      
+      <MailDashBox style={{marginTop:'13px', height:'308px'}}>
         <Header>
             <HeadText>
                 보낸 메일함
@@ -196,11 +215,13 @@ function MailDashBoard() {
             </div>
         </Contents>
         <GrayHr style={{margin:'0 auto', width:'344px'}}></GrayHr>
-      </ContentBox>
+      </MailDashBox>
         <Post>
             <img src={go} style={{width:"70%", height: "70%", objectFit:'contain'}}/>
         </Post>
-    </Container>
+    </MainContainer>
+    </>
+
   )
 }
 

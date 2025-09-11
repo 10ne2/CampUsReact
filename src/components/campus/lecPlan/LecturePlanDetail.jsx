@@ -1,5 +1,5 @@
 import React from 'react'
-import { CatTitle, FlexDiv, RegistButton } from '../commons/WHComponents'
+import { CatTitle, FlexDiv, RegistButton } from '../commons/WHComponent'
 import { Table, TableOverView, TableText, TableTitle, TitleText, Wrap } from '../mypage/Mypage'
 import { ContentBox, Header } from '../home/HomeWrapper'
 import { ContentText } from '../proObject/ProjectObjectProjectList'

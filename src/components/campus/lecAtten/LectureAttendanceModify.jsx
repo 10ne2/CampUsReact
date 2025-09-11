@@ -216,7 +216,7 @@ const SubmitBtn = styled.button`
 `;
 
 /* ===== Component ===== */
-export default function LectureAttendenceModify({
+export default function LectureAttendanceModify({
   onClose = () => {},
   onSubmit = (payload) => { alert(JSON.stringify(payload, null, 2)); }
 }) {

@@ -58,4 +58,10 @@ export const useSideMenuStore = create((set) => ({
   closeMenu: () => set({ isOpen: false }),
   toggleMenu: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
+export const useMailModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+
 export default useModalStore;

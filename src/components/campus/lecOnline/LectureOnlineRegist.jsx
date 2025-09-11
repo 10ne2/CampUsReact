@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
-import { Container } from '../menu/TopNav'
+import { Container } from '../topNav/TopNav'
 import { Flex, GrayHr } from '../home/HomeWrapperPro'
 import { Cancle, dropdownArrow } from '../img'
 import { ContentBox, Header } from '../home/HomeWrapper'
 import styled from 'styled-components'
 import { Hr } from '../menu/SideMenu'
-import { DropHeader, DropList, DropOption, SearchDrop, RegistButton } from '../commons/WHComponents'
+import { DropHeader, DropList, DropOption, SearchDrop, RegistButton } from '../commons/WHComponent'
 import useModalStore from '../commons/modalStore'
 import Toast from '../commons/Toast'
 

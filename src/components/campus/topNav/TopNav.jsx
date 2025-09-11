@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import {menuBar, logoRow, mail} from '../img'
 import { Nonebutton } from '../menu/SideMenu';
-import { useSideMenuStore } from '../commons/modalStore';
+import { useMailModalStore, useSideMenuStore } from '../commons/modalStore';
 
 export const Container = styled.div`
   width: 100%;
@@ -22,6 +22,7 @@ export const Menu = styled.div`
 
 function TopNav() {
   const toggleMenu = useSideMenuStore((state) => state.toggleMenu);
+  const showMail = useMailModalStore((state) => state.showModal);
 
   return (
     <Container>
@@ -29,7 +30,7 @@ function TopNav() {
       <img src={menuBar} style={{width:"27px", height: "18px", marginTop:"5px"}}/>
       </Nonebutton>
       <img src={logoRow} style={{width:"116px", height: "27px"}}/>
-      <img src={mail} style={{width:"27px", height: "18px", marginTop:"5px"}}/>
+      <img src={mail} style={{width:"27px", height: "18px", marginTop:"5px", cursor:'pointer'}} onClick={showMail}/>
     </Container>
   )
 }

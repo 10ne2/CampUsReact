@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { TopBar } from "../Project/ProjectTeamModify";
+import { TopBar } from "../proTeam/ProjectTeamModify";
 
 
 import $ from "jquery";

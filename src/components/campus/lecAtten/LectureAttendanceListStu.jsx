@@ -26,7 +26,7 @@ const NumberInput = styled.input`
     
 `
 
-function LectureAttendenceList() {
+function LectureAttendanceList() {
 
   return (
     <>
@@ -144,4 +144,4 @@ function LectureAttendenceList() {
   )
 }
 
-export default LectureAttendenceList
+export default LectureAttendanceList
