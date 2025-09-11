@@ -15,11 +15,13 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   margin-bottom: 18px;
+  margin-left: 10px;
 `;
 const TopActions = styled.div`
   margin-left: auto;
   display: flex;
   gap: 8px;
+  margin-right: 10px;
 `;
 const ActionChip = styled.button`
   height: 28px;
@@ -33,7 +35,8 @@ const ActionChip = styled.button`
 `;
 const ActionChipBrand = styled(ActionChip)`
   border-color: #2ec4b6;
-  color: #1a998d;
+  color: #fff;
+  background: #1a998d;
 `;
 
 const PageDivider = styled.div`
@@ -64,10 +67,12 @@ const CardTitle = styled.div`
   font-size: 16px;
   font-weight: 700;
   margin: 2px 0 8px;
+  margin-left: 10px;
 `;
 const CardMeta = styled.div`
   font-size: 12px;
   color: #98a1a8;
+  margin-left: 10px;
 `;
 const CardHr = styled.div`
   width: 372px;
@@ -81,6 +86,8 @@ const AssignBody = styled.div`
   color: #6b7680;
   line-height: 1.7;
   margin-bottom: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const CardFooter = styled.div`
@@ -98,13 +105,14 @@ const Button = styled.button`
   color: #59636b;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 /* ===== Section Header ===== */
 const SectionTitle = styled.h4`
   font-size: 14px;
   font-weight: 700;
-  margin: 8px 0 6px;
+  margin: 8px 10px 6px;
 `;
 const SectionDivider = styled.div`
   height: 2px;
@@ -115,7 +123,10 @@ const SectionDivider = styled.div`
 `;
 
 /* ===== Submission list (학생 제출 목록) ===== */
-const List = styled.div``;
+const List = styled.div`
+margin-left: 10px;
+`;
+
 const Row = styled.button`
   width: 100%;
   background: transparent;
@@ -129,6 +140,7 @@ const Row = styled.button`
   &:not(:first-child){
     border-top: 1px solid #eceff1;
   }
+  align-items: center;
 `;
 const Avatar = styled.div`
   width: 32px;
@@ -149,6 +161,7 @@ const AttachmentIcon = styled.img`
   height: 14px;
   background: #fff;
   object-fit: contain;
+  margin-right: 10px;
 `;
 const AvImg = styled.img`
   width: 100%; height: 100%; object-fit: cover;
@@ -177,6 +190,11 @@ const Text = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
 `;
 
 export default function LectureHoneworkProDetail() {
@@ -258,6 +276,7 @@ export default function LectureHoneworkProDetail() {
                 <RowMain>
                   <RowTop>
                     <Name>{s.name}</Name>
+                    <Meta>ㅣ</Meta>
                     <Time>{s.time}</Time>
                   </RowTop>
                   <Text>

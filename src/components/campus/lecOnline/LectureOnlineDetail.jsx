@@ -23,6 +23,7 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
+  margin-left: 10px;
 `;
 const TopActions = styled.div`
   margin-left: auto;
@@ -32,10 +33,11 @@ const ModifyBtn = styled.button`
   padding: 0 12px;
   font-size: 12px;
   border: 1px solid #2EC4B6;
-  background: #fff;
-  color: #2EC4B6;
+  background: #2EC4B6;
+  color: #fff;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 const PageDivider = styled.div`
   height: 2px;
@@ -49,7 +51,7 @@ const PageDivider = styled.div`
 const Title = styled.h3`
   font-size: 16px;
   font-weight: 700;
-  margin: 0 0 8px;
+  margin: 0 10px 8px;
 `;
 const MetaRow = styled.div`
   display: flex;
@@ -57,13 +59,14 @@ const MetaRow = styled.div`
   gap: 12px;
   font-size: 12px;
   color: #98a1a8;
+  margin-left: 10px;
 `;
 const CardHr = styled.div`
   width: 372px;
   height: 1px;
   background: #D9D9D9;
   border: 0;
-  margin: 12px 0 10px;
+  margin: 12px 0 20px;
 `;
 
 const VideoWrap = styled.div`
@@ -84,7 +87,7 @@ const Desc = styled.p`
   font-size: 14px;
   color: #6b7680;
   line-height: 1.7;
-  margin: 12px 0 50px;
+  margin: 12px 10px 50px;
 `;
 const Footer = styled.div`
   display: flex;
@@ -100,6 +103,7 @@ const Button = styled.button`
   color: #59636b;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 export default function LectureOnlineDetail({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { clip, imp, unImp } from "../img";
+import { clip} from "../img";
 
 const MobileShell = styled.div`
   width: 100vw;
@@ -22,6 +22,7 @@ const CloseBtn = styled.button`
   justify-content: center;
   font-size: 16px;
   line-height: 1;
+  margin-left: 10px;
 `;
 const PageTitle = styled.div`
   font-size: 18px;
@@ -36,8 +37,10 @@ const SubHeader = styled.div`
   font-size: 12px;
   color: #98a1a8;
   gap: 8px;
+  margin-right: 10px;
 `;
 const TimeText = styled.div`
+margin-left: 10px;
   flex: 1;
 `;
 const SmallBtn = styled.button`
@@ -79,17 +82,14 @@ const StarBtn = styled.button`
   align-items: center;
   justify-content: center;
 `;
-const StarImg = styled.img`
-  width: 22px;
-  height: 22px;
-  display: block;
-`;
 const MailTitle = styled.h3`
   flex: 1;
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 16px;
   line-height: 1.4;
+  margin-left: 10px;
+  
 `;
 
 const CardHr = styled.div`
@@ -110,6 +110,7 @@ const MetaLabel = styled.div`
   font-size: 14px;
   color: #98a1a8;
   line-height: 28px;
+  margin-left: 10px;
 `;
 const ChipRow = styled.div`
   display: flex;
@@ -142,6 +143,7 @@ const BodyText = styled.div`
   line-height: 1.7;
   white-space: pre-line;
   margin-top: 14px;
+  margin-left: 10px;
 `;
 
 const Attachment = styled.div`
@@ -149,6 +151,7 @@ const Attachment = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 12px;
+  margin-left: 10px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -183,6 +186,7 @@ const Button = styled.button`
   color: #59636b;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 export default function MailWasteDetail({ onClose }) {
@@ -232,13 +236,6 @@ export default function MailWasteDetail({ onClose }) {
 
         <Card>
           <TitleRow>
-            <StarBtn
-              aria-label={isStarred ? "즐겨찾기 해제" : "즐겨찾기 추가"}
-              aria-pressed={isStarred}
-              onClick={toggleStar}
-            >
-              <StarImg src={isStarred ? imp : unImp} alt={isStarred ? "starred" : "star"} />
-            </StarBtn>
             <div>
               <MailTitle>LMS 자료 접근 확인 요청</MailTitle>
             </div>

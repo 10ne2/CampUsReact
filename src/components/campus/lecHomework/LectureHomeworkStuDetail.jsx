@@ -15,6 +15,7 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   margin-bottom: 20px;
+  margin-left: 10px;
 `;
 
 const CloseBtn = styled.button`
@@ -46,13 +47,24 @@ const Card = styled.div`
 `;
 
 const SubHeader = styled.div`
-  display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:center;
+  display: flex;
+  gap:10px;
+  align-items:center;
+  margin-left: 10px;
 `;
 const Avatar = styled.div`
-  width:32px;height:32px;border-radius:50%;
-  background:#f3f4f6;border:1px solid #e5e7eb;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:#6b7680;overflow:hidden;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:#6b7680;
+  overflow:hidden;
+  
 `;
 
 const AvImg = styled.img`
@@ -85,6 +97,7 @@ const FileLine = styled.div`
   font-size:12px;
   color:#6b7280;
   border-bottom:1px solid #eceff1;
+  margin-left: 10px;
 `;
 
 const FileLink = styled.button`
@@ -103,7 +116,7 @@ const BodyText = styled.p`
   color:#6b7280;
   line-height:1.7;
   white-space:pre-line;
-  margin:10px 0 120px;
+  margin:10px 10px 120px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -137,6 +150,7 @@ const GhostBtn = styled.button`
   color:#59636b;
   border-radius:8px;
   cursor:pointer;
+  margin-right: 10px;
 `;
 
 const SectionHead = styled.div`
@@ -150,6 +164,7 @@ const SectionTitle = styled.h4`
   font-size:14px;
   font-weight:700;
   color:#707070;
+  margin-left: 10px;
 `;
 const EditChip = styled.button`
   margin-left:auto;
@@ -161,6 +176,7 @@ const EditChip = styled.button`
   background:#fff;
   border-radius:5px;
   cursor:pointer;
+  margin-right: 10px;
 `;
 const SectionDivider = styled.div`
   height:2px;
@@ -180,18 +196,32 @@ const FbHeader = styled.div`
   grid-template-columns:36px 1fr;
   gap:10px;
   align-items:center;
+  margin-left: 10px;
 `;
 const FbHeaderRight = styled.div`
   display:flex;
   align-items:center;
   gap:8px;
 `;
-/* 본문: 헤더 밑에 전체 줄 */
+
 const FbText = styled.div`
   margin-top:8px;
   font-size:13px;
   color:#6b7280;
   line-height:1.8;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const Line = styled.div`
+  width: 372px;
+  height: 12px;
+  color: #444444;
+`
+
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
 `;
 
 export default function LectureHomeworkStuDetail() {
@@ -212,6 +242,7 @@ export default function LectureHomeworkStuDetail() {
     avatar: "",
   };
 
+
   return (
 
         <MobileShell>
@@ -226,22 +257,23 @@ export default function LectureHomeworkStuDetail() {
               <Avatar>{submission.avatar ? <AvImg src={submission.avatar}/> : submission.name[0]}</Avatar>
               <NameTimeRow>
                 <Name>{submission.name}</Name>
+                <Meta>ㅣ</Meta>
                 <Time>{submission.time}</Time>
               </NameTimeRow>
             </SubHeader>
             <CardHr />
+
+            <BodyText>{submission.message}</BodyText>
             <FileLine>
               <AttachmentIcon src={clip}/>
               <FileLink>{submission.filename}</FileLink>
             </FileLine>
-
-            <BodyText>{submission.message}</BodyText>
             <CardHr />
             <CardFooterRight>
               <GhostBtn>목록</GhostBtn>
             </CardFooterRight>
           </Card>
-
+          <Line/>
           <SectionHead>
             <SectionTitle>피드백 작성</SectionTitle>
             <EditChip>수정</EditChip>
@@ -253,6 +285,7 @@ export default function LectureHomeworkStuDetail() {
               <Avatar>{feedback.avatar ? <AvImg src={feedback.avatar}/> : feedback.profName[0]}</Avatar>
               <FbHeaderRight>
                 <Name>{feedback.profName}</Name>
+                <Meta>ㅣ</Meta>
                 <Time>{feedback.time}</Time>
               </FbHeaderRight>
             </FbHeader>

@@ -18,6 +18,7 @@ const Breadcrumb = styled.div`
   & > span:last-child {
     color: #6b7680;
   }
+  margin-left: 10px;
 `;
 const DividerBrand = styled.div`
   height: 2px;
@@ -44,6 +45,7 @@ const Title = styled.h1`
   font-weight: 700;
   margin: 0 0 8px;
   line-height: 1.4;
+  margin-left: 10px;
 `;
 const MetaRow = styled.div`
   display: flex;
@@ -52,6 +54,7 @@ const MetaRow = styled.div`
   font-size: 12px;
   color: #98a1a8;
   margin-bottom: 8px;
+  margin-left: 10px;
 `;
 const Dot = styled.span`
   width: 3px;
@@ -66,6 +69,7 @@ const BodyText = styled.p`
   color: #6b7680;
   line-height: 1.7;
   margin-bottom: 150px;
+  margin-left: 10px;
 `;
 
 const Attachment = styled.div`
@@ -74,6 +78,7 @@ const Attachment = styled.div`
   gap: 10px;
   border-radius: 12px;
   margin-top: 100px;
+  margin-left: 10px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -97,6 +102,7 @@ const Footer = styled.div`
   margin-top: 14px;
   display: flex;
   justify-content: flex-end;
+  margin-right: 10px;
 `;
 const Btn = styled.button`
   height: 28px;
@@ -112,11 +118,12 @@ const Btn = styled.button`
 const SectionHead = styled.div`
   display: flex;
   align-items: center;
-  margin: 43px 0 10px;
+  margin: 20px 0 10px;
 `;
 const SectionTitle = styled.div`
   font-weight: 700;
   color: #707070;
+  margin-left: 10px;
 `;
 const SectionAction = styled.div`
   margin-left: auto;
@@ -124,6 +131,7 @@ const SectionAction = styled.div`
 const EditBtn = styled(Btn)`
   border-color: #2ec4b6;
   color: #2ec4b6;
+  margin-right: 10px;
 `;
 
 const FbHeader = styled.div`
@@ -136,6 +144,7 @@ const Avatar = styled.div`
   border-radius: 50%;
   background: #e9eef2;
   margin-right: 10px;
+  margin-left: 10px;
 `;
 const FbMeta = styled.div`
   flex: 1;
@@ -170,6 +179,20 @@ const FbBody = styled.div`
   color: #6b7680;
   line-height: 1.7;
   white-space: pre-line;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const Line = styled.div`
+  width: 372px;
+  height: 12px;
+  color: #444444;
+  margin-top: 20px;
+`
+
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
 `;
 
 export default function ProjectObjectDetailFeedback() {
@@ -185,7 +208,7 @@ export default function ProjectObjectDetailFeedback() {
 
           <MetaRow>
             <span>김원희</span>
-            <Dot />
+            <Meta>ㅣ</Meta>
             <span>2025-09-22 09:40</span>
           </MetaRow>
 
@@ -204,7 +227,7 @@ export default function ProjectObjectDetailFeedback() {
             <Btn>목록</Btn>
           </Footer>
         </Card>
-
+        <Line/>
         <SectionHead>
           <SectionTitle>피드백</SectionTitle>
           <SectionAction>

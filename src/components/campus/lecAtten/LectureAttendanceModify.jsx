@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-
+import { Cancle, clip } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const MobileShell = styled.div`
   width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #f7f7f7;
 `;
 
 const TopLine = styled.div`
@@ -25,10 +26,8 @@ const CloseBtn = styled.button`
   cursor: pointer;
 `;
 const Title = styled.h1`
-  margin: 8px 0 6px;
+  margin: 8px 10px 10px;
   font-size: 18px;
-  font-weight: 700;
-  color: #111;
 `;
 const BrandDivider = styled.div`
   height: 2px;
@@ -40,16 +39,14 @@ const BrandDivider = styled.div`
 
 /* ===== Post Card ===== */
 const Card = styled.div`
-  border: 1px solid #e9eef2;
-  border-radius: 12px;
-  padding: 0px;
   background: #fff;
-  height: 350px;
 `;
 const PostTitle = styled.h2`
   margin: 0 0 8px;
   font-size: 16px;
   font-weight: 700;
+  margin-left: 10px;
+  margin-bottom: 15px;
 `;
 const MetaRow = styled.div`
   display: flex;
@@ -65,6 +62,7 @@ const Avatar = styled.div`
   border-radius: 50%;
   overflow: hidden;
   background: #e9eef2 url("https://dummyimage.com/44x44/cccccc/ffffff&text=%20") center/cover no-repeat;
+  margin-left: 10px;
 `;
 const Dot = styled.span`
   width: 3px;
@@ -74,26 +72,36 @@ const Dot = styled.span`
   display: inline-block;
 `;
 const Body = styled.div`
-  margin: 10px 0 12px;
-  padding: 12px;
-  border: 1px solid #e8ecef;
+  margin: 10px 10px 100px;
   border-radius: 8px;
   background: #fafcfd;
-  font-size: 13px;
-  color: #6b7680;
+  font-size: 14px;
   line-height: 1.7;
   white-space: pre-line;
 `;
-const AttachRow = styled.div`
+const Attachment = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #6b7680;
-  padding: 8px 0;
-  border-top: 1px solid #eaeef2;
-  margin-top: 100px;
+  gap: 10px;
+  border-radius: 12px;
+  margin-left: 10px;
 `;
+
+const AttachmentIcon = styled.img`
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  object-fit: contain;
+  `;
+
+const AttachmentName = styled.div`
+  font-size: 13px;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  `;
 const ListBtnWrap = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -107,6 +115,7 @@ const GhostBtn = styled.button`
   color: #59636b;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 /* ===== Section: 출결 변경 ===== */
@@ -117,6 +126,7 @@ const SectionHead = styled.div`
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 6px;
+  margin-left: 10px;
 `;
 const SectionDivider = styled(BrandDivider)`
   margin: 0 0 12px;
@@ -125,6 +135,7 @@ const Segments = styled.div`
   display: inline-flex;
   gap: 8px;
   margin-bottom: 10px;
+  margin-left: 10px;
 `;
 const SegBtn = styled.button`
   height: 28px;
@@ -187,7 +198,6 @@ const TextInput = styled.textarea`
   width: 100%;
   min-height: 44px;
   border: 1px solid #dfe5ea;
-  border-radius: 8px;
   padding: 10px 12px;
   font-size: 13px;
   color: #444;
@@ -215,8 +225,26 @@ const SubmitBtn = styled.button`
   cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
 `;
 
-/* ===== Component ===== */
-export default function LectureAttendanceModify({
+const Line = styled.div`
+  width: 372px;
+  height: 12px;
+  color: #444444;
+  margin-top: 20px;
+`
+const CardHr = styled.div`
+  width: 372px;
+  height: 1px;
+  background: #D9D9D9;
+  border: 0;
+  margin: 15px 0 15px;
+`;
+
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
+`;
+
+export default function LectureAttendenceModify({
   onClose = () => {},
   onSubmit = (payload) => { alert(JSON.stringify(payload, null, 2)); }
 }) {
@@ -229,7 +257,6 @@ export default function LectureAttendanceModify({
 
   const statuses = ["출석", "지각", "결석"];
 
-  // close menu on outside click
   useEffect(() => {
     const onDocClick = (e) => {
       if (!menuRef.current) return;
@@ -252,9 +279,11 @@ export default function LectureAttendanceModify({
 
   return (
       <MobileShell>
-        <TopLine>
-          <CloseBtn aria-label="close" onClick={onClose}>×</CloseBtn>
-        </TopLine>
+        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <img src={Cancle} style={{width:'19px', height:'19px'}}></img>
+        </Container>
+ 
+        <div style={{ padding: '5px 20px 24px', backgroundColor:'#fff'}}>
         <Title>출결</Title>
         <BrandDivider />
 
@@ -264,7 +293,7 @@ export default function LectureAttendanceModify({
           <MetaRow>
             <Avatar />
             <span>권오규</span>
-            <Dot />
+            <Meta>ㅣ</Meta>
             <span>2025-08-29 21:49</span>
           </MetaRow>
 
@@ -274,13 +303,17 @@ export default function LectureAttendanceModify({
             출석으로 변경 부탁드립니다. 예비군 훈련증 파일 첨부 하였습니다!
           </Body>
 
-          <AttachRow>📎 자바프로그래밍 권오규 10주차.hwp</AttachRow>
-
+          <Attachment>
+              <AttachmentIcon src={clip}/>
+              <AttachmentName>권오규 예비군 확인증.pdf</AttachmentName>
+          </Attachment>
+          <CardHr/>
           <ListBtnWrap>
             <GhostBtn>목록</GhostBtn>
           </ListBtnWrap>
         </Card>
-
+        </div>
+        <div style={{ padding: '1px 20px 24px', backgroundColor:'#fff', marginTop:'20px'}}>
         <Section>
           <SectionHead>출결 변경</SectionHead>
           <SectionDivider />
@@ -330,6 +363,7 @@ export default function LectureAttendanceModify({
             <SubmitBtn disabled={!canSubmit} onClick={handleSubmit}>등록</SubmitBtn>
           </SubmitWrap>
         </Section>
+        </div>
       </MobileShell>
   );
 }

@@ -5,8 +5,7 @@ import { clip } from "../img";
 
 const MobileShell = styled.div`
   width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #f7f7f7;
 `;
 
 const TopBar = styled.div`
@@ -82,7 +81,7 @@ const CardFooter = styled.div`
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 2px;
 `;
 
 const CardHr = styled.div`
@@ -140,7 +139,6 @@ export const SubmissionAuthor = styled.span`
 
 const SubmissionTime = styled.span`
   white-space: nowrap;
-  margin-left: 6px;
   font-size: 12px;
   color: #98a1a8;
 `;
@@ -205,11 +203,17 @@ const Line = styled.div`
   width: 100%;
   height: 12px; 
   color: #666666;
-`
+`;
+
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
+`;
 
 export default function LectureHomeworkDetail() {
   return (
       <MobileShell>
+        <div style={{padding: '5px 20px 24px', backgroundColor:'#fff'}}>
         <TopBar>
           <PageTitle>과제제출</PageTitle>
           <TopActions>
@@ -218,7 +222,6 @@ export default function LectureHomeworkDetail() {
           </TopActions>
         </TopBar>
         <PageDivider />
-
         <Card>
           <CardTitle>7주차 과제 입니다.</CardTitle>
           <CardMeta>2025-08-05 16:00 ~ 2025-08-11 23:59</CardMeta>
@@ -237,12 +240,14 @@ export default function LectureHomeworkDetail() {
             <Button>목록</Button>
           </CardFooter>
         </Card>
-        <Line/>
-        <PageDivider />
+        </div>
 
+        <div style={{padding: '1px 20px 24px', backgroundColor:'#fff', marginTop:'20px'}}>
+        <PageDivider />
         <Card>
           <SubmissionHead>
             <SubmissionAuthor>권오규</SubmissionAuthor>
+            <Meta>ㅣ</Meta>
             <SubmissionTime>제출 시간 : 2025-07-31 23:56</SubmissionTime>
             <SubmissionActions>
               <Chip>삭제</Chip>
@@ -259,6 +264,7 @@ export default function LectureHomeworkDetail() {
             <AttachmentName>자바프로그래밍 권오규 7주차.hwp</AttachmentName>
           </Attachment>
         </Card>
+        </div>
       </MobileShell>
   );
 }

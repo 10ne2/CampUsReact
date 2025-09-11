@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { clip } from "../img";
+import { Title } from "../commons/WHComponent";
 
 const MobileShell = styled.div`
   width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #f7f7f7;
 `;
 
 const TopBar = styled.div`
@@ -16,41 +16,43 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
+  margin-left: 10px;
 `;
 const TopActions = styled.div`
   margin-left: auto;
   display: flex;
   gap: 8px;
+  margin-right: 10px;
 `;
 
 const DeleteBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #dfe5ea;
-  background: #fff;
-  color: #59636b;
-  border-radius: 8px;
+  border: none;
+  background: #BEBEBE;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
 const ModifyBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #2EC4B6;
-  background: #fff;
-  color: #2EC4B6;
-  border-radius: 8px;
+  border: none;
+  background: #2EC4B6;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
 const PageDivider = styled.div`
   height: 2px;
-  background: #2ec4b6;
-  opacity: 0.6;
-  border-radius: 2px;
-  margin-bottom: 10px;
+  background: #2EC4B6;
+  margin-bottom: 13px;
 `;
 
 const Card = styled.div`
@@ -61,25 +63,29 @@ const CardHead = styled.h3`
   font-weight: 700;
   margin: 0 0 8px;
   line-height: 1.4;
+  margin-left: 10px;
 `;
 const Meta = styled.div`
   font-size: 12px;
   color: #98a1a8;
   margin-bottom: 12px;
+  margin-left: 10px;
 `;
 const BodyText = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   color: #6b7680;
   line-height: 1.7;
   margin-bottom: 14px;
   white-space: pre-line;
-  margin-bottom: 120px;
+  margin-bottom: 100px;
+  margin-left: 10px;
 `;
 const Attachment = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
   border-radius: 12px;
+  margin-left: 10px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -103,14 +109,16 @@ const CardFooter = styled.div`
   justify-content: flex-end;
 `;
 const Button = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #dfe5ea;
+  border: 1px solid #aaa;
   background: #fff;
-  color: #59636b;
-  border-radius: 8px;
+  color: #aaa;
+  border-radius: 5px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 const CommentSection = styled.div`
@@ -121,9 +129,11 @@ const CommentCount = styled.div`
   font-weight: 700;
   margin-bottom: 10px;
   color: #707070;
+  margin-left: 10px;
 `;
 const CommentCard = styled.div`
   background: #fff;
+  margin-left: 10px;
 `;
 const CommentHead = styled.div`
   display: flex;
@@ -136,7 +146,7 @@ const CommentName = styled.span`
   font-weight: 600;
   color: #333;
   margin-right: 6px;
-  font-size: 13px;
+  font-size: 14px;
 `;
 const CommentTime = styled.span`
   margin-left: auto;
@@ -150,6 +160,7 @@ const CommentActions = styled.div`
   margin-left: auto;
   display: flex;
   gap: 6px;
+  margin-right: 10px;
 `;
 const SmallBtn = styled.button`
   font-size: 11px;
@@ -169,7 +180,6 @@ const EditBtn = styled(SmallBtn)`
 const CommentInputWrap = styled.div`
   background: #fff;
   border: 1px solid #e9eef2;
-  border-radius: 12px;
   padding: 10px 12px;
 `;
 const Input = styled.textarea`
@@ -180,6 +190,7 @@ const Input = styled.textarea`
   outline: none;
   color: #444;
   margin-bottom: 10px;
+  margin-top: 2px;
 `;
 const SubmitWrap = styled.div`
   display: flex;
@@ -201,12 +212,28 @@ const CardHr = styled.div`
   border: 0;
   margin: 15px 0 15px;
 `;
-
+const Line = styled.div`
+  width: 372px;
+  height: 12px;
+  color: #444444;
+  margin-top: 20px;
+`
+const GrayBar = styled.div`
+  width: 412px;
+  height: 20px;
+  background-color: #f7f7f7;
+  margin: 0;
+  top: 490px;
+  left: 0;
+  position: absolute;
+  z-index: 999;
+`
 
 
 export default function BoardDetail() {
   return (
       <MobileShell>
+        <div style={{padding: '5px 20px 24px', backgroundColor:'#fff'}}>
         <TopBar>
           <PageTitle>게시판</PageTitle>
           <TopActions>
@@ -233,11 +260,12 @@ export default function BoardDetail() {
             <Button>목록</Button>
           </CardFooter>
         </Card>
+        </div>
 
+        <div style={{padding: '1px 20px 24px', backgroundColor:'#fff', marginTop:'20px'}}>
         <CommentSection>
           <CommentCount>댓글 3</CommentCount>
           <PageDivider />
-
           <CommentCard>
             <CommentHead>
               <CommentName>김선범</CommentName>
@@ -276,11 +304,13 @@ export default function BoardDetail() {
         </CommentSection>
 <CardHr/>
         <CommentInputWrap>
+          <Title>김선범</Title>
           <Input rows="2" placeholder="댓글을 작성해주세요" />
           <SubmitWrap>
             <SubmitBtn>등록</SubmitBtn>
           </SubmitWrap>
         </CommentInputWrap>
+        </div>
       </MobileShell>
   );
 }

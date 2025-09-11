@@ -17,12 +17,14 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
+  margin-left: 10px;
 `;
 
 const TopActions = styled.div`
   margin-left: auto;
   display: flex;
   gap: 8px;
+  margin-right: 10px;
 `;
 
 const DeleteBtn = styled.button`
@@ -64,12 +66,13 @@ const Card = styled.div`
 const CardTitle = styled.div`
   font-size: 16px;
   font-weight: 700;
-  margin: 2px 0 8px;
+  margin: 2px 10px 8px;
 `;
 
 const CardMeta = styled.div`
   font-size: 12px;
   color: #98a1a8;
+  margin-left: 10px;
 `;
 
 const CardFooter = styled.div`
@@ -77,6 +80,7 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  margin-right: 10px;
 `;
 
 const CardHr = styled.div`
@@ -92,6 +96,8 @@ const AssignBody = styled.div`
   color: #6b7680;
   line-height: 1.7;
   margin-bottom: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const Button = styled.button`
@@ -124,11 +130,11 @@ const SubmissionHead = styled.div`
 export const SubmissionAuthor = styled.span`
   white-space: nowrap;
   font-size: 13px;
+  margin-left: 10px;
 `;
 
 const SubmissionTime = styled.span`
   white-space: nowrap;
-  margin-left: 6px;
   font-size: 12px;
   color: #98a1a8;
 `;
@@ -138,6 +144,7 @@ const SubmissionActions = styled.div`
   display: flex;
   gap: 8px;
   white-space: nowrap;
+  margin-right: 10px;
 `;
 
 const Chip = styled.span`
@@ -160,7 +167,7 @@ const SubmissionText = styled.div`
   font-size: 14px;
   color: #47525b;
   line-height: 1.7;
-  margin: 10px 0 12px;
+  margin: 10px 10px 12px;
 `;
 
 const Attachment = styled.div`
@@ -169,6 +176,7 @@ const Attachment = styled.div`
   gap: 10px;
   border-radius: 12px;
   margin-bottom: 42px;
+  margin-left: 10px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -193,6 +201,7 @@ const SectionTitle = styled.h4`
   font-weight: 700;
   margin: 8px 0 6px;
   color: #707070;
+  margin-left: 10px;
 `;
 const SectionDivider = styled.div`
   height: 2px;
@@ -205,6 +214,7 @@ const FeedbackHead = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: 10px;
 `;
 const Avatar = styled.div`
   width: 32px;
@@ -224,7 +234,6 @@ const FeedbackName = styled.span`
   color: #374151;
 `;
 const FeedbackTime = styled.span`
-  margin-left: auto;
   font-size: 12px;
   color: #98a1a8;
 `;
@@ -234,8 +243,13 @@ const FeedbackText = styled.div`
   line-height: 1.7;
   white-space: pre-line;
   margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
-
+const Meta = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
+`;
 export default function LectureHomeworkDetailFeedback() {
   return (
       <MobileShell>
@@ -272,6 +286,7 @@ export default function LectureHomeworkDetailFeedback() {
               <Card>
                 <SubmissionHead>
                   <SubmissionAuthor>권오규</SubmissionAuthor>
+                  <Meta>ㅣ</Meta>
                   <SubmissionTime>제출 시간 : 2025-07-31 23:56</SubmissionTime>
                   <SubmissionActions>
                     <Chip>삭제</Chip>
@@ -294,7 +309,8 @@ export default function LectureHomeworkDetailFeedback() {
         <Card>
           <FeedbackHead>
             <Avatar>김</Avatar>
-            <FeedbackName>김정민</FeedbackName>
+            <FeedbackName>김형민</FeedbackName>
+            <Meta>ㅣ</Meta>
             <FeedbackTime>2025-07-31 23:56</FeedbackTime>
           </FeedbackHead>
           <FeedbackText>

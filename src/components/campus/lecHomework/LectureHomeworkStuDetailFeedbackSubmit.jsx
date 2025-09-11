@@ -19,7 +19,7 @@ const CloseBtn = styled.button`
   cursor: pointer;
 `;
 const Title = styled.h1`
-  margin: 10px 0 15px;
+  margin: 10px 10px 15px;
   font-size: 18px;
   font-weight: 700;
   color: #111;
@@ -48,6 +48,7 @@ const Avatar = styled.div`
   border-radius: 50%;
   overflow: hidden;
   background: #e9eef2;
+  margin-left: 10px;
 `;
 const Name = styled.span`
   color: #4a4a4a;
@@ -58,6 +59,7 @@ const Attachment = styled.div`
   align-items: center;
   gap: 10px;
   margin-bottom: 30px;
+  margin-left: 10px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -83,6 +85,8 @@ const BodyText = styled.div`
   color: #6b7680;
   line-height: 1.7;
   white-space: pre-line;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const DividerGray = styled.div`
@@ -104,6 +108,7 @@ const GhostBtn = styled.button`
   color: #59636b;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 const SectionHead = styled.div`
@@ -114,6 +119,7 @@ const SectionTitle = styled.div`
   font-weight: 700;
   margin-bottom: 6px;
   color: #707070;
+  margin-left: 10px;
 `;
 
 const FbCard = styled.div`
@@ -167,6 +173,7 @@ const SubmitBtn = styled.button`
   padding: 6px 12px;
   font-size: 13px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 const Meta = styled.div`
   font-size: 12px;
@@ -195,16 +202,15 @@ export default function LectureHomeworkStuDetailFeedbackSubmit() {
           <span>2025-08-29 21:49</span>
         </MetaRow>
         <CardHr/>
-        <Attachment>
-                  <AttachmentIcon src={clip}/>
-                  <AttachmentName>자바프로그래밍 권오규 10주차.hwp</AttachmentName>
-        </Attachment>
 
         <BodyText>
           교수님 안녕하세요! 20171339 권오규입니다!
           {"\n"}10주차 과제 제출하였습니다 확인 부탁드립니다.
         </BodyText>
-
+        <Attachment>
+                  <AttachmentIcon src={clip}/>
+                  <AttachmentName>자바프로그래밍 권오규 10주차.hwp</AttachmentName>
+        </Attachment>
         <DividerGray />
         <Right>
           <GhostBtn>목록</GhostBtn>

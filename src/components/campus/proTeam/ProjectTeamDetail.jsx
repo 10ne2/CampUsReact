@@ -26,6 +26,7 @@ const CloseBtn = styled.button`
   justify-content: center;
   font-size: 16px;
   line-height: 1;
+  margin-left: 10px;
 `;
 
 const TitleHeader = styled.div`
@@ -40,6 +41,7 @@ const Semester = styled.div`
   font-size: 13px;
   font-weight: 700;
   color: #6b7680;
+  margin-left: 10px;
 `;
 
 const HeaderTitle = styled.div`
@@ -52,6 +54,7 @@ const HeaderTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 10px;
 `;
 
 const PageDivider = styled.div`
@@ -71,6 +74,7 @@ const Grid = styled.div`
   grid-template-columns: 72px 1fr;
   row-gap: 12px;
   column-gap: 8px;
+  margin-left: 10px;
 `;
 const Label = styled.div`
   font-size: 13px;
@@ -105,10 +109,11 @@ const Button = styled.button`
   padding: 0 12px;
   font-size: 12px;
   border: 1px solid #dfe5ea;
-  background: #fff;
-  color: #59636b;
+  background: #777777;
+  color: #fff;
   border-radius: 8px;
   cursor: pointer;
+  margin-right: 10px;
 `;
 
 export default function ProjectTeamDetail({
