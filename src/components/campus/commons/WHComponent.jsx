@@ -107,6 +107,7 @@ export const Button = styled.button`
     margin-left: auto;
     font-size: 14px;
     color: #fff;
+    cursor: pointer;
 `
 export const PageNation = styled.ul`
     width: 100%;

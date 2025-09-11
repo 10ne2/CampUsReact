@@ -10,6 +10,7 @@ import LecturePdsRegist from './components/campus/lecPds/LecturePdsRegist'
 import ProjectTeamModify from './components/campus/proTeam/ProjectTeamModify'
 import ProjectTeamRegist from './components/campus/proTeam/ProjectTeamRegist'
 import ProjectObjectRegist from './components/campus/proObject/ProjectObjectRegist'
+import LectureHomeworkStuDetailFeedbackSubmit from './components/campus/lecHomework/LectureHomeworkStuDetailFeedbackSubmit'
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -27,8 +28,7 @@ function App() {
   return (
     <>
       <GlobalStyle/>
-      {/* <TopNav/> */}
-      <ProjectObjectRegist/>
+      <CampusMain/>
     </>
   )
 }

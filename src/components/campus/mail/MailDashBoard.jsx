@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {Content, ContentBox, Contents, Header, HeadText, IconBox, LecText } from '../home/HomeWrapper'
 import { Flex, GrayHr } from '../home/HomeWrapperPro'
@@ -8,17 +8,19 @@ import { useMailModalStore } from '../commons/modalStore'
 import { Button, MailDashBox, RegistButton } from '../commons/WHComponent'
 import { Container } from '../topNav/TopNav'
 import MailNavBar from './MailNavBar'
+import { useSearchParams } from 'react-router-dom'
 
-const MainContainer = styled.div`
-    width: 412px;
-    height: 100%;
-    top: 0;
-    left: 0;
-    margin: 0 auto;
-    background-color: #f7f7f7;
-    min-height: calc(100vh - 119px);
-    position: fixed;
-    z-index: 999; 
+export const MainContainer = styled.div`
+    /* position: fixed; */
+  top: 0;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  width: 412px;
+  height: 100vh;
+  background-color: #f7f7f7;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
 `
 
 const MiniIconBox = styled.div`
@@ -39,15 +41,48 @@ const Post = styled.div`
     align-items: center; 
 `
 function MailDashBoard() {
-    const visible = useMailModalStore((state) => state.visible);
-    const hideModal = useMailModalStore((state) => state.hideModal);
+//     const modal = useMailModalStore((state) => state);
+//     const [searchParams, setSearchParams] = useSearchParams();
+//     const modalParam = searchParams.get("modal")
 
-    if (!visible) return null;
+//     useEffect(() => {
+//     if (modalParam === "dashboard") {
+//       if (!modal.visible) modal.showModal();
+//     } else {
+//       if (modal.visible) modal.hideModal();
+//     }
+//   }, [modalParam]);
+
+//     if (!modal.visible) return null;
+    
+//     const closeModal = () => {
+//   modal.hideModal();                   // Zustand 상태 먼저 닫기
+//   const newParams = new URLSearchParams(searchParams);
+//   newParams.delete("modal");           // modal 키 삭제
+//   setSearchParams(newParams);          // URL 업데이트
+// };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // 페이지 로드 시 sessionStorage 값으로 모달 상태 복원
+    useEffect(() => {
+        const saved = sessionStorage.getItem("mailModalOpen");
+        if (saved === "true") setIsModalOpen(true);
+    }, []);
+
+    // 모달 상태가 바뀔 때 sessionStorage에 저장
+    useEffect(() => {
+        sessionStorage.setItem("mailModalOpen", isModalOpen);
+    }, [isModalOpen]);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
   return (
     <>        
-     <MainContainer style={{height:'100%'}}>
+     {/* <MainContainer style={{height:'100%'}}> */}
         <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={hideModal}></img>
+            <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={closeModal}></img>
             <Button style={{width:'65px'}}>메일 작성</Button>
         </Container>
         <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
@@ -219,7 +254,7 @@ function MailDashBoard() {
         <Post>
             <img src={go} style={{width:"70%", height: "70%", objectFit:'contain'}}/>
         </Post>
-    </MainContainer>
+    {/* </MainContainer> */}
     </>
 
   )

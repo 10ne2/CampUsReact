@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import {menuBar, logoRow, mail} from '../img'
-import { Nonebutton } from '../menu/SideMenu';
+import { Nonebutton, StyledLink } from '../menu/SideMenu';
 import { useMailModalStore, useSideMenuStore } from '../commons/modalStore';
 
 export const Container = styled.div`
@@ -29,7 +29,11 @@ function TopNav() {
       <Nonebutton style={{width:"27px", height: "18px"}}  onClick={toggleMenu}>
       <img src={menuBar} style={{width:"27px", height: "18px", marginTop:"5px"}}/>
       </Nonebutton>
-      <img src={logoRow} style={{width:"116px", height: "27px"}}/>
+
+      <StyledLink to='/'>
+        <img src={logoRow} style={{width:"116px", height: "27px"}}/>
+      </StyledLink>
+
       <img src={mail} style={{width:"27px", height: "18px", marginTop:"5px", cursor:'pointer'}} onClick={showMail}/>
     </Container>
   )

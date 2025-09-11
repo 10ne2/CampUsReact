@@ -63,5 +63,20 @@ export const useMailModalStore = create((set) => ({
   showModal: () => set({ visible: true }),
   hideModal: () => set({ visible: false }),
 }));
+export const useLecPlanModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+export const useLecPlanRegistModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
+export const useLecNoticeRegistModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
 
 export default useModalStore;

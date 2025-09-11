@@ -8,9 +8,11 @@ import {
     WHContainer, DateBox, Title, Button,
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
     from '../commons/WHComponent'
+import { useLecNoticeRegistModalStore } from '../commons/modalStore';
 
 
 function LectureNoticeList() {
+    const registNotice = useLecNoticeRegistModalStore((state) => state.showModal);
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState("전체");
 
@@ -28,7 +30,7 @@ function LectureNoticeList() {
             <ListHeader>
                 <FlexDiv>
                     <CatTitle>공지사항</CatTitle>
-                    <Button>글쓰기</Button>
+                    <Button onClick={registNotice}>글쓰기</Button>
                 </FlexDiv>
                 <FlexDiv>
                     <SearchDrop>

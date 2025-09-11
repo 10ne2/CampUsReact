@@ -52,7 +52,7 @@ export const Table = styled.table`
 export const TableTitle = styled.td`
     min-width: 77px;
     width: 77px;
-    height: 30px;
+    height: 0px;
     border-right: 1px solid #aaa;
     border-bottom: 1px solid #aaa;
     

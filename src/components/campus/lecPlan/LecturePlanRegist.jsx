@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Cancle, clip } from "../img";
+import { useLecPlanRegistModalStore } from "../commons/modalStore";
+import { MainContainer } from "../mail/MailDashBoard";
 
 
 const TopBar = styled.div`
@@ -95,12 +97,17 @@ const FileText = styled.span`
 `;
 
 export default function LecturePlanRegist() {
+  const visible = useLecPlanRegistModalStore((state) => state.visible);
+  const hideModal = useLecPlanRegistModalStore((state) => state.hideModal);
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
+
+  if (!visible) return null;
 
   return (
     <div>
+      <MainContainer>
       <TopBar>
-        <CloseBtn aria-label="닫기" />
+        <CloseBtn aria-label="닫기" onClick={hideModal} style={{cursor:'pointer'}}/>
         <Spacer />
         <SubmitBtn>등록</SubmitBtn>
       </TopBar>
@@ -140,6 +147,7 @@ export default function LecturePlanRegist() {
           </FileArea>
         </UploadSection>
       </Body>
+      </MainContainer>
     </div>
   );
 }

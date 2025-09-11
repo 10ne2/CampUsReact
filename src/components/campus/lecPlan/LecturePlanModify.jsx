@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Cancle, clip } from "../img";
+import { MainContainer } from "../mail/MailDashBoard";
+import { useLecPlanModalStore } from "../commons/modalStore";
 
 
 
@@ -77,9 +79,14 @@ const RemoveBtn = styled.button`
 `;
 
 export default function LecturePlanModify() {
+  const visible = useLecPlanModalStore((state) => state.visible);
+  const hideModal = useLecPlanModalStore((state) => state.hideModal);
+
   const [files, setFiles] = useState([
     "2025-1학기_독서와토론_강의계획서.xlsx",
   ]);
+
+  if (!visible) return null;
 
   const handlePick = (e) => {
     const f = e.target.files?.[0];
@@ -93,8 +100,9 @@ export default function LecturePlanModify() {
 
   return (
     <div>
+      <MainContainer>
       <TopBar>
-        <CloseBtn aria-label="닫기" />
+        <CloseBtn aria-label="닫기" onClick={hideModal} style={{cursor:'pointer'}}/>
         <Spacer />
         <SubmitBtn>등록</SubmitBtn>
       </TopBar>
@@ -147,6 +155,7 @@ export default function LecturePlanModify() {
           )}
         </UploadSection>
       </Body>
+    </MainContainer>
     </div>
   );
 }

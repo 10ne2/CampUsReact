@@ -4,6 +4,7 @@ import { user1, home, homehv, lecture, lecturehv, project, projecthv,
         post, posthv, mypage
 } from '../img'
 import { useMypageModalStore, useSideMenuStore } from '../commons/modalStore'
+import { Link } from 'react-router-dom'
 
 export const Overlay = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
@@ -115,6 +116,12 @@ export const Nonebutton = styled.button`
   border: none;
   background: none;
 `
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #212121;
+  
+`
+
 function SideMenu() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [homeHover, setHomeHover] = useState(false)
@@ -182,13 +189,27 @@ function SideMenu() {
               </div>
             </div>
 
-            <li className="nav-item"><p style={{ marginLeft: '80px' }}>강의계획서</p></li>
+            <StyledLink to='/JAVA101/plan' onClick={closeMenu}>
+              <li className="nav-item"><p style={{ marginLeft: '80px' }}>강의계획서</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/notice' onClick={closeMenu}>
             <li className="nav-item"><p style={{ marginLeft: '80px' }}>공지사항</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/online' onClick={closeMenu}>
             <li className="nav-item"><p style={{ marginLeft: '80px' }}>실시간 강의</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/atten' onClick={closeMenu}>
             <li className="nav-item"><p style={{ marginLeft: '80px' }}>온라인 강의</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/atten' onClick={closeMenu}>
             <li className="nav-item"><p style={{ marginLeft: '80px' }}>출결</p></li>
-            <li className="nav-item"><p style={{ marginLeft: '80px' }}>자료실</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/homework' onClick={closeMenu}>
             <li className="nav-item"><p style={{ marginLeft: '80px' }}>과제제출</p></li>
+            </StyledLink>
+            <StyledLink to='/JAVA101/pds' onClick={closeMenu}>
+            <li className="nav-item"><p style={{ marginLeft: '80px' }}>자료실</p></li>
+            </StyledLink>
           </ul>
         </li>
 

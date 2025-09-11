@@ -242,270 +242,270 @@ function LecturePlanDetail() {
                                         </TableOverView>
                                 </tr>
                             </Table>
+                            </ContentBox >
+                            <ContentBox style={{height:'1760px' }}>
+                                <Header style={{paddingTop:'18px', alignItems:'center',paddingLeft:'26px'}}>
+                                <ContentText style={{fontSize:'14px'}}>
+                                    주차정보
+                                </ContentText>
+                                
+                                </Header>
+                                <Hr style={{width:'372px', margin:'0 auto'}}/>
+                                <Table>
+                                    <tr>
+                                        <TableTitle style={{backgroundColor:'#f9f9f9', textAlign:'center'}}>
+                                            <TitleText style={{marginLeft:'0'}}>
+                                            순번
+                                            </TitleText>
+                                            </TableTitle>
+                                        <TableOverView style={{backgroundColor:'#f9f9f9', textAlign:'center'}}>
+                                            <TableText>
+                                            강의주제 및 내용
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles style={{textAlign:'center'}}>
+                                            <TitleTexts>
+                                            1
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            오리엔테이션 및 과목 소개 : 수업 목표, 평가 방식 안내, 독서와 토론의 의미 이해
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                -
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            2
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            독서의 기초 I – 읽기의 전략 : 목적에 맞는 읽기, 핵심 정보 찾기, 요약 연습
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                간단한 독서 계획서 작성
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            3
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            독서의 기초 II – 비판적 읽기 : 관점 파악, 주장과 근거 구분, 논리적 오류 찾기
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                지정 글 요약 + 주장/근거/논점 정리
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            4
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            텍스트 분석 실습 : 지정된 글 읽고 요지 정리 및 발표
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                토론을 위한 글 1편 분석 보고서 제출
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            5
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            토론의 기초 I – 토론의 구조와 규칙 : 찬반 구조, 역할 분담, 토론 절차 이해
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                토론 입장 정하기 및 근거 조사
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            6
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            찬반 구조, 역할 분담, 토론 절차 이해 : 주장 구성, 근거 제시, 반론 대응 훈련
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                짧은 주장문 작성 및 피드백 제출
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            7
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            글쓰기 I – 주장문 작성법 : 논리적 글쓰기 구조, 논거 배열, 초안 작성
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                주장문 초안 작성 및 피어리뷰
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            8
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            중간 발표 및 피드백 : 소그룹 토론 시연, 피드백 중심 수업
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                토론 참여 후 자기평가 리포트 제출
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            9
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            다양한 장르의 독서 : 문학, 시사, 철학, 과학 등 장르별 독해 접근
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                관심 있는 주제의 글 1편 요약
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            10
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            이슈 중심 토론 I – 시사 토론 : 최근 사회 이슈를 주제로 토론 준비 및 실습
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                팀별로 시사 주제 조사 및 토론자료 작성
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            11
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            이슈 중심 토론 II – 윤리적 딜레마 : 사례 기반 토론, 다중 관점 고려
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                윤리적 문제에 대한 자신의 입장문 작성
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            12
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            글쓰기 II – 토론문 및 에세이 : 입장 정리, 비교 논증, 결론 도출 글쓰기
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                최종 토론문 또는 입장 에세이 제출
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            13
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            종합 토론 발표 준비 : 조별 주제 선정, 자료 조사 및 구조화
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                팀 발표 자료 정리 및 발표 스크립트 완성
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            14
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            종합 토론 발표 : 팀별 발표 및 질의응답, 상호 평가
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                발표로 대체
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                    <tr>
+                                        <TableTitles>
+                                            <TitleTexts>
+                                            15
+                                            </TitleTexts>
+                                            </TableTitles>
+                                        <TableOverView>
+                                            <TableText>
+                                            성찰 및 정리 : 학습 성과 정리, 자기 평가 및 피드백 공유
+                                            </TableText>
+                                            <GrayHr style={{width:'275px', margin:'0 auto'}}/>
+                                            <TableText>
+                                                수업 성찰 에세이 작성
+                                            </TableText>
+                                            </TableOverView>
+                                    </tr>
+                                </Table>
                             </ContentBox>
-                            <ContentBox style={{height:'1405px', marginBottom:'10px'}}>
-                                        <Header style={{paddingTop:'18px', alignItems:'center',paddingLeft:'26px'}}>
-                                        <ContentText style={{fontSize:'14px'}}>
-                                            주차정보
-                                        </ContentText>
-                                       
-                                        </Header>
-                                        <Hr style={{width:'372px', margin:'0 auto'}}/>
-                                    <Table>
-                                        <tr>
-                                            <TableTitle style={{backgroundColor:'#f9f9f9', textAlign:'center'}}>
-                                                <TitleText style={{marginLeft:'0'}}>
-                                                순번
-                                                </TitleText>
-                                                </TableTitle>
-                                            <TableOverView style={{backgroundColor:'#f9f9f9', textAlign:'center'}}>
-                                                <TableText>
-                                                강의주제 및 내용
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles style={{textAlign:'center'}}>
-                                                <TitleTexts>
-                                                1
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                오리엔테이션 및 과목 소개 : 수업 목표, 평가 방식 안내, 독서와 토론의 의미 이해
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    -
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                2
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                독서의 기초 I – 읽기의 전략 : 목적에 맞는 읽기, 핵심 정보 찾기, 요약 연습
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                   간단한 독서 계획서 작성
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                3
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                독서의 기초 II – 비판적 읽기 : 관점 파악, 주장과 근거 구분, 논리적 오류 찾기
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    지정 글 요약 + 주장/근거/논점 정리
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                4
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                텍스트 분석 실습 : 지정된 글 읽고 요지 정리 및 발표
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    토론을 위한 글 1편 분석 보고서 제출
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                5
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                토론의 기초 I – 토론의 구조와 규칙 : 찬반 구조, 역할 분담, 토론 절차 이해
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    토론 입장 정하기 및 근거 조사
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                6
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                찬반 구조, 역할 분담, 토론 절차 이해 : 주장 구성, 근거 제시, 반론 대응 훈련
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    짧은 주장문 작성 및 피드백 제출
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                7
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                글쓰기 I – 주장문 작성법 : 논리적 글쓰기 구조, 논거 배열, 초안 작성
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    주장문 초안 작성 및 피어리뷰
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                8
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                중간 발표 및 피드백 : 소그룹 토론 시연, 피드백 중심 수업
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    토론 참여 후 자기평가 리포트 제출
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                9
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                다양한 장르의 독서 : 문학, 시사, 철학, 과학 등 장르별 독해 접근
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    관심 있는 주제의 글 1편 요약
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                10
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                이슈 중심 토론 I – 시사 토론 : 최근 사회 이슈를 주제로 토론 준비 및 실습
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    팀별로 시사 주제 조사 및 토론자료 작성
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                11
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                이슈 중심 토론 II – 윤리적 딜레마 : 사례 기반 토론, 다중 관점 고려
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    윤리적 문제에 대한 자신의 입장문 작성
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                12
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                글쓰기 II – 토론문 및 에세이 : 입장 정리, 비교 논증, 결론 도출 글쓰기
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    최종 토론문 또는 입장 에세이 제출
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                13
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                종합 토론 발표 준비 : 조별 주제 선정, 자료 조사 및 구조화
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    팀 발표 자료 정리 및 발표 스크립트 완성
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                               14
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                종합 토론 발표 : 팀별 발표 및 질의응답, 상호 평가
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    발표로 대체
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                        <tr>
-                                            <TableTitles>
-                                                <TitleTexts>
-                                                15
-                                                </TitleTexts>
-                                                </TableTitles>
-                                            <TableOverView>
-                                                <TableText>
-                                                성찰 및 정리 : 학습 성과 정리, 자기 평가 및 피드백 공유
-                                                </TableText>
-                                                <GrayHr style={{width:'275px', margin:'0 auto'}}/>
-                                                <TableText>
-                                                    수업 성찰 에세이 작성
-                                                </TableText>
-                                                </TableOverView>
-                                        </tr>
-                                    </Table>
-                                    </ContentBox>
                </Wrap>
                </>
   )

@@ -83,20 +83,23 @@ import BoardDetail from './board/BoardDetail'
 import BoardList from './board/BoardList'
 import BoardModify from './board/BoardModify'
 import BoardRegist from './board/BoardRegist'
+import styled from 'styled-components'
 
 function CampusMain() {
 
+  const Container = styled.div`
+    width: 100vw;
+  `
   return (
     <>
     <BrowserRouter>
       <TopNav />
-      <MailDashBoard/>
       <SideMenu/>
-
+      
       <Routes>
         <Route path='/' element={<HomeWrapper />}></Route>
         <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
-          <Route index element={<LecturePlanDetail />}></Route>
+          <Route index element={<LecturePlanNoneDataPro />}></Route>
         </Route>
         <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}>
           <Route index element={<LectureNoticeList />}></Route>
@@ -134,9 +137,13 @@ function CampusMain() {
       </Routes>
 
       <Mypage/>
-      <LecturePlanRegist/>
+      <MailDashBoard/>
       <LecturePlanModify/>
-      <LectureNoticeRegist/>
+      <LecturePlanRegist/>
+      <LecturePlanRegist/>
+      
+
+      {/* 
       <LectureNoticeModify/>
       <LectureOnlineRegist/>
       <LectureOnlineModify/>
@@ -154,7 +161,7 @@ function CampusMain() {
       <ProjectTeamRegist/>
       <ProjectTeamModifyCheck/>
       <BoardModify/>
-      <BoardRegist/>
+      <BoardRegist/> */}
 
     </BrowserRouter>
     </>
