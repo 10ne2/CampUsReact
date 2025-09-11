@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { clip } from "../img";
 
 const MobileShell = styled.div`
-  width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  width: 100%;
+  background: #f7f7f7;
 `;
 
 const TopBar = styled.div`
@@ -14,7 +13,7 @@ const TopBar = styled.div`
 `;
 const PageTitle = styled.div`
   font-size: 18px;
-  margin-bottom: 18px;
+  margin-bottom: 5px;
   margin-left: 10px;
 `;
 const TopActions = styled.div`
@@ -23,20 +22,29 @@ const TopActions = styled.div`
   gap: 8px;
   margin-right: 10px;
 `;
-const ActionChip = styled.button`
-  height: 28px;
-  padding: 0 10px;
+const DeleteBtn = styled.button`
+  width: 50px;
+  height: 26px;
+  padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #e3e7ec;
-  background: #fff;
-  color: #8b95a1;
+  border: none;
+  background: #BEBEBE;
+  color: #fff;
   border-radius: 5px;
   cursor: pointer;
+  margin-bottom: 8px;
 `;
-const ActionChipBrand = styled(ActionChip)`
-  border-color: #2ec4b6;
+
+const ModifyBtn = styled.button`
+  width: 50px;
+  height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: none;
+  background: #2EC4B6;
   color: #fff;
-  background: #1a998d;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 const PageDivider = styled.div`
@@ -112,7 +120,7 @@ const Button = styled.button`
 const SectionTitle = styled.h4`
   font-size: 14px;
   font-weight: 700;
-  margin: 8px 10px 6px;
+  margin: 15px 10px 6px;
 `;
 const SectionDivider = styled.div`
   height: 2px;
@@ -197,7 +205,7 @@ const Meta = styled.div`
   color: #98a1a8;
 `;
 
-export default function LectureHoneworkProDetail() {
+export default function LectureHomeworkProDetail() {
   const submissions = [
     {
       id: 1,
@@ -239,11 +247,12 @@ export default function LectureHoneworkProDetail() {
 
   return (
       <MobileShell>
+        <div style={{backgroundColor:'#fff',marginBottom:'12px' ,padding:'1px 20px 24px'}}>
         <TopBar>
           <PageTitle>과제제출</PageTitle>
           <TopActions>
-            <ActionChip>삭제</ActionChip>
-            <ActionChipBrand>수정</ActionChipBrand>
+            <DeleteBtn>삭제</DeleteBtn>
+            <ModifyBtn>수정</ModifyBtn>
           </TopActions>
         </TopBar>
         <PageDivider />
@@ -263,7 +272,8 @@ export default function LectureHoneworkProDetail() {
             <Button>목록</Button>
           </CardFooter>
         </Card>
-
+        </div>
+        <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
         <SectionTitle>제출 과제</SectionTitle>
         <SectionDivider />
         <Card>
@@ -288,6 +298,7 @@ export default function LectureHoneworkProDetail() {
             ))}
           </List>
         </Card>
+        </div>
       </MobileShell>
   );
 }

@@ -7,8 +7,8 @@ import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
 import { Cancle } from "../img";
-import { MainContainer } from "../mail/MailDashBoard";
-import { useLecNoticeRegistModalStore } from "../commons/modalStore";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const TopBar = styled.div`
   height: 56px;
@@ -106,12 +106,9 @@ const FileText = styled.span`
 `;
 
 export default function LectureNoticeRegist() {
-  const visible = useLecNoticeRegistModalStore((state) => state.visible);
-  const hideModal = useLecNoticeRegistModalStore((state) => state.hideModal);
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
   const [html, setHtml] = useState("");
   const editorRef = useRef(null);
-
   
 
   useEffect(() => {
@@ -135,24 +132,18 @@ export default function LectureNoticeRegist() {
       try { $el.summernote("destroy"); } catch (_) {}
     };
   }, []);
-  
-  
 
   const handleSubmit = () => {
     const current = $(editorRef.current).summernote("code");
     console.log("제출 HTML:", current);
   };
 
-  if (!visible) return null;
-
   return (
     <div>
-      <MainContainer>
-      <TopBar>
-        {/* <CloseBtn aria-label="닫기" onClick={hideModal} style={{cursor:'pointer'}}/> */}
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
-      </TopBar>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+          <Button>등록</Button>
+      </Container>
 
       <Body>
         <TitleInput placeholder="제목을 입력해주세요." />
@@ -172,7 +163,6 @@ export default function LectureNoticeRegist() {
           <FileText>{fileName}</FileText>
         </FileRow>
       </Body>
-      </MainContainer>
     </div>
   );
 }

@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Cancle, clip } from "../img";
-import { MainContainer } from "../mail/MailDashBoard";
-import { useLecPlanModalStore } from "../commons/modalStore";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 
 
 
 const TopBar = styled.div`
   height: 56px; display: flex; align-items: center;
-  padding: 0 16px; box-sizing: border-box;
+  padding: 24px; box-sizing: border-box;
 `;
 const CloseBtn = styled.button`
   width: 28px; height: 28px; padding: 0; border: 0;
@@ -23,7 +23,7 @@ const SubmitBtn = styled.button`
   border-radius: 5px; font-weight: 700; cursor: pointer; margin-top: 20px;
 `;
 
-const Body = styled.div` padding: 16px 29px; box-sizing: border-box; `;
+const Body = styled.div` box-sizing: border-box; background-color:#f7f7f7; `;
 
 const GuideWrap = styled.div` margin: 15px 0; `;
 const GuideCard = styled.div`
@@ -79,14 +79,9 @@ const RemoveBtn = styled.button`
 `;
 
 export default function LecturePlanModify() {
-  const visible = useLecPlanModalStore((state) => state.visible);
-  const hideModal = useLecPlanModalStore((state) => state.hideModal);
-
   const [files, setFiles] = useState([
     "2025-1학기_독서와토론_강의계획서.xlsx",
   ]);
-
-  if (!visible) return null;
 
   const handlePick = (e) => {
     const f = e.target.files?.[0];
@@ -100,14 +95,14 @@ export default function LecturePlanModify() {
 
   return (
     <div>
-      <MainContainer>
-      <TopBar>
-        <CloseBtn aria-label="닫기" onClick={hideModal} style={{cursor:'pointer'}}/>
-        <Spacer />
-        <SubmitBtn>등록</SubmitBtn>
-      </TopBar>
+         <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+                <Button>등록</Button>
+            </Container>
+      
 
       <Body>
+        <div style={{backgroundColor:'#fff', padding: '1px 29px 16px'}}>
         <GuideWrap>
           <GuideCard>
             <GuideTitle>
@@ -127,9 +122,9 @@ export default function LecturePlanModify() {
             </DownloadBtn>
           </DownloadRow>
         </GuideWrap>
+        </div>
 
-        <SectionGap />
-
+        <div style={{backgroundColor:'#fff', padding: '16px 29px', marginTop:'20px'}}>
         <UploadSection>
           <UploadHeader>업로드</UploadHeader>
 
@@ -154,8 +149,8 @@ export default function LecturePlanModify() {
             </FileList>
           )}
         </UploadSection>
+        </div>
       </Body>
-    </MainContainer>
     </div>
   );
 }

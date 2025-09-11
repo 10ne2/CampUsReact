@@ -5,7 +5,7 @@ import { clip } from "../img";
 const MobileShell = styled.div`
   width: 100vw;
   padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #fff;
 `;
 
 const TopBar = styled.div`
@@ -28,26 +28,27 @@ const TopActions = styled.div`
 `;
 
 const DeleteBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #dfe5ea;
-  background: #fff;
-  color: #59636b;
-  border-radius: 8px;
+  border: none;
+  background: #BEBEBE;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
 const ModifyBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #2EC4B6;
+  border: none;
   background: #2EC4B6;
   color: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
 `;
 
 const PageDivider = styled.div`

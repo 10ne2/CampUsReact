@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import { user1, home, homehv, lecture, lecturehv, project, projecthv,
         post, posthv, mypage
 } from '../img'
-import { useMypageModalStore, useSideMenuStore } from '../commons/modalStore'
+import { useAuthStore, useMypageModalStore, useSideMenuStore } from '../commons/modalStore'
 import { Link } from 'react-router-dom'
+import Toast from '../commons/Toast'
+import { logoutUser } from '../api'
 
 export const Overlay = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
@@ -130,6 +132,20 @@ function SideMenu() {
   const [postHover, setPostHover] = useState(false)
   const { showModal } = useMypageModalStore();
   const { isOpen, closeMenu } = useSideMenuStore();
+  const logout = useAuthStore(state => state.logout);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const handleLogout = async () => {
+  try {
+    await logoutUser(); // 서버 세션 삭제
+    logout(); // Zustand 상태 초기화
+    sessionStorage.removeItem('user');
+    setToastMsg('로그아웃 완료!');
+  } catch (err) {
+    console.error(err);
+    setToastMsg('로그아웃 실패');
+  }
+};
   
   return (
     <>
@@ -149,7 +165,7 @@ function SideMenu() {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20220001
           </Text>
         </Profile>
-        <Button style={{ marginTop: '47px', fontSize: "13px" }}>로그아웃</Button>
+        <Button style={{ marginTop: '47px', fontSize: "13px" }} onClick={handleLogout}>로그아웃</Button>
       </div>
 
       <Hr style={{ width: '290px', marginTop:'22px' }} />
@@ -242,6 +258,7 @@ function SideMenu() {
         </li>
       </ul>
     </Container>
+    {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
     </>
   )
 }

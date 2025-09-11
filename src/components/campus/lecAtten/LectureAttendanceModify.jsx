@@ -5,7 +5,7 @@ import { Container } from "../topNav/TopNav";
 import { Button } from "../commons/WHComponent";
 
 const MobileShell = styled.div`
-  width: 100vw;
+  width: 100%;
   background: #f7f7f7;
 `;
 

@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import { campus } from '../img';
+import { useAuthStore } from '../commons/modalStore';
+import axios from 'axios';
+import Toast from '../commons/Toast';
 
 const PageWrap = styled.div`
   display: flex;
@@ -69,25 +72,46 @@ const LoginButton = styled.button`
     background: #1fa99c;
   }
 `;
-
 function Login() {
-  return (
+    const login = useAuthStore(state => state.login)
+      const [id, setId] = useState('')
+      const [pw, setPw] = useState('')
+      const [toastMsg, setToastMsg] = useState("");
+
+        const handleLogin = async () => {
+    try {
+      const res = await axios.post(
+        '/api/login/index',
+        { id, pwd: pw },
+        { withCredentials: true } 
+      )
+      login(res.data);
+      sessionStorage.setItem('user', JSON.stringify(res.data));
+      setToastMsg("로그인 성공");
+    } catch (err) {
+      setToastMsg(err.response?.data || '로그인 실패')
+    }
+  }
+      
+    return (
     <PageWrap>
       <Body>
         <Logo src={campus} alt="CAMPUS" />
         <MiddleMent>회원님의 아이디와 비밀번호를 정확히 입력해주세요.</MiddleMent>
 
-        <Input type="text" placeholder="ID" />
-        <Input type="password" placeholder="PASSWORD" />
+        <Input type="text" placeholder="ID" value={id} onChange={e => setId(e.target.value)}/>
+        <Input type="password" placeholder="PASSWORD" value={pw} onChange={e => setPw(e.target.value)} />
         
         <Help>
           <span>비밀번호를 잊어버리셨나요?</span>
           <FindLink>비밀번호 찾기</FindLink>
         </Help>
 
-        <LoginButton>로그인</LoginButton>
+        <LoginButton onClick={handleLogin}>로그인</LoginButton>
       </Body>
+      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
     </PageWrap>
+
   )
 }
 

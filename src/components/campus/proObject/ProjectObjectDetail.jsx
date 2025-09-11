@@ -5,7 +5,7 @@ import { clip } from "../img";
 const MobileShell = styled.div`
   width: 100vw;
   padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #fff;
 `;
 
 const Crumb = styled.div`

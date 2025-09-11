@@ -7,12 +7,14 @@ import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
 import { Cancle } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const TopBar = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 24;
   box-sizing: border-box;
   gap: 16px;
 `;
@@ -43,7 +45,7 @@ const SendBtn = styled.button`
 `;
 
 const Body = styled.div`
-  padding: 0 16px 16px;
+  padding: 0 24px 24px;
   box-sizing: border-box;
 `;
 
@@ -132,12 +134,11 @@ export default function MailWrite() {
 
   return (
     <div>
-      <TopBar>
-        <CloseArea><CloseBtn aria-label="닫기" /></CloseArea>
-        <Spacer />
-        <SendBtn onClick={handleSend}>보내기</SendBtn>
-      </TopBar>
-
+        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+               <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+               <Button>보내기</Button>
+           </Container>
+     
       <Body>
         <ReceiverField>
           <ReceiverLabel>받는 사람</ReceiverLabel>

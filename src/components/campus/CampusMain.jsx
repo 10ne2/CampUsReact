@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TopNav from './topNav/TopNav'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -84,8 +84,28 @@ import BoardList from './board/BoardList'
 import BoardModify from './board/BoardModify'
 import BoardRegist from './board/BoardRegist'
 import styled from 'styled-components'
+import { useAuthStore } from './commons/modalStore'
+import Loading from './commons/Loading'
+import Login from './commons/Login'
 
 function CampusMain() {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn)
+  const login = useAuthStore(state => state.login);
+  const logout = useAuthStore(state => state.logout);
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+      login(JSON.parse(userData));
+    } else {
+      logout();
+    }
+    setCheckingSession(false);
+  }, []);
+
+  if (checkingSession) return <Loading />;
 
   const Container = styled.div`
     width: 100vw;
@@ -93,9 +113,12 @@ function CampusMain() {
   return (
     <>
     <BrowserRouter>
+      {!isLoggedIn ? ( <Login />
+          ) : (
+      <>
       <TopNav />
       <SideMenu/>
-      
+
       <Routes>
         <Route path='/' element={<HomeWrapper />}></Route>
         <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
@@ -141,6 +164,8 @@ function CampusMain() {
       <LecturePlanModify/>
       <LecturePlanRegist/>
       <LecturePlanRegist/>
+      </>
+      )}
       
 
       {/* 

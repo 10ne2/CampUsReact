@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const useModalStore = create((set) => ({
   // Confirm
@@ -78,5 +79,19 @@ export const useLecNoticeRegistModalStore = create((set) => ({
   showModal: () => set({ visible: true }),
   hideModal: () => set({ visible: false }),
 }));
+export const useAuthStore = create(
+  persist(
+    set => ({
+      isLoggedIn: false,
+      user: null, // 로그인한 사용자 정보
+      login: (userData) => set({ isLoggedIn: true, user: userData }),
+      logout: () => set({ isLoggedIn: false, user: null })
+    }),
+    {
+      name: "user-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
 
 export default useModalStore;

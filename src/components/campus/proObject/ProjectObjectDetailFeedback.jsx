@@ -3,15 +3,14 @@ import styled from "styled-components";
 import { clip } from "../img";
 
 const MobileShell = styled.div`
-  width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  width: 100%;
+  background: #f7f7f7;
 `;
 
 const Breadcrumb = styled.div`
   font-size: 18px;
   color: #98a1a8;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -128,10 +127,17 @@ const SectionTitle = styled.div`
 const SectionAction = styled.div`
   margin-left: auto;
 `;
-const EditBtn = styled(Btn)`
-  border-color: #2ec4b6;
-  color: #2ec4b6;
-  margin-right: 10px;
+const ModifyBtn = styled.button`
+  width: 50px;
+  height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: none;
+  background: #2EC4B6;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
 `;
 
 const FbHeader = styled.div`
@@ -172,7 +178,8 @@ const FbTime = styled.span`
 `;
 const FbBodyWrap = styled.div`
   padding-top: 10px;
-  border-top: 1px solid #eceff1;
+  border-top: 1px solid #d0d0d0;
+  margin-top: 13px;
 `;
 const FbBody = styled.div`
   font-size: 13px;
@@ -198,6 +205,7 @@ const Meta = styled.div`
 export default function ProjectObjectDetailFeedback() {
   return (
       <MobileShell>
+        <div style={{backgroundColor:'#fff',marginBottom:'12px' ,padding:'10px 20px 24px'}}>
         <Breadcrumb>
           <span>결과물</span> <span>›</span> <span style={{color:"#2EC4B6"}}>Camp_us</span>
         </Breadcrumb>
@@ -227,11 +235,13 @@ export default function ProjectObjectDetailFeedback() {
             <Btn>목록</Btn>
           </Footer>
         </Card>
-        <Line/>
+        </div>
+        
+        <div style={{backgroundColor:'#fff', padding:'1px 20px 24px', marginTop:'20px'}}>
         <SectionHead>
           <SectionTitle>피드백</SectionTitle>
           <SectionAction>
-            <EditBtn>수정</EditBtn>
+            <ModifyBtn>수정</ModifyBtn>
           </SectionAction>
         </SectionHead>
         <DividerBrand />
@@ -240,8 +250,7 @@ export default function ProjectObjectDetailFeedback() {
             <FbMeta>
               <FbTop>
                 <FbName>김형민</FbName>
-                <FbScore>평가 점수 : 25</FbScore>
-                <FbTime></FbTime>
+                <FbScore>| 평가 점수 : 25</FbScore>
               </FbTop>
             </FbMeta>
           </FbHeader>
@@ -251,6 +260,7 @@ export default function ProjectObjectDetailFeedback() {
               전제적으로 컴포넌트의 역할과 기능이 잘 구분되어 있어서 이해하기가 수월했습니다. 다만 일부 컴포넌트의 입력 값과 출력 값 정의가 조금 모호하게 서술된 부분이 있습니다. 특히 사용자 입력을 처리하는 부분에서는 예외 상황에 대한 처리 로직도 함께 기술해 주시면 더 완성도가 높아질 것 같습니다. 또한 컴포넌트 간 데이터 흐름을 조금 더 구체적으로 표현해 주시면 다른 팀원이 명세서를 보고 구현할 때 혼동이 줄어들 것으로 보입니다.
             </FbBody>
           </FbBodyWrap>
+          </div>
       </MobileShell>
   );
 }

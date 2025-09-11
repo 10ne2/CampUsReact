@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Cancle, clip } from "../img";
-import { useLecPlanRegistModalStore } from "../commons/modalStore";
-import { MainContainer } from "../mail/MailDashBoard";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 
 const TopBar = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 24px;
   box-sizing: border-box;
 `;
 const CloseBtn = styled.button`
@@ -30,8 +30,8 @@ const SubmitBtn = styled.button`
 `;
 
 const Body = styled.div`
-  padding: 15px 29px;        
   box-sizing: border-box;
+  background-color: #f7f7f7;
 `;
 
 const GuideWrap = styled.div`
@@ -97,22 +97,18 @@ const FileText = styled.span`
 `;
 
 export default function LecturePlanRegist() {
-  const visible = useLecPlanRegistModalStore((state) => state.visible);
-  const hideModal = useLecPlanRegistModalStore((state) => state.hideModal);
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
-
-  if (!visible) return null;
 
   return (
     <div>
-      <MainContainer>
-      <TopBar>
-        <CloseBtn aria-label="닫기" onClick={hideModal} style={{cursor:'pointer'}}/>
-        <Spacer />
-        <SubmitBtn>등록</SubmitBtn>
-      </TopBar>
+         <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+                <Button>등록</Button>
+            </Container>
+      
 
       <Body>
+        <div style={{backgroundColor:'#fff', padding: '1px 29px 16px'}}>
         <GuideWrap>
           <GuideCard>
             <GuideTitle>
@@ -132,7 +128,9 @@ export default function LecturePlanRegist() {
             </DownloadLink>
           </DownloadRow>
         </GuideWrap>
+        </div>
 
+        <div style={{backgroundColor:'#fff', padding: '16px 29px', marginTop:'20px'}}>
         <UploadSection>
           <UploadHeader>업로드</UploadHeader>
           <FileArea>
@@ -146,8 +144,8 @@ export default function LecturePlanRegist() {
             <FileText>{fileName}</FileText>
           </FileArea>
         </UploadSection>
+        </div>
       </Body>
-      </MainContainer>
     </div>
   );
 }

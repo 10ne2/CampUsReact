@@ -3,7 +3,9 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Cancle, searchIcon, calender, radioCheck } from "../img";
+import { Cancle, searchIcon, calender, radioCheck, searchbtn } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const Page = styled.div`
   width: 412px;
@@ -18,7 +20,7 @@ const TopBar = styled.div`
   align-items: center;
   padding: 0 16px;
   box-sizing: border-box;
-  gap: 16px; 
+  gap: 16px;
 `;
 
 const CloseArea = styled.div`
@@ -33,14 +35,12 @@ const CloseBtn = styled.button`
   width: 28px; height: 28px; padding: 0; border: 0;
   background: url(${Cancle}) center / 24px 24px no-repeat transparent;
   cursor: pointer; font-size: 0; color: transparent;
-  margin-top: 15px; 
+  margin-top: 15px;
 `;
 
 const Spacer = styled.div` flex: 1; `;
 const RightButtons = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;           
+  display: flex; align-items: center; gap: 6px;
 `;
 
 const MutedBtn = styled.button`
@@ -59,12 +59,13 @@ const Section = styled.div`
   background: #fff;
   box-sizing: border-box;
 `;
-const TopSection = styled(Section)` height: 523px; `;
-const BottomSection = styled(Section)` height: 265px; `;
+const TopSection = styled(Section)` `;
+const BottomSection = styled(Section)` height: 265px; margin-top: 20px;`;
 const SectionInner = styled.div`
-  padding: 16px;
+  padding: 24px;
   height: 100%;
   box-sizing: border-box;
+  margin-top: -20px;
 `;
 const Gap = styled.div` height: 12px; background: #f3f3f3; `;
 
@@ -72,7 +73,7 @@ const Row = styled.div`
   display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
 `;
 const Label = styled.div`
-  width: 72px; font-size: 13px; font-weight: 600; color: #3b3b3b; 
+  width: 72px; font-size: 13px; font-weight: 600; color: #3b3b3b;
 `;
 
 const Input = styled.input`
@@ -84,23 +85,36 @@ const Input = styled.input`
 
 const DateGrid = styled.div`
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr) 34px;
-  column-gap: 8px; align-items: center; margin-bottom: 10px;
+  grid-template-columns: 72px minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
 `;
+
 const DPWrap = styled.div`
+  position: relative;
   min-width: 0;
   .react-datepicker-wrapper,
   .react-datepicker__input-container { width: 100%; min-width: 0; }
 `;
+
 const DateField = styled.input`
-  width: 100%; height: 34px;
+  width: 230px;; height: 34px;
   border: 1px solid #d6d6d6; border-radius: 5px;
-  padding: 0 10px; font-size: 13px; color: #333;
+  padding: 0 40px 0 10px; 
+  font-size: 13px; color: #333;
   background: #fff; outline: none; cursor: pointer;
 `;
-const CalendarBtn = styled.button`
-  width: 34px; height: 34px; border: 1px solid #d6d6d6; border-radius: 5px;
-  background: #fff url(${calender}) center / 18px 18px no-repeat;
+
+
+const CalendarIconBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 24px; height: 24px;
+  border: 0; padding: 0;
+  background: transparent url(${calender}) center / 18px 18px no-repeat;
   cursor: pointer;
 `;
 
@@ -108,36 +122,22 @@ const Radios = styled.div`
   display: flex; align-items: center; gap: 16px; font-size: 13px; color: #333;
 `;
 const RadioLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
 `;
-const RadioButton = styled.input.attrs({ type: "radio" })`
-  display: none;
-`;
+const RadioButton = styled.input.attrs({ type: "radio" })` display: none; `;
 const RadioMark = styled.span`
-  width: 13px;
-  height: 13px;
-  cursor: pointer;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  background-color: white;
-  display: inline-block;
-  margin-top: 2px;
-
+  width: 13px; height: 13px; cursor: pointer;
+  border: 1px solid #bbb; border-radius: 8px; background-color: #fff;
+  display: inline-block; margin-top: 2px;
   ${RadioButton}:checked + & {
-    background-color: #fff;
     background-image: url(${radioCheck});
-    background-size: 65%;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-size: 65%; background-repeat: no-repeat; background-position: center;
   }
 `;
 
 const SearchBtn = styled.button`
   width: 34px; height: 34px; border: 0; padding: 0;
-  background: url(${searchIcon}) center / 100% 100% no-repeat transparent;
+  background: url(${searchbtn}) center / 100% 100% no-repeat transparent;
   cursor: pointer;
 `;
 
@@ -148,25 +148,15 @@ const Divider = styled.div`
 const BodyText = styled.textarea`
   width: 100%;
   height: ${({ h }) => h}px;
-  border: 0;
-  padding: 0;
-  resize: none;
-  outline: none;
-  font-size: 13px;
-  color: #606060;
-  background: transparent;
+  border: 0; padding: 0; resize: none; outline: none;
+  font-size: 13px; color: #606060; background: transparent;
 `;
 
 const SubHeader = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: #444;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #2EC4B6;  
+  font-size: 14px; font-weight: 600; color: #444;
+  padding-bottom: 8px; border-bottom: 2px solid #2EC4B6;
 `;
-const BottomLine = styled.div`
-  height: 1px; background: #e5e5e5; margin-top: 14px; 
-`;
+const BottomLine = styled.div` height: 1px; background: #e5e5e5; margin-top: 14px; `;
 
 const DPInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <DateField
@@ -186,14 +176,11 @@ export default function ProjectTeamModifyCheck() {
 
   return (
     <Page>
-      <TopBar>
-        <CloseArea><CloseBtn aria-label="닫기" /></CloseArea>
-        <Spacer />
-        <RightButtons>
-          <MutedBtn>거부</MutedBtn>
-          <ApproveBtn>승인</ApproveBtn>
-        </RightButtons>
-      </TopBar>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+        <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} alt="close" />
+        <Button style={{backgroundColor:'#aaa', marginRight:'-200px'}}>거부</Button>
+        <Button>승인</Button>
+      </Container>
 
       <TopSection>
         <SectionInner>
@@ -211,10 +198,14 @@ export default function ProjectTeamModifyCheck() {
                 dateFormat="yyyy-MM-dd"
                 customInput={<DPInput ref={startRef} />}
               />
+              <CalendarIconBtn
+                aria-label="시작일 달력 열기"
+                onClick={() => startRef.current?.setFocus()}
+              />
             </DPWrap>
-            <CalendarBtn onClick={() => startRef.current?.setFocus()} />
           </DateGrid>
 
+          {/* 종료일 */}
           <DateGrid>
             <Label>종료일</Label>
             <DPWrap>
@@ -224,8 +215,11 @@ export default function ProjectTeamModifyCheck() {
                 dateFormat="yyyy-MM-dd"
                 customInput={<DPInput ref={endRef} />}
               />
+              <CalendarIconBtn
+                aria-label="종료일 달력 열기"
+                onClick={() => endRef.current?.setFocus()}
+              />
             </DPWrap>
-            <CalendarBtn onClick={() => endRef.current?.setFocus()} />
           </DateGrid>
 
           <Row>
@@ -272,7 +266,7 @@ export default function ProjectTeamModifyCheck() {
       <BottomSection>
         <SectionInner>
           <SubHeader>수정 사유</SubHeader>
-          <BodyText h={149} defaultValue="일정 변경 요청합니다." />
+          <BodyText style={{marginTop:'10px'}} h={149} defaultValue="일정 변경 요청합니다." />
           <BottomLine />
         </SectionInner>
       </BottomSection>

@@ -95,6 +95,81 @@ function BoardList() {
                     </div>
                 </div>
             </WHContainer>
+            <WHContainer style={{height:"83px"}}>
+                <div style={{width:'350px'}}>
+                    <DateBox>2025-09-01</DateBox>
+                    <FlexDiv>
+                        <Title>[자유] 실습자료 제공</Title>
+                        <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
+                    </FlexDiv>
+                    <Writer>권오규</Writer>
+                </div>
+                <div>
+                    <div style={{width:"28px", height:"28px", border:"1px solid #ccc", borderRadius:"14px", marginTop:"11px"}}>
+                        <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
+                    </div>
+                </div>
+            </WHContainer>
+            <WHContainer style={{height:"83px"}}>
+                <div style={{width:'350px'}}>
+                    <DateBox>2025-09-01</DateBox>
+                    <FlexDiv>
+                        <Title>[자유] 실습자료 제공</Title>
+                        <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
+                    </FlexDiv>
+                    <Writer>권오규</Writer>
+                </div>
+                <div>
+                    <div style={{width:"28px", height:"28px", border:"1px solid #ccc", borderRadius:"14px", marginTop:"11px"}}>
+                        <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
+                    </div>
+                </div>
+            </WHContainer>
+            <WHContainer style={{height:"83px"}}>
+                <div style={{width:'350px'}}>
+                    <DateBox>2025-09-01</DateBox>
+                    <FlexDiv>
+                        <Title>[자유] 실습자료 제공</Title>
+                        <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
+                    </FlexDiv>
+                    <Writer>권오규</Writer>
+                </div>
+                <div>
+                    <div style={{width:"28px", height:"28px", border:"1px solid #ccc", borderRadius:"14px", marginTop:"11px"}}>
+                        <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
+                    </div>
+                </div>
+            </WHContainer>
+            <WHContainer style={{height:"83px"}}>
+                <div style={{width:'350px'}}>
+                    <DateBox>2025-09-01</DateBox>
+                    <FlexDiv>
+                        <Title>[자유] 실습자료 제공</Title>
+                        <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
+                    </FlexDiv>
+                    <Writer>권오규</Writer>
+                </div>
+                <div>
+                    <div style={{width:"28px", height:"28px", border:"1px solid #ccc", borderRadius:"14px", marginTop:"11px"}}>
+                        <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
+                    </div>
+                </div>
+            </WHContainer>
+            <WHContainer style={{height:"83px"}}>
+                <div style={{width:'350px'}}>
+                    <DateBox>2025-09-01</DateBox>
+                    <FlexDiv>
+                        <Title>[자유] 실습자료 제공</Title>
+                        <img src={clip} style={{height:'12px', marginTop:'6px', marginLeft:'8px'}}></img>
+                    </FlexDiv>
+                    <Writer>권오규</Writer>
+                </div>
+                <div>
+                    <div style={{width:"28px", height:"28px", border:"1px solid #ccc", borderRadius:"14px", marginTop:"11px"}}>
+                        <span style={{display:'block', fontSize:'12px', textAlign:'center', lineHeight:'25px', color:'#2EC4B6', fontWeight:'700'}}>1</span>
+                    </div>
+                </div>
+            </WHContainer>
             <nav>
                 <PageNation>
                     <PageArrowButton>

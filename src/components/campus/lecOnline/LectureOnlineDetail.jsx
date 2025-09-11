@@ -6,13 +6,13 @@ const PageWrap = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  background: #fafbfc;
+  background: #fff;
 `;
 
 const MobileShell = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 22px 20px 24px;
+  padding: 10px 20px 24px;
 `;
 
 const TopBar = styled.div`
@@ -29,13 +29,14 @@ const TopActions = styled.div`
   margin-left: auto;
 `;
 const ModifyBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #2EC4B6;
+  border: none;
   background: #2EC4B6;
   color: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
 `;

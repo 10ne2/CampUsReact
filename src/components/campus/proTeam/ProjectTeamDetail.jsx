@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { Container } from "../topNav/TopNav";
+import { Cancle } from "../img";
 
 const MobileShell = styled.div`
   width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #fff;
 `;
 
 const TopBar = styled.div`
@@ -138,10 +139,11 @@ export default function ProjectTeamDetail({
 
   return (
       <MobileShell>
-        <TopBar>
-          <CloseBtn aria-label="닫기" onClick={handleClose}>✕</CloseBtn>
-        </TopBar>
+        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleClose}></img>
+        </Container>
 
+        <div style={{padding: '12px 20px 24px'}}>
         <TitleHeader>
           <Semester>{data.semester}</Semester>
           <HeaderTitle>{data.title}</HeaderTitle>
@@ -175,6 +177,7 @@ export default function ProjectTeamDetail({
             <Button onClick={handleDelete}>삭제</Button>
           </Footer>
         </Card>
+        </div>
       </MobileShell>
   );
 }

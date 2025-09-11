@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Cancle, dropdownArrow } from "../img";
-import { DropHeader, DropList, DropOption, SearchDrop } from "../commons/WHComponent";
+import { Button, DropHeader, DropList, DropOption, SearchDrop } from "../commons/WHComponent";
+import { Container } from "../topNav/TopNav";
 
 const TopBar = styled.div`
   height: 56px;
@@ -35,6 +36,7 @@ const Content = styled.div`
   flex-direction: column;
   min-height: 0;     
   overflow: hidden;   
+  background-color: #f7f7f7;
 `;
 
 const TopBox = styled.div`
@@ -48,6 +50,7 @@ const Title = styled.div`
   font-weight: 700;
   color: #444;
   margin-bottom: 10px;
+  margin-top: -10px;
 `;
 const TitleLine = styled.div`
   height: 2px;
@@ -80,7 +83,7 @@ const Gap = styled.div`
 const Editor = styled.div`
   flex: 1;               
   background: #fff;
-  padding: 16px;
+  padding: 24px;
   box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;   
@@ -110,9 +113,9 @@ const TitleInput = styled.input`
 `;
 
 const BodyWrap = styled.div`
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 0 16px;
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 0 24px;
   border-bottom: 1px solid #e5e5e5;
 `;
 
@@ -158,13 +161,13 @@ export default function ProjectObjectRegist() {
 
   return (
       <div>
-        <TopBar>
-          <CloseArea><CloseBtn aria-label="닫기" /></CloseArea>
-          <Spacer />
-          <RegisterBtn>등록</RegisterBtn>
-        </TopBar>
-
+       <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+                <Button>등록</Button>
+            </Container>
+      
         <Content>
+        <div>
           <TopBox>
             <Title>클라우드 기반 협업 플랫폼</Title>
             <TitleLine />
@@ -173,9 +176,9 @@ export default function ProjectObjectRegist() {
             <Row><Label>팀장</Label><Value>김원희</Value></Row>
             <Row><Label>팀원</Label><Value>권오규, 김민주, 김선범</Value></Row>
           </TopBox>
+        </div>
 
-          <Gap />
-
+        <div style={{marginTop:'20px'}}>
           <Editor>
             <SearchDrop style={{marginTop:'-9px'}}>
                 <DropHeader style={{width:'131px', height:'27px', borderTop: '1px solid #ccc', borderRadius:'5px', fontSize:'13px', lineHeight:'16px'}} onClick={toggleOpen}>
@@ -204,6 +207,7 @@ export default function ProjectObjectRegist() {
               <span>선택된 파일이 없습니다.</span>
             </FileRow>
           </Editor>
+          </div>
         </Content>
       </div>
   

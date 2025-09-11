@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { clip } from "../img";
 
 const MobileShell = styled.div`
-  width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  width: 100%;
+  background: #f7f7f7;
 `;
 
 const TopBar = styled.div`
@@ -28,24 +27,26 @@ const TopActions = styled.div`
 `;
 
 const DeleteBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #dfe5ea;
-  background: #fff;
-  color: #59636b;
-  border-radius: 8px;
+  border: none;
+  background: #BEBEBE;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
 const ModifyBtn = styled.button`
-  height: 28px;
+  width: 50px;
+  height: 26px;
   padding: 0 12px;
   font-size: 12px;
-  border: 1px solid #2EC4B6;
-  background: #fff;
-  color: #2EC4B6;
-  border-radius: 8px;
+  border: none;
+  background: #2EC4B6;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
@@ -56,6 +57,7 @@ const PageDivider = styled.div`
   opacity: .6;
   border-radius: 2px;
   margin-bottom: 14px;
+  margin-top: 10px;
 `;
 
 /* ===== Card ===== */
@@ -175,7 +177,7 @@ const Attachment = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 12px;
-  margin-bottom: 42px;
+  margin-bottom: 20px;
   margin-left: 10px;
 `;
 
@@ -199,9 +201,10 @@ const AttachmentName = styled.div`
 const SectionTitle = styled.h4`
   font-size: 14px;
   font-weight: 700;
-  margin: 8px 0 6px;
+  margin: 15px 0 6px;
   color: #707070;
   margin-left: 10px;
+  
 `;
 const SectionDivider = styled.div`
   height: 2px;
@@ -253,6 +256,7 @@ const Meta = styled.div`
 export default function LectureHomeworkDetailFeedback() {
   return (
       <MobileShell>
+        <div style={{backgroundColor:'#fff',marginBottom:'12px' ,padding:'1px 20px 0'}}>
               <TopBar>
                 <PageTitle>과제제출</PageTitle>
                 <TopActions>
@@ -280,17 +284,18 @@ export default function LectureHomeworkDetailFeedback() {
                   <Button>목록</Button>
                 </CardFooter>
               </Card>
-              
-              <PageDivider />
-      
+              </div>
+
+              <div style={{backgroundColor:'#fff',marginBottom:'10px' ,padding:'1px 20px 15px'}}>
               <Card>
+              <PageDivider style={{marginTop: '20px'}}/>
                 <SubmissionHead>
                   <SubmissionAuthor>권오규</SubmissionAuthor>
                   <Meta>ㅣ</Meta>
                   <SubmissionTime>제출 시간 : 2025-07-31 23:56</SubmissionTime>
                   <SubmissionActions>
-                    <Chip>삭제</Chip>
-                    <ChipBrand>수정</ChipBrand>
+                    <DeleteBtn>삭제</DeleteBtn>
+                    <ModifyBtn>수정</ModifyBtn>
                   </SubmissionActions>
                 </SubmissionHead>
       
@@ -303,7 +308,9 @@ export default function LectureHomeworkDetailFeedback() {
                   <AttachmentName>자바프로그래밍 권오규 7주차.hwp</AttachmentName>
                 </Attachment>
               </Card>
+              </div>
 
+        <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
         <SectionTitle>피드백</SectionTitle>
         <SectionDivider />
         <Card>
@@ -319,6 +326,7 @@ export default function LectureHomeworkDetailFeedback() {
             다음에는 다양한 관점을 미리 대비해보는 전략도 고려해보면 좋겠습니다.
           </FeedbackText>
         </Card>
+        </div>
       </MobileShell>
   );
 }

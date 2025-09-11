@@ -76,7 +76,7 @@ const DateInputBox = styled.div`
 const DateField = styled.input`
   width: 100%; height: 34px;
   border: 1px solid #d6d6d6; border-radius: 5px;
-  padding: 0 34px 0 10px;  /* 오른쪽 아이콘 자리 확보 */
+  padding: 0 34px 0 10px;  
   font-size: 13px; color: #333;
   background: #fff; outline: none; cursor: pointer;
 `;
@@ -90,7 +90,7 @@ const CalendarInsideBtn = styled.button`
   background: transparent url(${calender}) center / 18px 18px no-repeat;
   cursor: pointer;
 `;
-/* ─────────────────────────────────────────────────────────────── */
+
 
 const TimeSelect = styled.select`
   width: 56px; height: 34px;
@@ -123,7 +123,6 @@ const FileLabel = styled.label`
 `;
 const FileText = styled.span` font-size: 12px; color: #707070; `;
 
-/* customInput: 내부에 아이콘 포함 */
 const DPInput = forwardRef(({ value, onClick, placeholder }, ref) => (
   <DateInputBox>
     <DateField
@@ -203,7 +202,6 @@ export default function LectureHomeworkRegist() {
                 customInput={<DPInput />}
               />
             </DatePickerWrap>
-            {/* 외부 캘린더 버튼 제거 */}
             <TimeSelect value={startHour} onChange={e => setStartHour(+e.target.value)}>
               {hours.map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}</option>)}
             </TimeSelect>
@@ -225,7 +223,6 @@ export default function LectureHomeworkRegist() {
                 customInput={<DPInput />}
               />
             </DatePickerWrap>
-            {/* 외부 캘린더 버튼 제거 */}
             <TimeSelect value={endHour} onChange={e => setEndHour(+e.target.value)}>
               {hours.map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}</option>)}
             </TimeSelect>

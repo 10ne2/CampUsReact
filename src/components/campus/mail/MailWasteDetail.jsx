@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { clip} from "../img";
+import { Cancle, clip} from "../img";
+import { Container } from "../topNav/TopNav";
 
 const MobileShell = styled.div`
   width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  background: #fff;
 `;
 
 
@@ -224,8 +224,11 @@ export default function MailWasteDetail({ onClose }) {
 
   return (
       <MobileShell>
-        <CloseBtn aria-label="닫기" onClick={handleClose}>✕</CloseBtn>
+        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleClose}></img>
+        </Container>
 
+        <div style={{padding: '12px 20px 24px'}}>
         <SubHeader>
           <TimeText>{receivedAt}</TimeText>
           <SmallBtn onClick={handleRestore}>복구</SmallBtn>
@@ -270,6 +273,7 @@ export default function MailWasteDetail({ onClose }) {
             <Button onClick={handleClose}>목록</Button>
           </CardFooter>
         </Card>
+        </div>
       </MobileShell>
   );
 }

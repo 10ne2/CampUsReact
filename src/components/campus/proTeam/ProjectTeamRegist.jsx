@@ -154,7 +154,7 @@ export default function ProjectTeamRegist() {
           <Button>등록</Button>
       </Container>
 
-      <TopSection>
+      <TopSection style={{marginTop:'-20px'}}>
         <SectionInner>
 
           <DatesRow>
@@ -211,7 +211,6 @@ export default function ProjectTeamRegist() {
             <SearchBtn aria-label="팀장 검색" />
           </Row>
 
-          {/* 팀원 */}
           <Row>
             <Label>팀원</Label>
             <TextInput placeholder="팀원을 등록해주세요." />

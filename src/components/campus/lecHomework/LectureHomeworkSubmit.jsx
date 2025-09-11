@@ -7,6 +7,8 @@ import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
 import { Cancle } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const TopBar = styled.div`
   height: 56px;
@@ -64,11 +66,11 @@ const ToolBtn = styled.button`
 const AccentLine = styled.div`
   height: 2px;
   background: #2EC4B6;
-  margin: 0 16px;
+  margin: 0 24px;
 `;
 
 const Body = styled.div`
-  padding: 16px;
+  padding: 24px;
   box-sizing: border-box;
 `;
 
@@ -171,17 +173,16 @@ export default function LectureHomeworkSubmit() {
 
   return (
     <div>
-      <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
-      </TopBar>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleSubmit}></img>
+          <Button>등록</Button>
+      </Container>
 
       <AccentLine />
 
       <Body>
-        <Title>7주차 과제 입니다.</Title>
-        <Period>2025-08-05 16:00 ~ 2025-08-11 23:59</Period>
+        <Title style={{marginTop:'-5px', marginLeft:'10px'}}>7주차 과제 입니다.</Title>
+        <Period style={{marginLeft:'10px'}}>2025-08-05 16:00 ~ 2025-08-11 23:59</Period>
 
         <Divider />
 

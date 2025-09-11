@@ -7,6 +7,8 @@ import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
 import { Cancle } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const TopBar = styled.div`
   height: 56px;
@@ -103,7 +105,7 @@ const FileText = styled.span`
   color: #707070;
 `;
 
-export default function LectureNoticeRegist() {
+export default function BoardRegist() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
   const [html, setHtml] = useState("");
   const editorRef = useRef(null);
@@ -137,11 +139,10 @@ export default function LectureNoticeRegist() {
 
   return (
     <div>
-      <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
-      </TopBar>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleSubmit}></img>
+          <Button>등록</Button>
+      </Container>
 
       <Body>
         <TitleInput placeholder="제목을 입력해주세요." />

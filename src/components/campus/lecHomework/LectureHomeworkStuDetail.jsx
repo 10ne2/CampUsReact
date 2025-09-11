@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { clip } from "../img";
+import { Cancle } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
 
 const MobileShell = styled.div`
-  width: 100vw;
-  padding: 12px 20px 24px;
-  background: #fafbfc;
+  width: 100%;
+  background: #f7f7f7;
 `;
 
 const TopBar = styled.div`
@@ -15,25 +17,11 @@ const TopBar = styled.div`
 const PageTitle = styled.div`
   font-size: 18px;
   margin-bottom: 20px;
-  margin-left: 10px;
-`;
-
-const CloseBtn = styled.button`
-  width:28px;
-  height:28px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border:none;
-  background:transparent;
-  cursor:pointer;
-  font-size:22px;
-  line-height:1;
-  color:#6b7680;
-  margin-bottom: 15px;
+  margin-left: 15px;
 `;
 
 const MintDivider = styled.div`
+width: 100%;
   height:2px;
   background:#2ec4b6;
   opacity:.6;
@@ -43,14 +31,13 @@ const MintDivider = styled.div`
 
 const Card = styled.div`
   background:#fff;
-  margin-bottom: 50px;
 `;
 
 const SubHeader = styled.div`
   display: flex;
   gap:10px;
   align-items:center;
-  margin-left: 10px;
+  margin-left: 15px;
 `;
 const Avatar = styled.div`
   width:32px;
@@ -96,8 +83,7 @@ const FileLine = styled.div`
   gap:8px;
   font-size:12px;
   color:#6b7280;
-  border-bottom:1px solid #eceff1;
-  margin-left: 10px;
+  margin-left: 15px;
 `;
 
 const FileLink = styled.button`
@@ -108,7 +94,6 @@ const FileLink = styled.button`
   font-size:12px;
   cursor:pointer;
   align-items: center;
-  margin-bottom: 15px;
 `;
 
 const BodyText = styled.p`
@@ -116,7 +101,7 @@ const BodyText = styled.p`
   color:#6b7280;
   line-height:1.7;
   white-space:pre-line;
-  margin:10px 10px 120px;
+  margin:10px 15px 120px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -134,7 +119,7 @@ margin-top:12px;
 `;
 
 const CardHr = styled.div`
-  width: 372px;
+  width: 100%;
   height: 1px;
   background: #D9D9D9;
   border: 0;
@@ -150,7 +135,8 @@ const GhostBtn = styled.button`
   color:#59636b;
   border-radius:8px;
   cursor:pointer;
-  margin-right: 10px;
+  margin-right: 15px;
+  margin-bottom: 20px;
 `;
 
 const SectionHead = styled.div`
@@ -164,7 +150,7 @@ const SectionTitle = styled.h4`
   font-size:14px;
   font-weight:700;
   color:#707070;
-  margin-left: 10px;
+  margin-left: 15px;
 `;
 const EditChip = styled.button`
   margin-left:auto;
@@ -176,9 +162,11 @@ const EditChip = styled.button`
   background:#fff;
   border-radius:5px;
   cursor:pointer;
-  margin-right: 10px;
+  margin-right: 15px;
+  margin-bottom: 5px;
 `;
 const SectionDivider = styled.div`
+  width: 100%;
   height:2px;
   background:#2ec4b6;
   opacity:.6;
@@ -196,7 +184,7 @@ const FbHeader = styled.div`
   grid-template-columns:36px 1fr;
   gap:10px;
   align-items:center;
-  margin-left: 10px;
+  margin-left: 15px;
 `;
 const FbHeaderRight = styled.div`
   display:flex;
@@ -209,8 +197,8 @@ const FbText = styled.div`
   font-size:13px;
   color:#6b7280;
   line-height:1.8;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
 `;
 
 const Line = styled.div`
@@ -246,10 +234,10 @@ export default function LectureHomeworkStuDetail() {
   return (
 
         <MobileShell>
-          <CloseBtn aria-label="close">×</CloseBtn>
-          <TopBar>
-          <PageTitle>과제제출</PageTitle>
-          </TopBar>          
+          <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
+          <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+              <img src={Cancle} style={{width:'19px', height:'19px'}}></img>
+          </Container>        
           <MintDivider />
 
           <Card>
@@ -273,10 +261,11 @@ export default function LectureHomeworkStuDetail() {
               <GhostBtn>목록</GhostBtn>
             </CardFooterRight>
           </Card>
-          <Line/>
+          </div>
+          <div style={{backgroundColor:'#fff', marginTop:'20px', padding:'0px 20px 24px'}}>
           <SectionHead>
             <SectionTitle>피드백 작성</SectionTitle>
-            <EditChip>수정</EditChip>
+            <Button style={{marginBottom:'5px', marginRight:'3px'}}>수정</Button>
           </SectionHead>
           <SectionDivider />
 
@@ -291,6 +280,7 @@ export default function LectureHomeworkStuDetail() {
             </FbHeader>
             <FbText>{feedback.text}</FbText>
           </FbCard>
+          </div>
         </MobileShell>
   );
 }

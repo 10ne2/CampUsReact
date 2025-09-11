@@ -1,18 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
-//   plugins: [react()],
-// })
- plugins: [react()],
+  plugins: [react()],
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost/', // 톰캣 서버 호스트 + 포트
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/campus/api'), 
-        // '/api/project/list/stu' → '/campus/api/project/list/stu'로 매핑
+        target: 'http://localhost', // 백엔드 포트
+        changeOrigin: true,              // 호스트 헤더 변경
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/campus/api')                   // https가 아닌 경우
       },
     },
   },
