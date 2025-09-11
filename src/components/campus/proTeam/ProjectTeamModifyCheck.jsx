@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Cancle, searchIcon, calender } from "../img";
+import { Cancle, searchIcon, calender, radioCheck } from "../img";
 
 const Page = styled.div`
   width: 412px;
@@ -18,23 +18,41 @@ const TopBar = styled.div`
   align-items: center;
   padding: 0 16px;
   box-sizing: border-box;
+  gap: 16px; 
+`;
+
+const CloseArea = styled.div`
+  width: 54px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const CloseBtn = styled.button`
   width: 28px; height: 28px; padding: 0; border: 0;
   background: url(${Cancle}) center / 24px 24px no-repeat transparent;
   cursor: pointer; font-size: 0; color: transparent;
+  margin-top: 15px; 
 `;
 
 const Spacer = styled.div` flex: 1; `;
+const RightButtons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;           
+`;
 
 const MutedBtn = styled.button`
+  width: 48px; height: 26px;
   background: #AAAAAA; color: #fff; border: 0; border-radius: 5px;
-  padding: 8px 12px; font-weight: 700; cursor: pointer; margin-right: 8px;
+  font-weight: 500; cursor: pointer; margin-right: 8px;
 `;
+
 const ApproveBtn = styled.button`
+  width: 48px; height: 26px;
   background: #2EC4B6; color: #fff; border: 0; border-radius: 5px;
-  padding: 8px 12px; font-weight: 700; cursor: pointer;
+  font-weight: 500; cursor: pointer;
 `;
 
 const Section = styled.div`
@@ -88,7 +106,33 @@ const CalendarBtn = styled.button`
 
 const Radios = styled.div`
   display: flex; align-items: center; gap: 16px; font-size: 13px; color: #333;
-  input { margin-right: 6px; }
+`;
+const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+`;
+const RadioButton = styled.input.attrs({ type: "radio" })`
+  display: none;
+`;
+const RadioMark = styled.span`
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background-color: white;
+  display: inline-block;
+  margin-top: 2px;
+
+  ${RadioButton}:checked + & {
+    background-color: #fff;
+    background-image: url(${radioCheck});
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 `;
 
 const SearchBtn = styled.button`
@@ -143,10 +187,12 @@ export default function ProjectTeamModifyCheck() {
   return (
     <Page>
       <TopBar>
-        <CloseBtn aria-label="닫기" />
+        <CloseArea><CloseBtn aria-label="닫기" /></CloseArea>
         <Spacer />
-        <MutedBtn>거부</MutedBtn>
-        <ApproveBtn>승인</ApproveBtn>
+        <RightButtons>
+          <MutedBtn>거부</MutedBtn>
+          <ApproveBtn>승인</ApproveBtn>
+        </RightButtons>
       </TopBar>
 
       <TopSection>
@@ -185,8 +231,16 @@ export default function ProjectTeamModifyCheck() {
           <Row>
             <Label>학기</Label>
             <Radios>
-              <label><input type="radio" name="term" defaultChecked />1학기</label>
-              <label><input type="radio" name="term" />2학기</label>
+              <RadioLabel>
+                <RadioButton name="term" defaultChecked />
+                <RadioMark />
+                <span>1학기</span>
+              </RadioLabel>
+              <RadioLabel>
+                <RadioButton name="term" />
+                <RadioMark />
+                <span>2학기</span>
+              </RadioLabel>
             </Radios>
           </Row>
 

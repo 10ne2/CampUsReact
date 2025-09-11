@@ -3,7 +3,10 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Cancle, searchIcon, calender } from "../img";
+import { Cancle, searchIcon, calender, searchbtn } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button } from "../commons/WHComponent";
+import { RadioButton, RadioLabel, RadioMark, RadioWrap } from "./ProjectTeamModify";
 
 const Page = styled.div`
   width: 412px;
@@ -33,14 +36,14 @@ const Section = styled.div`
   background: #fff;
   box-sizing: border-box;
 `;
-const TopSection = styled(Section)` height: 320px; `;   
-const BottomSection = styled(Section)` height: 465px; `; 
+const TopSection = styled(Section)` height: 320px; `;
+const BottomSection = styled(Section)` height: 465px; `;
 const SectionInner = styled.div`
-  padding: 16px;
+  padding: 24px;
   height: 100%;
   box-sizing: border-box;
 `;
-const Gap = styled.div` height: 15px; background: #f3f3f3; `; 
+const Gap = styled.div` height: 15px; background: #f3f3f3; `;
 
 const Row = styled.div`
   display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
@@ -49,14 +52,9 @@ const Label = styled.div`
   width: 64px; font-size: 13px; font-weight: 600; color: #3b3b3b; 
 `;
 
-const DateGrid = styled.div`
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) 34px;
-  column-gap: 8px;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-const DPWrap = styled.div`
+
+
+export const DPWrap = styled.div`
   min-width: 0;
   .react-datepicker-wrapper,
   .react-datepicker__input-container { width: 100%; min-width: 0; }
@@ -64,13 +62,41 @@ const DPWrap = styled.div`
 const DateField = styled.input`
   width: 100%; height: 34px;
   border: 1px solid #d6d6d6; border-radius: 5px;
-  padding: 0 10px; font-size: 13px; color: #333;
+  padding: 0 34px 0 10px; 
+  font-size: 13px; color: #333;
   background: #fff; outline: none; cursor: pointer;
 `;
-const CalendarBtn = styled.button`
-  width: 34px; height: 34px; border: 1px solid #d6d6d6; border-radius: 5px;
-  background: #fff url(${calender}) center / 18px 18px no-repeat;
+
+export const DatesRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+`;
+export const DateCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+`;
+export const FieldTopLabel = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b6b6b;
+`;
+const CalendarInsideBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 20px; height: 20px;
+  border: 0; padding: 0;
+  background: transparent url(${calender}) center / 18px 18px no-repeat;
   cursor: pointer;
+`;
+const DateInputBox = styled.div`
+  position: relative;
+  width: 100%;
 `;
 
 const Radios = styled.div`
@@ -86,7 +112,7 @@ const TextInput = styled.input`
 `;
 const SearchBtn = styled.button`
   width: 34px; height: 34px; border: 0; padding: 0;
-  background: url(${searchIcon}) center / 100% 100% no-repeat transparent;
+  background: url(${searchbtn}) center / 100% 100% no-repeat transparent;
   cursor: pointer;
 `;
 
@@ -103,13 +129,16 @@ const UnderlineArea = styled.textarea`
 const BottomLine = styled.div` height: 1px; background: #e5e5e5; margin-top: 14px; `;
 
 const DPInput = forwardRef(({ value, onClick, placeholder }, ref) => (
-  <DateField
-    ref={ref}
-    onClick={onClick}
-    value={value || ""}
-    placeholder={placeholder || "YYYY-MM-DD"}
-    readOnly
-  />
+  <DateInputBox>
+    <DateField
+      ref={ref}
+      onClick={onClick}
+      value={value || ""}
+      placeholder={placeholder || "YYYY-MM-DD"}
+      readOnly
+    />
+    <CalendarInsideBtn type="button" aria-label="달력 열기" onClick={onClick} />
+  </DateInputBox>
 ));
 
 export default function ProjectTeamRegist() {
@@ -120,48 +149,54 @@ export default function ProjectTeamRegist() {
 
   return (
     <Page>
-      <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn>등록</SubmitBtn>
-      </TopBar>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+          <Button>등록</Button>
+      </Container>
 
-      {/* 위 320 */}
       <TopSection>
         <SectionInner>
-          {/* 시작일 */}
-          <DateGrid>
-            <Label>시작일</Label>
-            <DPWrap>
-              <DatePicker
-                selected={startDate}
-                onChange={setStartDate}
-                dateFormat="yyyy-MM-dd"
-                customInput={<DPInput ref={startRef} />}
-              />
-            </DPWrap>
-            <CalendarBtn onClick={() => startRef.current?.setFocus()} />
-          </DateGrid>
 
-          <DateGrid>
-            <Label>종료일</Label>
-            <DPWrap>
-              <DatePicker
-                selected={endDate}
-                onChange={setEndDate}
-                dateFormat="yyyy-MM-dd"
-                customInput={<DPInput ref={endRef} />}
-              />
-            </DPWrap>
-            <CalendarBtn onClick={() => endRef.current?.setFocus()} />
-          </DateGrid>
+          <DatesRow>
+            <DateCol>
+              <FieldTopLabel>시작일</FieldTopLabel>
+              <DPWrap>
+                <DatePicker
+                  selected={startDate}
+                  onChange={setStartDate}
+                  dateFormat="yyyy-MM-dd"
+                  customInput={<DPInput ref={startRef} />}
+                />
+              </DPWrap>
+            </DateCol>
+
+            <DateCol>
+              <FieldTopLabel>종료일</FieldTopLabel>
+              <DPWrap>
+                <DatePicker
+                  selected={endDate}
+                  onChange={setEndDate}
+                  dateFormat="yyyy-MM-dd"
+                  customInput={<DPInput ref={endRef} />}
+                />
+              </DPWrap>
+            </DateCol>
+          </DatesRow>
 
           <Row>
             <Label>학기</Label>
-            <Radios>
-              <label><input type="radio" name="term" defaultChecked />1학기</label>
-              <label><input type="radio" name="term" />2학기</label>
-            </Radios>
+            <RadioWrap>
+              <RadioLabel>
+                <RadioButton name="term" defaultChecked />
+                <RadioMark />
+                <span>1학기</span>
+              </RadioLabel>
+              <RadioLabel>
+                <RadioButton name="term" />
+                <RadioMark />
+                <span>2학기</span>
+              </RadioLabel>
+            </RadioWrap>
           </Row>
 
           <Row>
@@ -189,7 +224,7 @@ export default function ProjectTeamRegist() {
 
       <BottomSection>
         <SectionInner>
-          <UnderlineInput placeholder="프로젝트명을 입력해주세요." />
+          <UnderlineInput style={{marginTop:"-10px"}} placeholder="프로젝트명을 입력해주세요." />
           <UnderlineArea placeholder="내용을 입력해주세요." />
           <BottomLine />
         </SectionInner>

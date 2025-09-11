@@ -9,8 +9,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Cancle, calender } from "../img";
+import { Button } from "../commons/WHComponent";
+import { Container } from "../topNav/TopNav";
 
-const Container = styled.div`
+const MJContainer = styled.div`
   width: 412px;
   margin: 0 auto;
   overflow-x: hidden; 
@@ -35,7 +37,7 @@ const SubmitBtn = styled.button`
 `;
 
 const Body = styled.div`
-  padding: 16px;
+  padding: 20px;
   box-sizing: border-box;
 `;
 
@@ -65,18 +67,31 @@ const DatePickerWrap = styled.div`
     min-width: 0;
   }
 `;
+
+/* ── 변경된 부분: 아이콘을 입력칸 안쪽에 오버레이 ─────────────────── */
+const DateInputBox = styled.div`
+  position: relative;
+  width: 100%;
+`;
 const DateField = styled.input`
   width: 100%; height: 34px;
   border: 1px solid #d6d6d6; border-radius: 5px;
-  padding: 0 10px; font-size: 13px; color: #333;
+  padding: 0 34px 0 10px;  /* 오른쪽 아이콘 자리 확보 */
+  font-size: 13px; color: #333;
   background: #fff; outline: none; cursor: pointer;
 `;
-const CalendarBtn = styled.button`
-  width: 34px; height: 34px; flex: 0 0 34px;
-  border: 1px solid #d6d6d6;
-  background: #fff url(${calender}) center / 18px 18px no-repeat;
-  border-radius: 5px; cursor: pointer;
+const CalendarInsideBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 20px; height: 20px;
+  border: 0; padding: 0;
+  background: transparent url(${calender}) center / 18px 18px no-repeat;
+  cursor: pointer;
 `;
+/* ─────────────────────────────────────────────────────────────── */
+
 const TimeSelect = styled.select`
   width: 56px; height: 34px;
   border: 1px solid #d6d6d6; border-radius: 5px;
@@ -108,8 +123,18 @@ const FileLabel = styled.label`
 `;
 const FileText = styled.span` font-size: 12px; color: #707070; `;
 
+/* customInput: 내부에 아이콘 포함 */
 const DPInput = forwardRef(({ value, onClick, placeholder }, ref) => (
-  <DateField ref={ref} onClick={onClick} value={value || ""} placeholder={placeholder || "YYYY-MM-DD"} readOnly />
+  <DateInputBox>
+    <DateField
+      ref={ref}
+      onClick={onClick}
+      value={value || ""}
+      placeholder={placeholder || "YYYY-MM-DD"}
+      readOnly
+    />
+    <CalendarInsideBtn type="button" aria-label="달력 열기" onClick={onClick} />
+  </DateInputBox>
 ));
 
 export default function LectureHomeworkRegist() {
@@ -122,9 +147,6 @@ export default function LectureHomeworkRegist() {
   const [endDate, setEndDate] = useState(new Date());
   const [endHour, setEndHour] = useState(23);
   const [endMinute, setEndMinute] = useState(59);
-
-  const startPickerRef = useRef(null);
-  const endPickerRef = useRef(null);
 
   const editorRef = useRef(null);
 
@@ -161,12 +183,11 @@ export default function LectureHomeworkRegist() {
   };
 
   return (
-    <Container>
-      <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
-      </TopBar>
+    <MJContainer>
+      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+          <Button>등록</Button>
+      </Container>
 
       <Body>
         <TitleInput placeholder="제목을 입력해주세요." />
@@ -179,10 +200,10 @@ export default function LectureHomeworkRegist() {
                 selected={startDate}
                 onChange={setStartDate}
                 dateFormat="yyyy-MM-dd"
-                customInput={<DPInput ref={startPickerRef} />}
+                customInput={<DPInput />}
               />
             </DatePickerWrap>
-            <CalendarBtn onClick={() => startPickerRef.current?.setFocus()} />
+            {/* 외부 캘린더 버튼 제거 */}
             <TimeSelect value={startHour} onChange={e => setStartHour(+e.target.value)}>
               {hours.map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}</option>)}
             </TimeSelect>
@@ -201,10 +222,10 @@ export default function LectureHomeworkRegist() {
                 selected={endDate}
                 onChange={setEndDate}
                 dateFormat="yyyy-MM-dd"
-                customInput={<DPInput ref={endPickerRef} />}
+                customInput={<DPInput />}
               />
             </DatePickerWrap>
-            <CalendarBtn onClick={() => endPickerRef.current?.setFocus()} />
+            {/* 외부 캘린더 버튼 제거 */}
             <TimeSelect value={endHour} onChange={e => setEndHour(+e.target.value)}>
               {hours.map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}</option>)}
             </TimeSelect>
@@ -231,6 +252,6 @@ export default function LectureHomeworkRegist() {
           <FileText>{fileName}</FileText>
         </FileRow>
       </Body>
-    </Container>
+    </MJContainer>
   );
 }

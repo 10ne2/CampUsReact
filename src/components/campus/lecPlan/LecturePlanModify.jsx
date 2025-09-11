@@ -1,114 +1,106 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Cancle, clip } from "../img";
 
 
 
 
 const TopBar = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  box-sizing: border-box;
-`;
-const CloseArea = styled.div`
-  width: 54px; height: 45px;
-  display: flex; align-items: center; justify-content: center;
+  height: 56px; display: flex; align-items: center;
+  padding: 0 16px; box-sizing: border-box;
 `;
 const CloseBtn = styled.button`
-  border: 0; background: transparent; font-size: 24px; line-height: 1;
-  cursor: pointer; color: #707070;
+  width: 28px; height: 28px; padding: 0; border: 0;
+  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
+  cursor: pointer; margin-top: 25px; font-size: 0; color: transparent;
 `;
 const Spacer = styled.div` flex: 1; `;
 const SubmitBtn = styled.button`
-  background: #2EC4B6; color: #fff; border: 0; border-radius: 5px;
-  padding: 8px 14px; font-weight: 700; cursor: pointer;
+  width: 48px; height: 26px; background: #2EC4B6; color: #fff; border: 0;
+  border-radius: 5px; font-weight: 700; cursor: pointer; margin-top: 20px;
 `;
 
+const Body = styled.div` padding: 16px 29px; box-sizing: border-box; `;
 
-const Body = styled.div`
-  padding: 16px 29px;
-  box-sizing: border-box;
-`;
-
+const GuideWrap = styled.div` margin: 15px 0; `;
 const GuideCard = styled.div`
   width: 100%; height: 140px;
   border: 1px solid #e3e3e3; border-radius: 4px;
-  padding: 14px 14px 10px; box-sizing: border-box; position: relative;
+  padding: 14px 14px 10px; background: #fff; box-sizing: border-box;
 `;
 const GuideTitle = styled.span`
-  font-size: 12px; color: #333;
-  b { color: #d35454; font-weight: 700; }
+  font-size: 12px; color: #333; b { color: #d35454; font-weight: 700; }
 `;
 const GuideList = styled.ol`
   margin: 10px 0 0; padding-left: 18px;
   li { font-size: 12px; color: #555; line-height: 1.6; }
 `;
-const DownloadLink = styled.button`
-  position: absolute; right: 10px; bottom: 8px;
+const DownloadRow = styled.div` display: flex; justify-content: flex-end; margin-top: 6px; `;
+const DownloadBtn = styled.button`
   display: inline-flex; align-items: center; gap: 6px;
   border: 0; background: transparent; color: #9a9a9a; font-size: 12px; cursor: pointer;
 `;
-const Paperclip = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path d="M21 7.5l-9.6 9.6a5 5 0 11-7.07-7.07L13.5 0" stroke="#9a9a9a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M19.07 9.43L9.43 19.07" stroke="#9a9a9a" strokeWidth="1.6" strokeLinecap="round"/>
-  </svg>
-);
-
+const DownloadIcon = styled.img` width: 15px; height: 15px; object-fit: contain; opacity: .85; `;
 
 const SectionGap = styled.div` height: 13px; `;
-
 
 const UploadSection = styled.div` width: 100%; background: #fff; `;
 const UploadHeader = styled.div`
   font-size: 14px; font-weight: 600; color: #444;
-  padding: 10px 0 8px;
-  border-bottom: 2px solid #2EC4B6;  
+  padding: 10px 0 8px; border-bottom: 2px solid #2EC4B6;
 `;
 
+const PickerRow = styled.div`
+  display: flex; align-items: center; gap: 10px; padding-top: 12px;
+`;
+const HiddenFile = styled.input.attrs({ type: "file", id: "uploadFile" })`
+  display: none;
+`;
+const FileLabel = styled.label`
+  width: 74px; height: 25px; display: inline-block;
+  border: 1px solid #bdbdbd; border-radius: 5px; background: #f4f4f4;
+  font-size: 12px; text-align: center; line-height: 25px; cursor: pointer;
+`;
+const EmptyText = styled.span` font-size: 12px; color: #9a9a9a; `;
 
 const FileList = styled.ul` list-style: none; margin: 8px 0 0; padding: 0; `;
 const FileItem = styled.li`
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 0;
+  display: flex; align-items: center; gap: 10px; padding: 8px 0;
 `;
+const ListIcon = styled.img` width: 16px; height: 16px; object-fit: contain; opacity: .85; `;
 const FileName = styled.span`
-  font-size: 12px; color: #4a4a4a;
-  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 12px; color: #4a4a4a; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 `;
 const RemoveBtn = styled.button`
-  border: 0; background: transparent; cursor: pointer;
-  font-size: 18px; line-height: 1; color: #9a9a9a;
+  border: 0; background: transparent; cursor: pointer; font-size: 18px; line-height: 1; color: #9a9a9a;
 `;
-
-/* 클립 아이콘 (리스트용) */
-const SmallClip = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path d="M21 7.5l-9.6 9.6a5 5 0 11-7.07-7.07L13.5 0" stroke="#8a8a8a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
 
 export default function LecturePlanModify() {
   const [files, setFiles] = useState([
     "2025-1학기_독서와토론_강의계획서.xlsx",
   ]);
 
-  const removeFile = (idx) => {
-    setFiles((prev) => prev.filter((_, i) => i !== idx));
+  const handlePick = (e) => {
+    const f = e.target.files?.[0];
+    setFiles(f ? [f.name] : []);   
+    e.target.value = "";         
+  };
+
+  const handleRemove = (idx) => {
+    setFiles([]);                  
   };
 
   return (
     <div>
-        <TopBar>
-          <CloseArea><CloseBtn aria-label="닫기">×</CloseBtn></CloseArea>
-          <Spacer />
-          <SubmitBtn>등록</SubmitBtn>
-        </TopBar>
+      <TopBar>
+        <CloseBtn aria-label="닫기" />
+        <Spacer />
+        <SubmitBtn>등록</SubmitBtn>
+      </TopBar>
 
-        <Body>
-        
+      <Body>
+        <GuideWrap>
           <GuideCard>
             <GuideTitle>
               강의계획서는 <b>지정된 양식으로만 제출 가능</b>합니다.
@@ -118,31 +110,43 @@ export default function LecturePlanModify() {
               <li>② 강의계획서를 작성하시고,</li>
               <li>③ 작성 완료된 파일을 업로드해 주십시오.</li>
             </GuideList>
-            <DownloadLink><Paperclip />양식 다운로드</DownloadLink>
           </GuideCard>
 
-          <SectionGap />
+          <DownloadRow>
+            <DownloadBtn>
+              <DownloadIcon src={clip} alt="" />
+              양식 다운로드
+            </DownloadBtn>
+          </DownloadRow>
+        </GuideWrap>
 
-          {/* 업로드 섹션 */}
-          <UploadSection>
-            <UploadHeader>업로드</UploadHeader>
+        <SectionGap />
 
+        <UploadSection>
+          <UploadHeader>업로드</UploadHeader>
+
+          <HiddenFile onChange={handlePick} />
+
+          {files.length === 0 && (
+            <PickerRow>
+              <FileLabel htmlFor="uploadFile">파일선택</FileLabel>
+              <EmptyText>선택된 파일이 없습니다.</EmptyText>
+            </PickerRow>
+          )}
+
+          {files.length > 0 && (
             <FileList>
               {files.map((name, i) => (
                 <FileItem key={i}>
-                  <SmallClip />
+                  <ListIcon src={clip} alt="" />
                   <FileName title={name}>{name}</FileName>
-                  <RemoveBtn aria-label="삭제" onClick={() => removeFile(i)}>×</RemoveBtn>
+                  <RemoveBtn aria-label="삭제" onClick={() => handleRemove(i)}>×</RemoveBtn>
                 </FileItem>
               ))}
-              {files.length === 0 && (
-                <FileItem>
-                  <FileName style={{ color: "#9a9a9a" }}>첨부된 파일이 없습니다.</FileName>
-                </FileItem>
-              )}
             </FileList>
-          </UploadSection>
-        </Body>
+          )}
+        </UploadSection>
+      </Body>
     </div>
   );
 }

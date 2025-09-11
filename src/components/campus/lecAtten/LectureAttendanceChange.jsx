@@ -1,15 +1,15 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { TopBar } from "../proTeam/ProjectTeamModify";
-
 
 import $ from "jquery";
 window.$ = window.jQuery = $;
 import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
-import { Cancle } from "../img";
+import { Cancle, dropdownArrow } from "../img";
+import { Container } from "../topNav/TopNav";
+import { Button, DropHeader, DropList, DropOption, SearchDrop } from "../commons/WHComponent";
 
 const CloseArea = styled.div`
   width: 54px;
@@ -77,7 +77,6 @@ const Arrow = styled.span`
   color: #999999;
 `;
 
-/* 제목 */
 const TitleInput = styled.input`
   width: 100%;
   border: none;
@@ -94,7 +93,6 @@ const EditorWrap = styled.div`
   .note-editor.note-frame {
     border: 0;
     box-shadow: none;
-    font-family: 'Noto Sans KR','Noto Sans',sans-serif;
   }
   .note-toolbar { border: 0; padding: 6px 0; }
   .note-statusbar { display: none; }           
@@ -103,6 +101,7 @@ const EditorWrap = styled.div`
     font-size: 14px;
     line-height: 1.5;
   }
+
 `;
 
 
@@ -140,6 +139,15 @@ export default function LectureAttendanceChange() {
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
   const editorRef = useRef(null);     
   const [html, setHtml] = useState(""); 
+  const [dropOpen, setDropOpen] = useState(false);
+  const [dropSelected, setDropSelected] = useState("전체");
+
+  const toggleOpen = () => setDropOpen(!dropOpen);
+  
+  const handleDropSelect = (value) => {
+        setDropSelected(value);
+        setDropOpen(false);
+    }
 
   useEffect(() => {
     const $el = $(editorRef.current);
@@ -172,25 +180,30 @@ export default function LectureAttendanceChange() {
 
   return (
     <div>
-       <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
-      </TopBar>
+       <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
+          <Button>등록</Button>
+      </Container>
 
       <Body>
        
-        <SelectWrap>
-          <Select defaultValue="2025-04-11">
-            <option value="2025-04-11">2025-04-11</option>
-            <option value="2025-04-12">2025-04-12</option>
-            <option value="2025-04-13">2025-04-13</option>
-          </Select>
-          <Arrow>▾</Arrow>
-        </SelectWrap>
+        <SearchDrop style={{marginTop:'-9px', position:'absolute', zIndex:'1'}}>
+            <DropHeader style={{width:'131px', height:'27px', borderTop: '1px solid #ccc', borderRadius:'5px', fontSize:'13px', lineHeight:'16px'}} onClick={toggleOpen}>
+                {dropSelected}
+                <img src={dropdownArrow} style={{width:"13px", height:"8px", marginLeft:'auto', display:'block', marginTop:'4px'}}></img>
+            </DropHeader>
+            {dropOpen && (
+                <DropList style={{width:'131px'}}>
+                    <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("전체")}>전체</DropOption>
+                    <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션1")}>옵션1</DropOption>
+                    <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션2")}>옵션2</DropOption>
+                    <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션3")}>옵션3</DropOption>
+                </DropList>
+            )}
+        </SearchDrop>
 
 
-        <TitleInput placeholder="제목을 입력해주세요." />
+        <TitleInput placeholder="제목을 입력해주세요." style={{marginTop:'30px'}}/>
 
        
         <EditorWrap>

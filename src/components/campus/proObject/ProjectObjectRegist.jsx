@@ -1,23 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Cancle, dropdownArrow } from "../img";
+import { DropHeader, DropList, DropOption, SearchDrop } from "../commons/WHComponent";
 
-/* 고정 폭 412 */
-const Page = styled.div`
-  width: 412px;
-  margin: 0 auto;
-  background: #efefef; /* 데모용 배경 */
+const TopBar = styled.div`
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  gap: 16px;
+  background: #fff;
+`;
+const CloseArea = styled.div`
+  width: 54px; height: 45px;
+  display: flex; align-items: center; justify-content: center;
+`;
+const CloseBtn = styled.button`
+  width: 28px; height: 28px; padding: 0; border: 0;
+  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
+  cursor: pointer; font-size: 0; color: transparent;
+  margin-top: 15px;
+`;
+const Spacer = styled.div` flex: 1; `;
+const RegisterBtn = styled.button`
+  width: 62px; height: 26px;
+  background: #2EC4B6; color: #fff; border: 0; border-radius: 5px;
+  font-weight: 500; cursor: pointer;
 `;
 
-/* 상단 요약 박스: H 263 */
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;     
+  overflow: hidden;   
+`;
+
 const TopBox = styled.div`
   background: #fff;
   height: 263px;
   box-sizing: border-box;
-  padding: 16px;
-  border-radius: 6px 6px 0 0;
+  padding: 24px;
 `;
 
-/* 타이틀 + 옥색 언더라인 */
 const Title = styled.div`
   font-weight: 700;
   color: #444;
@@ -39,27 +65,27 @@ const Label = styled.div`
   width: 72px;
   color: #777;
   font-weight: 700;
+  font-size: 14px;
 `;
 const Value = styled.div`
   flex: 1;
   color: #555;
 `;
 
-/* 회색 구분선: H 15 */
 const Gap = styled.div`
   height: 15px;
   background: #f3f3f3;
 `;
 
-/* 아래 입력 영역 */
 const Editor = styled.div`
+  flex: 1;               
   background: #fff;
   padding: 16px;
   box-sizing: border-box;
-  border-radius: 0 0 6px 6px;
+  overflow-y: auto;
+  overflow-x: hidden;   
 `;
 
-/* 드롭다운: W167 × H29 */
 const CategorySelect = styled.select`
   width: 167px;
   height: 29px;
@@ -72,7 +98,6 @@ const CategorySelect = styled.select`
   outline: none;
 `;
 
-/* 제목 한 줄 + 밑줄 */
 const TitleInput = styled.input`
   width: 100%;
   border: 0;
@@ -84,16 +109,17 @@ const TitleInput = styled.input`
   ::placeholder { color: #bdbdbd; }
 `;
 
-/* 본문: W412 × H216 (Page가 412px이므로 padding 제거해 정확히 맞춤) */
 const BodyWrap = styled.div`
-  margin-left: -16px;   /* 좌우 패딩 제거해서 정확히 412 폭 확보 */
+  margin-left: -16px;
   margin-right: -16px;
-  padding: 0 16px;      /* 텍스트 시작점은 유지 */
+  padding: 0 16px;
   border-bottom: 1px solid #e5e5e5;
 `;
+
 const BodyArea = styled.textarea`
-  width: 412px;       /* 명시적으로 412 */
-  height: 216px;      /* 요구 사이즈 */
+  width: 100%;           
+  max-width: 412px;      
+  height: 216px;
   border: 0;
   resize: none;
   outline: none;
@@ -104,7 +130,6 @@ const BodyArea = styled.textarea`
   ::placeholder { color: #bdbdbd; }
 `;
 
-/* 파일 선택 라인 (옵션) */
 const FileRow = styled.div`
   display: flex;
   align-items: center;
@@ -114,63 +139,73 @@ const FileRow = styled.div`
   font-size: 13px;
 `;
 const FileButton = styled.label`
-  display: inline-block;
-  padding: 6px 10px;
-  border: 1px solid #cfcfcf;
-  background: #f2f2f2;
-  border-radius: 6px;
-  cursor: pointer;
+  display: inline-block; width: 74px; height: 25px; text-align: center; align-content: center;
+  border: 1px solid #bdbdbd; border-radius: 5px; font-size: 12px; cursor: pointer; user-select: none;
+  background: #f4f4f4; margin-right: 10px;
 `;
-const HiddenFile = styled.input`
-  display: none;
-`;
+const HiddenFile = styled.input` display: none; `;
 
-export default function ProjectObjectRegistLayout() {
+export default function ProjectObjectRegist() {
+  const [dropOpen, setDropOpen] = useState(false);
+  const [dropSelected, setDropSelected] = useState("전체");
+
+  const toggleOpen = () => setDropOpen(!dropOpen);
+
+    const handleDropSelect = (value) => {
+        setDropSelected(value);
+        setDropOpen(false);
+    }
+
   return (
-    <Page>
-      <TopBox>
-        <Title>클라우드 기반 협업 플랫폼</Title>
-        <TitleLine />
-        <Row>
-          <Label>기간</Label>
-          <Value>2025-08-26 ~ 2025-08-26</Value>
-        </Row>
-        <Row>
-          <Label>담당교수</Label>
-          <Value>서형원</Value>
-        </Row>
-        <Row>
-          <Label>팀장</Label>
-          <Value>김원희</Value>
-        </Row>
-        <Row>
-          <Label>팀원</Label>
-          <Value>권오규, 김민주, 김선범</Value>
-        </Row>
-      </TopBox>
+      <div>
+        <TopBar>
+          <CloseArea><CloseBtn aria-label="닫기" /></CloseArea>
+          <Spacer />
+          <RegisterBtn>등록</RegisterBtn>
+        </TopBar>
 
-      <Gap />
+        <Content>
+          <TopBox>
+            <Title>클라우드 기반 협업 플랫폼</Title>
+            <TitleLine />
+            <Row><Label>기간</Label><Value>2025-08-26 ~ 2025-08-26</Value></Row>
+            <Row><Label>담당교수</Label><Value>서형원</Value></Row>
+            <Row><Label>팀장</Label><Value>김원희</Value></Row>
+            <Row><Label>팀원</Label><Value>권오규, 김민주, 김선범</Value></Row>
+          </TopBox>
 
-      <Editor>
-        <CategorySelect defaultValue="">
-          <option value="" disabled>카테고리 구분</option>
-          <option value="공지">공지</option>
-          <option value="업무">업무</option>
-          <option value="자료">자료</option>
-        </CategorySelect>
+          <Gap />
 
-        <TitleInput placeholder="제목을 입력해주세요" />
+          <Editor>
+            <SearchDrop style={{marginTop:'-9px'}}>
+                <DropHeader style={{width:'131px', height:'27px', borderTop: '1px solid #ccc', borderRadius:'5px', fontSize:'13px', lineHeight:'16px'}} onClick={toggleOpen}>
+                    {dropSelected}
+                    <img src={dropdownArrow} style={{width:"13px", height:"8px", marginLeft:'auto', display:'block', marginTop:'4px'}}></img>
+                </DropHeader>
+                {dropOpen && (
+                    <DropList style={{width:'131px'}}>
+                        <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("전체")}>전체</DropOption>
+                        <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션1")}>옵션1</DropOption>
+                        <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션2")}>옵션2</DropOption>
+                        <DropOption style={{padding:'8px 10px', fontSize:'13px'}} onClick={() => handleDropSelect("옵션3")}>옵션3</DropOption>
+                    </DropList>
+                )}
+            </SearchDrop>
 
-        <BodyWrap>
-          <BodyArea placeholder="내용을 입력해주세요." />
-        </BodyWrap>
+            <TitleInput placeholder="제목을 입력해주세요" />
 
-        <FileRow>
-          <FileButton htmlFor="file">파일선택</FileButton>
-          <HiddenFile id="file" type="file" />
-          <span>선택된 파일이 없습니다.</span>
-        </FileRow>
-      </Editor>
-    </Page>
+            <BodyWrap>
+              <BodyArea placeholder="내용을 입력해주세요." />
+            </BodyWrap>
+
+            <FileRow>
+              <FileButton htmlFor="file">파일선택</FileButton>
+              <HiddenFile id="file" type="file" />
+              <span>선택된 파일이 없습니다.</span>
+            </FileRow>
+          </Editor>
+        </Content>
+      </div>
+  
   );
 }

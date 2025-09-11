@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Cancle } from "../img";
+import { Cancle, clip } from "../img";
 
 
 const TopBar = styled.div`
@@ -12,130 +12,86 @@ const TopBar = styled.div`
   padding: 0 16px;
   box-sizing: border-box;
 `;
-const CloseArea = styled.div`
-  width: 54px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 const CloseBtn = styled.button`
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: none;
+  width: 28px; height: 28px;
+  padding: 0; border: 0;
   background: url(${Cancle}) center / 24px 24px no-repeat transparent;
-  cursor: pointer;
-  margin-top: 25px;
-  font-size: 0;
-  color: transparent;
+  cursor: pointer; margin-top: 25px;
+  font-size: 0; color: transparent;
 `;
-
 const Spacer = styled.div` flex: 1; `;
 const SubmitBtn = styled.button`
-width: 48px;
-height: 26px;   
-  background: #2EC4B6;
-  color: #fff;
-  border: 0;
-  border-radius: 5px;
-  font-weight: 700;
-  cursor: pointer;
+  width: 48px; height: 26px;
+  background: #2EC4B6; color: #fff; border: 0;
+  border-radius: 5px; font-weight: 700; cursor: pointer;
   margin-top: 20px;
 `;
 
-
-
 const Body = styled.div`
-  padding: 16px 29px;      
+  padding: 15px 29px;        
   box-sizing: border-box;
 `;
 
+const GuideWrap = styled.div`
+  margin: 15px 0;           
+`;
 
 const GuideCard = styled.div`
-  width: 100%;            
+  width: 100%;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
-  padding: 14px 14px 10px; 
-  box-sizing: border-box;
-  position: relative;
+  padding: 14px 14px 10px;
   background: #fff;
+  box-sizing: border-box;
 `;
 const GuideTitle = styled.span`
-  font-size: 12px;
-  color: #333;
+  font-size: 12px; color: #333;
   b { color: #d35454; font-weight: 700; }
 `;
 const GuideList = styled.ol`
-  margin: 10px 0 0;
-  padding-left: 18px;
-  li {
-    font-size: 12px;
-    color: #555;
-    line-height: 1.6;
-  }
+  margin: 10px 0 0; padding-left: 18px;
+  li { font-size: 12px; color: #555; line-height: 1.6; }
+`;
+
+const DownloadRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;           
 `;
 const DownloadLink = styled.button`
-  position: absolute;
-  right: 10px;
-  bottom: 8px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 0;
-  background: transparent;
-  color: #9a9a9a;
-  font-size: 12px;
+  border: 0; background: transparent;
+  color: #9a9a9a; font-size: 12px;
   cursor: pointer;
 `;
-const Paperclip = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path d="M21 7.5l-9.6 9.6a5 5 0 11-7.07-7.07L13.5 0" stroke="#9a9a9a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M19.07 9.43L9.43 19.07" stroke="#9a9a9a" strokeWidth="1.6" strokeLinecap="round"/>
-  </svg>
-);
-
-
-const SectionGap = styled.div` height: 13px; `;
-
+const DownloadIcon = styled.img`
+  width: 15px; height: 15px; object-fit: contain;
+  opacity: 0.85;             
+`;
 
 const UploadSection = styled.div`
-  width: 100%;
-  background: #fff;
+  width: 100%; background: #fff;
 `;
-
 const UploadHeader = styled.div`
-  font-size: 14px;
-  font-weight: 600;                 
-  color: #444;
+  font-size: 14px; font-weight: 600; color: #444;
   padding: 10px 0 8px;
-  border-bottom: 2px solid #2EC4B6; 
+  border-bottom: 2px solid #2EC4B6;
 `;
-
-
-const FileArea = styled.div`
-  padding-top: 12px;
-`;
+const FileArea = styled.div` padding-top: 12px; `;
 const HiddenFile = styled.input.attrs({ type: "file", id: "planFile" })`
   display: none;
 `;
 const FileLabel = styled.label`
-  width: 74px;
-  height: 25px;
-  text-align: center;
-  align-content: center;
-  display: inline-block;
-  border: 1px solid #bdbdbd;
-  border-radius: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  user-select: none;
-  background: #f4f4f4;
-  margin-right: 10px;
+  width: 74px; height: 25px; display: inline-block;
+  text-align: center; align-content: center;
+  border: 1px solid #bdbdbd; border-radius: 5px;
+  font-size: 12px; cursor: pointer; user-select: none;
+  background: #f4f4f4; margin-right: 10px;
 `;
 const FileText = styled.span`
-  font-size: 12px;
-  color: #707070;
+  font-size: 12px; color: #707070;
 `;
 
 export default function LecturePlanRegist() {
@@ -143,14 +99,14 @@ export default function LecturePlanRegist() {
 
   return (
     <div>
-          <TopBar>
+      <TopBar>
         <CloseBtn aria-label="닫기" />
         <Spacer />
         <SubmitBtn>등록</SubmitBtn>
       </TopBar>
 
-        <Body>
-
+      <Body>
+        <GuideWrap>
           <GuideCard>
             <GuideTitle>
               강의계획서는 <b>지정된 양식으로만 제출 가능</b>합니다.
@@ -160,30 +116,30 @@ export default function LecturePlanRegist() {
               <li>② 강의계획서를 작성하시고,</li>
               <li>③ 작성 완료된 파일을 업로드해 주십시오.</li>
             </GuideList>
-            <DownloadLink>
-              <Paperclip />
-              양식 다운로드
-            </DownloadLink>
           </GuideCard>
 
-    
-          <SectionGap />
+          <DownloadRow>
+            <DownloadLink>
+              <DownloadIcon src={clip} alt="" />
+              양식 다운로드
+            </DownloadLink>
+          </DownloadRow>
+        </GuideWrap>
 
-   
-          <UploadSection>
-            <UploadHeader>업로드</UploadHeader>
-            <FileArea>
-              <HiddenFile
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  setFileName(f ? f.name : "선택된 파일이 없습니다.");
-                }}
-              />
-              <FileLabel htmlFor="planFile">파일선택</FileLabel>
-              <FileText>{fileName}</FileText>
-            </FileArea>
-          </UploadSection>
-        </Body>
+        <UploadSection>
+          <UploadHeader>업로드</UploadHeader>
+          <FileArea>
+            <HiddenFile
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                setFileName(f ? f.name : "선택된 파일이 없습니다.");
+              }}
+            />
+            <FileLabel htmlFor="planFile">파일선택</FileLabel>
+            <FileText>{fileName}</FileText>
+          </FileArea>
+        </UploadSection>
+      </Body>
     </div>
   );
 }

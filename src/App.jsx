@@ -4,6 +4,12 @@ import BoardDetail from './components/campus/board/BoardDetail'
 import TopNav from './components/campus/topNav/TopNav'
 import LectureAttendenceModify from './components/campus/lecAtten/LectureAttendanceModify'
 import LectureHomeworkDetail from './components/campus/lecHomework/LectureHomeworkDetail'
+import LectureAttendanceChange from './components/campus/lecAtten/LectureAttendanceChange'
+import LectureHomeworkRegist from './components/campus/lecHomework/LectureHomeworkRegist'
+import LecturePdsRegist from './components/campus/lecPds/LecturePdsRegist'
+import ProjectTeamModify from './components/campus/proTeam/ProjectTeamModify'
+import ProjectTeamRegist from './components/campus/proTeam/ProjectTeamRegist'
+import ProjectObjectRegist from './components/campus/proObject/ProjectObjectRegist'
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -21,8 +27,8 @@ function App() {
   return (
     <>
       <GlobalStyle/>
-      <TopNav/>
-      <LectureAttendenceModify/>
+      {/* <TopNav/> */}
+      <ProjectObjectRegist/>
     </>
   )
 }

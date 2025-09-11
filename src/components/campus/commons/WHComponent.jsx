@@ -195,6 +195,24 @@ export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeho
         }}
     />
 );
+export const MJCustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) => 
+    <input
+        value={value}
+        onClick={onClick}
+        onChange={onChange}
+        ref={ref}
+        placeholder={placeholder}
+        style={{
+        width: "169px",
+        height: "29px",
+        fontSize: "14px",
+        border: "1px solid #d6d6d6",
+        outline:'none',
+        padding: "0 8px",
+        borderRadius:'3px',
+        }}
+    />
+);
 export const CheckContainer = styled.div`
     width: 100%;
     height: 20px;
