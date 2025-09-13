@@ -182,7 +182,7 @@ export default function LectureAttendanceChange() {
     <div>
        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
-          <Button>등록</Button>
+          <Button>보내기</Button>
       </Container>
 
       <Body>

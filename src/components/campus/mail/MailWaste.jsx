@@ -65,12 +65,6 @@ function MailWaste() {
 
   return (
     <>  
-        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <img src={Cancle} style={{width:'19px', height:'19px'}}></img>
-            <RegistButton>메일 작성</RegistButton>
-        </Container>
-        <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
-        <MailNavBar/>
         <div style={{width:"100%", minHeight:"100vh", backgroundColor:"#f7f7f7"}}>
             <ListHeader style={{height:'97px', padding:'13px 25px'}}>
                 <FlexDiv style={{justifyContent:'center'}}>

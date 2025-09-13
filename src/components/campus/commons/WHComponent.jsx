@@ -327,9 +327,8 @@ export const MailView = styled.div`
     ;
 `
 export const MailDashBox = styled.div`
-    width: 385px;
+    width: 100%;
     height: 209px;
-    margin: auto;
     margin-bottom: 20px;
     background-color: #fff;
     border-radius: 5px;

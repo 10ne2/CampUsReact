@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {menuBar, logoRow, mail} from '../img'
 import { Nonebutton, StyledLink } from '../menu/SideMenu';
 import { useMailModalStore, useSideMenuStore } from '../commons/modalStore';
+import { useNavigate } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 100%;
@@ -22,7 +23,7 @@ export const Menu = styled.div`
 
 function TopNav() {
   const toggleMenu = useSideMenuStore((state) => state.toggleMenu);
-  const showMail = useMailModalStore((state) => state.showModal);
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -34,7 +35,7 @@ function TopNav() {
         <img src={logoRow} style={{width:"116px", height: "27px"}}/>
       </StyledLink>
 
-      <img src={mail} style={{width:"27px", height: "18px", marginTop:"5px", cursor:'pointer'}} onClick={showMail}/>
+      <img src={mail} style={{width:"27px", height: "18px", marginTop:"5px", cursor:'pointer'}} onClick={()=> navigate('/mail')}/>
     </Container>
   )
 }

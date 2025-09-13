@@ -3,10 +3,11 @@ import styled from 'styled-components'
 
 const Text = styled.h3`
     font-size: 15px;
-    color: #aaa;
+    color: ${props => (props.active ? '#2ec4b6' : '#aaa')};
     font-weight: bold;
     margin-top: 7px;
     line-height: 1;
+    
 `
 
 const Container = styled.div`
@@ -20,10 +21,10 @@ const Container = styled.div`
     }
 `
 
-function MailNavItem({name}) {
+function MailNavItem({name, active}) {
   return (
     <Container>
-        <Text>{name}</Text>
+        <Text active={active}>{name}</Text>
         </Container>
   )
 }

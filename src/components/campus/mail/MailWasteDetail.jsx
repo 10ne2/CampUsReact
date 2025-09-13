@@ -228,7 +228,7 @@ export default function MailWasteDetail({ onClose }) {
             <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleClose}></img>
         </Container>
 
-        <div style={{padding: '12px 20px 24px'}}>
+        <div style={{padding: '0px 20px 24px'}}>
         <SubHeader>
           <TimeText>{receivedAt}</TimeText>
           <SmallBtn onClick={handleRestore}>복구</SmallBtn>

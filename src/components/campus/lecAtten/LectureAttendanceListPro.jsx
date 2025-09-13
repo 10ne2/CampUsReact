@@ -33,7 +33,7 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * 900) + 100;
 }
 
-function LectureAttendanceList() {
+function LectureAttendanceListPro() {
     const [dropOpen, setDropOpen] = useState(false);
     const [dropSelected, setDropSelected] = useState("전체");
     const [isOpen, setIsOpen] = useState(false);
@@ -205,4 +205,4 @@ function LectureAttendanceList() {
   )
 }
 
-export default LectureAttendanceList
+export default LectureAttendanceListPro

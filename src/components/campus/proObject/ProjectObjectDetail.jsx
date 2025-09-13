@@ -49,7 +49,6 @@ const TitleRow = styled.div`
 const GrayTag = styled.span`
   font-size: 16px;
   border-radius: 4px;
-  background: #f3f5f7;
   color: #8b95a1;
   font-weight: 700;
   margin-left: 10px;

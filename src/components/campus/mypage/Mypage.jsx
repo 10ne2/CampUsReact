@@ -202,7 +202,7 @@ function Mypage() {
             </tr>
         </Table>
         </ContentBox>
-        <ContentBox style={{height:'450px', marginBottom:'10px'}}>
+        <ContentBox style={{height:'540px', marginBottom:'10px'}}>
             <Header style={{paddingTop:'20px',paddingBottom:'10px', alignItems:'center',paddingLeft:'26px'}}>
             <MyTitleText>
                 학사정보

@@ -31,6 +31,36 @@ import LecturePlanModify from './components/campus/lecPlan/LecturePlanModify'
 import LecturePlanRegist from './components/campus/lecPlan/LecturePlanRegist'
 import MailWrite from './components/campus/mail/MailWrite'
 import ProjectTeamModifyCheck from './components/campus/proTeam/ProjectTeamModifyCheck'
+import BoardModify from './components/campus/board/BoardModify'
+import HomeWrapper from './components/campus/home/HomeWrapper'
+import HomeWrapperPro from './components/campus/home/HomeWrapperPro'
+import LectureAttendanceListPro from './components/campus/lecAtten/LectureAttendanceListPro'
+import LectureAttendanceListStu from './components/campus/lecAtten/LectureAttendanceListStu'
+import LectureHomeworkList from './components/campus/lecHomework/LectureHomeworkList'
+import LectureNoticeList from './components/campus/lecNotice/LectureNoticeList'
+import LectureNoticeModify from './components/campus/lecNotice/LectureNoticeModify'
+import LectureOnlineList from './components/campus/lecOnline/LectureOnlineList'
+import LectureOnlineModify from './components/campus/lecOnline/LectureOnlineModify'
+import LectureOnlineRegist from './components/campus/lecOnline/LectureOnlineRegist'
+import LecturePdsList from './components/campus/lecPds/LecturePdsList'
+import LecturePdsModify from './components/campus/lecPds/LecturePdsModify'
+import LecturePlanDetail from './components/campus/lecPlan/LecturePlanDetail'
+import LecturePlanDetailPro from './components/campus/lecPlan/LecturePlanDetailPro'
+import LecturePlanNoneData from './components/campus/lecPlan/LecturePlanNoneData'
+import LecturePlanNoneDataPro from './components/campus/lecPlan/LecturePlanNoneDataPro'
+import MailDashBoard from './components/campus/mail/MailDashBoard'
+import MailReceive from './components/campus/mail/MailReceive'
+import MailSend from './components/campus/mail/MailSend'
+import MailWaste from './components/campus/mail/MailWaste'
+import Mypage from './components/campus/mypage/Mypage'
+import MypagePro from './components/campus/mypage/MypagePro'
+import ChangePasswordModal from './components/campus/mypage/ChangePasswordModal'
+import ProjectObjectFeedback from './components/campus/proObject/ProjectObjectFeedback'
+import ProjectObjectList from './components/campus/proObject/ProjectObjectList'
+import ProjectTeamList from './components/campus/proTeam/ProjectTeamList'
+import ProjectTeamListPro from './components/campus/proTeam/ProjectTeamListPro'
+import AttandanceModal from './components/campus/lecAtten/AttandanceModal'
+import ProjectObjectProjectList from './components/campus/proObject/ProjectObjectProjectList'
 
 const GlobalStyle = createGlobalStyle`
   *{
@@ -47,8 +77,11 @@ function App() {
 
   return (
     <>
+    <BrowserRouter>
       <GlobalStyle/>
+      {/* <TopNav/> */}
       <CampusMain />
+      </BrowserRouter>
     </>
   )
 }

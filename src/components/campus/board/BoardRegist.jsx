@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import $ from "jquery";
-window.$ = window.jQuery = $;                    
+window.$ = window.jQuery = $;
 import "summernote/dist/summernote-lite.css";
 import "summernote/dist/summernote-lite.js";
 
@@ -128,7 +128,7 @@ export default function BoardRegist() {
     });
 
     return () => {
-      try { $el.summernote("destroy"); } catch (_) {}
+      try { $el.summernote("destroy"); } catch (_) { }
     };
   }, []);
 
@@ -139,9 +139,9 @@ export default function BoardRegist() {
 
   return (
     <div>
-      <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}} onClick={handleSubmit}></img>
-          <Button>등록</Button>
+      <Container style={{ backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <img src={Cancle} style={{ width: '19px', height: '19px', cursor: 'pointer' }} onClick={handleSubmit}></img>
+        <Button>등록</Button>
       </Container>
 
       <Body>

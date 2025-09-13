@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TopNav from './topNav/TopNav'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import SideMenu from './menu/SideMenu'
 
@@ -87,12 +87,15 @@ import styled from 'styled-components'
 import { useAuthStore } from './commons/modalStore'
 import Loading from './commons/Loading'
 import Login from './commons/Login'
+import { RedirectAfterLogin } from './home/RedirectAfterLogin'
 
 function CampusMain() {
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
   const login = useAuthStore(state => state.login);
   const logout = useAuthStore(state => state.logout);
   const [checkingSession, setCheckingSession] = useState(true);
+  const user = useAuthStore(state => state.user);
+  const location = useLocation();
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -112,61 +115,70 @@ function CampusMain() {
   `
   return (
     <>
-    <BrowserRouter>
-      {!isLoggedIn ? ( <Login />
-          ) : (
-      <>
-      <TopNav />
-      <SideMenu/>
 
-      <Routes>
-        <Route path='/' element={<HomeWrapper />}></Route>
-        <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
-          <Route index element={<LecturePlanNoneDataPro />}></Route>
-        </Route>
-        <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}>
-          <Route index element={<LectureNoticeList />}></Route>
-          <Route path=':id' element={<LectureNoticeDetail />}></Route>
-        </Route>
-        <Route path='/JAVA101/online' element={<LectureOnlineWrapper />}>
-          <Route index element={<LectureOnlineList />}></Route>
-          <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
-        </Route>
-        <Route path='/JAVA101/atten' element={<LectureAttendanceWrapper />}>
-          <Route index element={<LectureAttendanceListStu />}></Route>
-        </Route>
-        <Route path='/JAVA101/homework' element={<LectureHomeworkWrapper />}>
-          <Route index element={<LectureHomeworkList />}></Route>
-          <Route path=':hw_no' element={<LectureHomeworkDetailFeedback />}></Route>
-        </Route>
-        <Route path='/JAVA101/pds' element={<LecturePdsWrapper />}>
-          <Route index element={<LecturePdsList />}></Route>
-          <Route path=':cf_no' element={<LecturePdsDetail />}></Route>
-        </Route>
-        <Route path='/project/team' element={<ProjectTeamWrapper />}>
-          <Route index element={<ProjectTeamList />}></Route>
-          <Route path=':team_id' element={<ProjectTeamDetail />}></Route>
-        </Route>
-        <Route path='/project/object' element={<ProjectObjectWrapper />}>
-          <Route index element={<ProjectObjectProjectList />}></Route>
-          <Route path=':project_id/list' element={<ProjectObjectList />}>
-            <Route path=':rm_id' element={<ProjectObjectDetailFeedback />}></Route>
-          </Route>
-        </Route>
-        <Route path='/board' element={<BoardWrapper />}>
-          <Route index element={<BoardList />}></Route>
-          <Route path=':board_id' element={<BoardDetail />}></Route>
-        </Route>
-      </Routes>
+      {!isLoggedIn ? (<Login />
+      ) : (
+        <>
+          <RedirectAfterLogin />
+          <TopNav />
+          {location.pathname.startsWith('/mail') ? <MailNavBar /> : null}
+          <SideMenu />
 
-      <Mypage/>
-      <MailDashBoard/>
+          <Routes>
+            <Route path='/' element={user.mem_auth === "ROLE01" ? <HomeWrapper /> : <HomeWrapperPro />}></Route>
+            <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
+              <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanNoneData /> : <LecturePlanNoneDataPro />}></Route>
+            </Route>
+            <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}>
+              <Route index element={<LectureNoticeList />}></Route>
+              <Route path=':id' element={<LectureNoticeDetail />}></Route>
+            </Route>
+            <Route path='/JAVA101/online' element={<LectureOnlineWrapper />}>
+              <Route index element={<LectureOnlineList />}></Route>
+              <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
+            </Route>
+            <Route path='/JAVA101/atten' element={<LectureAttendanceWrapper />}>
+              <Route index element={user.mem_auth === "ROLE01" ? <LectureAttendanceListStu /> : <LectureAttendanceListPro />}></Route>
+            </Route>
+            <Route path='/JAVA101/homework' element={<LectureHomeworkWrapper />}>
+              <Route index element={<LectureHomeworkList />}></Route>
+              <Route path=':hw_no' element={<LectureHomeworkDetailFeedback />}></Route>
+            </Route>
+            <Route path='/JAVA101/pds' element={<LecturePdsWrapper />}>
+              <Route index element={<LecturePdsList />}></Route>
+              <Route path=':cf_no' element={<LecturePdsDetail />}></Route>
+            </Route>
+            <Route path='/project/team' element={<ProjectTeamWrapper />}>
+              <Route index element={user.mem_auth === "ROLE01" ? <ProjectTeamList /> : <ProjectTeamListPro />}
+              />
+              <Route path=':team_id' element={<ProjectTeamDetail />}></Route>
+            </Route>
+            <Route path='/project/object' element={<ProjectObjectWrapper />}>
+              <Route index element={<ProjectObjectProjectList />}></Route>
+              <Route path=':project_id/list' element={<ProjectObjectList />}>
+                <Route path=':rm_id' element={<ProjectObjectDetailFeedback />}></Route>
+              </Route>
+            </Route>
+            <Route path='/board' element={<BoardWrapper />}>
+              <Route index element={<BoardList />}></Route>
+              <Route path=':board_id' element={<BoardDetail />}></Route>
+            </Route>
+            <Route path='/mail' element={<MailWrapper />}>
+              <Route index element={<MailDashBoard />}></Route>
+              <Route path='/mail/receive' element={<MailReceive />}></Route>
+              <Route path='/mail/send' element={<MailSend />}></Route>
+              <Route path='/mail/waste' element={<MailWaste />}></Route>
+            </Route>
+          </Routes>
+
+          {user?.mem_auth?.includes("ROLE01") ? <Mypage /> : <MypagePro />}
+          {/* <MailDashBoard/>
       <LecturePlanModify/>
       <LecturePlanRegist/>
-      <LecturePlanRegist/>
-      </>
+      <LecturePlanRegist/> */}
+        </>
       )}
-      
+
 
       {/* 
       <LectureNoticeModify/>
@@ -188,7 +200,6 @@ function CampusMain() {
       <BoardModify/>
       <BoardRegist/> */}
 
-    </BrowserRouter>
     </>
   )
 }

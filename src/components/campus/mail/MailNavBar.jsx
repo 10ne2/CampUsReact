@@ -1,10 +1,13 @@
 import React from 'react'
 import { GrayHr } from '../home/HomeWrapperPro'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import MailNavItem from '../mail/MailNavItem'
+import { Button } from '../commons/WHComponent'
+import { Cancle } from '../img'
+import { Container } from '../topNav/TopNav'
 
-const Container = styled.div`
+const NavContainer = styled.div`
     height: 48px;
     display: flex;
     justify-content: center;
@@ -12,32 +15,38 @@ const Container = styled.div`
     gap: 40px;
 `
 
-const StyleLink = styled(Link)`
+const StyleLink = styled(NavLink)`
     text-decoration: none;
     color: #aaa;
-    border-bottom: 2px solid transparent; 
+    border-bottom: 2px solid transparent;
+
     &:hover{
         color: #2ec4b6;
         border-bottom: 2px solid #2ec4b6;
     }
+    &.active {
+        color: #2ec4b6;
+        border-bottom: 2px solid #2ec4b6;
+  }
 `
 function MailNavBar() {
   return (
     <>
-    <Container style={{ alignItems:'center'}}>
-        <StyleLink to='/'>
-            <MailNavItem name='전체 메일'></MailNavItem>
+    <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
+    <NavContainer style={{ alignItems:'center'}}>
+        <StyleLink to='/mail' end>
+            {({ isActive }) => <MailNavItem name='전체 메일' active={isActive} />}
         </StyleLink>
-        <StyleLink to='/'>
-            <MailNavItem name='받은 메일함'></MailNavItem>
+        <StyleLink to='/mail/receive'>
+            {({ isActive }) => <MailNavItem name='받은 메일함' active={isActive} />}
         </StyleLink>
-        <StyleLink to='/'>
-            <MailNavItem name='보낸 메일함'></MailNavItem>
+        <StyleLink to='/mail/send'>
+            {({ isActive }) => <MailNavItem name='보낸 메일함' active={isActive} />}
         </StyleLink>
-        <StyleLink to='/'>
-            <MailNavItem name='휴지통'></MailNavItem>
+        <StyleLink to='/mail/waste'>
+            {({ isActive }) => <MailNavItem name='휴지통' active={isActive} />}
         </StyleLink>
-    </Container>
+    </NavContainer>
     <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
     </>
   )
