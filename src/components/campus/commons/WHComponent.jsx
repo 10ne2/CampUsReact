@@ -129,32 +129,32 @@ export const PageArrowButton = styled.li`
     list-style: none;
 `
 export const PageNumberButton = styled.li`
-    width: 28px;
-    height: 28px;
-    border-radius: 5px;
-    background-color: ${props => (props.active ? '#2EC4B6' : 'transparent')};
-    list-style: none;
-    &:hover {
-        background-color: ${props => (props.active ? '#2EC4B6' : '#e0e0e0')};
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.active ? '#2EC4B6' : 'transparent'};
+  color: ${(props) => props.active ? '#fff' : '#000'};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.active ? '#2EC4B6' : '#e0e0e0'};
   }
-`
+`;
 export const PageText = styled.a`
     text-align: center;
     font-size: 15px;
     color: #212121;
 `
 export const PageNumText = styled.a`
-    display: block;
-    width: 28px;
-    height: 5px;
+    margin-left: 9px;
     font-size: 15px;
-    text-align: center;
-    margin-top: 3px;
-    color: ${props => (props.active ? '#fff' : '#212121')};
-    font-weight: ${props => (props.active ? '700' : '500')};;
-    outline: none; 
-    &:hover {
-        color: ${props => (props.active ? '#fff' : '#212121')};
+    color: #212121;
+    &:active{
+        color: #fff;
+        font-weight: 700;
     }
 `
 export const FlexDiv = styled.div`
@@ -181,7 +181,7 @@ export const CheckButton = styled.div`
     line-height: 24px;
     margin-top: 5px;
 `
-export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) =>
+export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) => 
     <input
         value={value}
         onClick={onClick}
@@ -189,18 +189,18 @@ export const CustomInput = React.forwardRef(({ value, onClick, onChange, placeho
         ref={ref}
         placeholder={placeholder}
         style={{
-            width: "165px",
-            height: "36px",
-            fontSize: "16px",
-            border: "1px solid #bbb",
-            outline: 'none',
-            borderTop: "2px solid #2EC4B6",
-            margin: '10px 0px',
-            padding: "0 8px",
+        width: "165px",
+        height: "36px",
+        fontSize: "16px",
+        border: "1px solid #bbb",
+        outline:'none',
+        borderTop: "2px solid #2EC4B6",
+        margin: '10px 0px',
+        padding: "0 8px",
         }}
     />
 );
-export const MJCustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) =>
+export const MJCustomInput = React.forwardRef(({ value, onClick, onChange, placeholder }, ref) => 
     <input
         value={value}
         onClick={onClick}
@@ -208,13 +208,13 @@ export const MJCustomInput = React.forwardRef(({ value, onClick, onChange, place
         ref={ref}
         placeholder={placeholder}
         style={{
-            width: "169px",
-            height: "29px",
-            fontSize: "14px",
-            border: "1px solid #d6d6d6",
-            outline: 'none',
-            padding: "0 8px",
-            borderRadius: '3px',
+        width: "169px",
+        height: "29px",
+        fontSize: "14px",
+        border: "1px solid #d6d6d6",
+        outline:'none',
+        padding: "0 8px",
+        borderRadius:'3px',
         }}
     />
 );
@@ -353,11 +353,11 @@ export const MailDashBox = styled.div`
 
 
 function WHComponent() {
-    return (
-        <>
-            <div></div>
-        </>
-    )
+  return (
+    <>
+      <div></div>
+    </>
+  )
 }
 
 export default WHComponent

@@ -77,6 +77,9 @@ import ProjectTeamListPro from './proTeam/ProjectTeamListPro'
 import ProjectTeamModify from './proTeam/ProjectTeamModify'
 import ProjectTeamModifyCheck from './proTeam/ProjectTeamModifyCheck'
 import ProjectTeamRegist from './proTeam/ProjectTeamRegist'
+import TeamSearch from './proTeam/TeamSearch'
+import TeamMemberSearch from './proTeam/TeamMemberSearch'
+import ProfessorSearch from './proTeam/ProfessorSearch'
 
 import BoardWrapper from './board/BoardWrapper'
 import BoardDetail from './board/BoardDetail'
@@ -89,6 +92,12 @@ import Loading from './commons/Loading'
 import Login from './commons/Login'
 import { RedirectAfterLogin } from './home/RedirectAfterLogin'
 
+// /lecture → /notice 로 리다이렉트 (쿼리 유지)
+function LectureAliasRedirect() {
+  const { search } = useLocation();
+  return <Navigate to={`/notice${search}`} replace />;
+}
+
 function CampusMain() {
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
   const login = useAuthStore(state => state.login);
@@ -96,7 +105,6 @@ function CampusMain() {
   const [checkingSession, setCheckingSession] = useState(true);
   const user = useAuthStore(state => state.user);
   const location = useLocation();
-  const { mail_id } = useParams();
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -127,10 +135,15 @@ function CampusMain() {
 
           <Routes>
             <Route path='/' element={user.mem_auth === "ROLE01" ? <HomeWrapper /> : <HomeWrapperPro />}></Route>
+
+            {/* /lecture로 들어오는 옛 링크 대응
+            <Route path="/lecture" element={<LectureAliasRedirect />} />
+            <Route path="/lecture/*" element={<LectureAliasRedirect />} /> */}
+
             <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
               <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanNoneData /> : <LecturePlanNoneDataPro />}></Route>
             </Route>
-            <Route path='/JAVA101/notice' element={<LectureNoticeWrapper />}>
+            <Route path='/notice' element={<LectureNoticeWrapper />}>
               <Route index element={<LectureNoticeList />}></Route>
               <Route path=':id' element={<LectureNoticeDetail />}></Route>
             </Route>
@@ -160,10 +173,13 @@ function CampusMain() {
                 <Route path=':rm_id' element={<ProjectObjectDetailFeedback />}></Route>
               </Route>
             </Route>
-            <Route path='/board' element={<BoardWrapper />}>
-              <Route index element={<BoardList />}></Route>
-              <Route path=':board_id' element={<BoardDetail />}></Route>
+            <Route path="/board" element={<BoardWrapper />}>
+              <Route index element={<BoardList />} />
+              <Route path="detail/:id" element={<BoardDetail />} />
+              <Route path="modify/:id" element={<BoardModify />} />
+              <Route path="write" element={<BoardRegist />} />
             </Route>
+            
             <Route path='/mail' element={<MailWrapper />}>
               <Route index element={<MailDashBoard />}></Route>
               <Route path='receive' element={<MailReceive />}></Route>
@@ -174,17 +190,24 @@ function CampusMain() {
             </Route>
           </Routes>
 
-          {user?.mem_auth?.includes("ROLE01") ? <Mypage /> : <MypagePro />}
+          {user.mem_auth.includes("ROLE01") ? <Mypage /> : <MypagePro />}
+
           <MailWrite />
-          {/*
-      <LecturePlanModify/>
-      <LecturePlanRegist/>
-      <LecturePlanRegist/> */}
+          <ChangePasswordModal />
+          <ProjectTeamModify />
+          <ProjectTeamRegist />
+          <TeamSearch />
+          <TeamMemberSearch />
+          <ProfessorSearch />
+          <ProjectTeamModifyCheck />
         </>
       )}
 
 
       {/* 
+      <LecturePlanModify/>
+      <LecturePlanRegist/>
+      <LecturePlanRegist/>
       <LectureNoticeModify/>
       <LectureOnlineRegist/>
       <LectureOnlineModify/>
@@ -198,9 +221,6 @@ function CampusMain() {
       <LectureAttendanceModify/>
       <ProjectObjectFeedback/>
       <ProjectObjectRegist/>
-      <ProjectTeamModify/>
-      <ProjectTeamRegist/>
-      <ProjectTeamModifyCheck/>
       <BoardModify/>
       <BoardRegist/> */}
 

@@ -140,7 +140,7 @@ export default function LectureNoticeModify() {
       <TopBar>
         <CloseBtn aria-label="닫기" />
         <Spacer />
-        <SubmitBtn onClick={handleSubmit}>수정</SubmitBtn>
+        <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn>
       </TopBar>
 
       <Body>
