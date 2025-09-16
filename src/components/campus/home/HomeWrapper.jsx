@@ -62,6 +62,8 @@ export const Day = styled.h3`
 export const LecText = styled.h3`
     font-size: 13px;
     font-weight: 500;
+    text-decoration: none;
+    color: #212121;
 `
 export const Times = styled.div`
     width: 68px;

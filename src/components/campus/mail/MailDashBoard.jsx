@@ -8,8 +8,8 @@ import { useMailModalStore } from '../commons/modalStore'
 import { Button, MailDashBox, RegistButton } from '../commons/WHComponent'
 import { Container } from '../topNav/TopNav'
 import MailNavBar from './MailNavBar'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { getMailDash } from '../api'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { getMailDash, getUserSession } from '../api'
 
 export const MainContainer = styled.div`
   margin: 0 auto;
@@ -39,6 +39,7 @@ function MailDashBoard() {
     const navigate = useNavigate();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const user = getUserSession();
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -75,7 +76,7 @@ function MailDashBoard() {
         <>
             <MainContainer>
                 <MailDashBox style={{ marginTop: '15px', height: '335px', marginBottom: '0' }}>
-                    <Header onClick={() => navigate('/mail/receive')}>
+                    <Header onClick={() => navigate(`/mail/receive?memId=${user.mem_id}`)}>
                         <HeadText>
                             받은 메일함
                         </HeadText>
@@ -85,36 +86,38 @@ function MailDashBoard() {
                     </Header>
                     <Hr style={{ margin: '0 auto', width: '344px' }}></Hr>
 
-                    <div style={{display:'flex', flexDirection:'column', overflowY: 'auto', height:'275px', width:'370px'}}>
-                        { loading ? ( <p>로딩 중...</p>) : (
-                            data?.receiveList?.map((rl,idx) => 
-                            <Contents key={idx} style={{marginTop:'-1px'}}>
-                                <Content>
-                                    <MiniIconBox>
-                                        <img src={rl.mail_rread === 0 ? unRead : read} style={{ width: "100%", objectFit: "cover", marginTop:'4px' }} />
-                                    </MiniIconBox>
-                                    <div style={{ marginLeft: '12px' }}>
-                                        <LecText>{rl.sender_name}</LecText>
+                    <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', height: '275px', width: '370px' }}>
+                        {loading ? (<p>로딩 중...</p>) : (
+                            data?.receiveList?.map((rl, idx) =>
+                                <Contents key={idx} style={{ marginTop: '-1px' }}>
+                                    <Link to={`/mail/detail/${rl.mail_id}?memId=${user.mem_id}`}>
+                                        <Content>
+                                            <MiniIconBox>
+                                                <img src={rl.mail_rread === 0 ? unRead : read} style={{ width: "100%", objectFit: "cover", marginTop: '4px' }} />
+                                            </MiniIconBox>
+                                            <div style={{ marginLeft: '12px' }}>
+                                                <LecText>{rl.sender_name}</LecText>
+                                            </div>
+                                            <div style={{ marginLeft: '10px' }}>
+                                                <LecText style={{ fontSize: '12px', color: '#aaa' }}>{rl.mail_sender}</LecText>
+                                            </div>
+                                            <div style={{ marginLeft: 'auto' }}>
+                                                <LecText style={{ fontSize: '12px', color: '#aaa' }}>{formatDate(rl.mail_rdate)}</LecText>
+                                            </div>
+                                        </Content>
+                                    </Link>
+                                    <div style={{ marginLeft: '34px', marginTop: '10px' }}>
+                                        <LecText style={{ marginBottom: '10px' }}>{rl.mail_name}</LecText>
                                     </div>
-                                    <div style={{ marginLeft: '10px' }}>
-                                        <LecText style={{ fontSize: '12px', color: '#aaa' }}>{rl.mail_sender}</LecText>
-                                    </div>
-                                    <div style={{ marginLeft: 'auto' }}>
-                                        <LecText style={{ fontSize: '12px', color: '#aaa' }}>{formatDate(rl.mail_rdate)}</LecText>
-                                    </div>
-                                </Content>
-                                <div style={{ marginLeft: '34px', marginTop: '10px' }}>
-                                    <LecText style={{ marginBottom: '10px' }}>{rl.mail_name}</LecText>
-                                </div>
-                                {idx !== data.receiveList.length - 1 && ( <GrayHr style={{ margin: '0 auto'}} /> )}
-                            </Contents> 
+                                    {idx !== data.receiveList.length - 1 && (<GrayHr style={{ margin: '0 auto' }} />)}
+                                </Contents>
                             ))
                         }
                     </div>
                 </MailDashBox>
 
                 <MailDashBox style={{ marginTop: '20px', height: '335px', marginBottom: '0' }}>
-                    <Header onClick={() => navigate('/mail/send')}>
+                    <Header onClick={() => navigate(`/mail/send?memId=${user.mem_id}`)}>
                         <HeadText>
                             보낸 메일함
                         </HeadText>
@@ -123,27 +126,29 @@ function MailDashBoard() {
                         </IconBox>
                     </Header>
                     <Hr style={{ margin: '0 auto', width: '344px' }}></Hr>
-                    
-                    <div style={{display:'flex', flexDirection:'column', overflowY: 'auto', height:'275px', width:'370px'}}>
-                        { loading ? ( <p>로딩 중...</p>) : (
-                            data?.sendList?.map((sl,idx) => 
-                            <Contents key={idx} style={{ paddingTop: '13px' }}>
-                                <Content>
-                                    <div>
-                                        <LecText>{sl.receiver_name}</LecText>
-                                    </div>
-                                    <div style={{ marginLeft: '10px' }}>
-                                        <LecText style={{ fontSize: '12px', color: '#aaa' }}>{sl.mail_receiver}</LecText>
-                                    </div>
-                                    <div style={{ marginLeft: 'auto' }}>
-                                        <LecText style={{ fontSize: '12px', color: '#aaa' }}>{formatDate(sl.mail_sdate)}</LecText>
-                                    </div>
-                                </Content>
-                                <div style={{ marginTop: '10px' }}>
-                                    <LecText style={{ marginBottom: '10px' }}>{sl.mail_name}</LecText>
-                                </div>
-                                {idx !== data.receiveList.length - 1 && ( <GrayHr style={{ margin: '0 auto'}} /> )}
-                            </Contents>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', height: '275px', width: '370px' }}>
+                        {loading ? (<p>로딩 중...</p>) : (
+                            data?.sendList?.map((sl, idx) =>
+                                <Link to={`/mail/detail/${sl.mail_id}?memId=${user.mem_id}`}>
+                                    <Contents key={idx} style={{ paddingTop: '13px' }}>
+                                        <Content>
+                                            <div>
+                                                <LecText>{sl.receiver_name}</LecText>
+                                            </div>
+                                            <div style={{ marginLeft: '10px' }}>
+                                                <LecText style={{ fontSize: '12px', color: '#aaa' }}>{sl.mail_receiver}</LecText>
+                                            </div>
+                                            <div style={{ marginLeft: 'auto' }}>
+                                                <LecText style={{ fontSize: '12px', color: '#aaa' }}>{formatDate(sl.mail_sdate)}</LecText>
+                                            </div>
+                                        </Content>
+                                        <div style={{ marginTop: '10px' }}>
+                                            <LecText style={{ marginBottom: '10px' }}>{sl.mail_name}</LecText>
+                                        </div>
+                                        {idx !== data.receiveList.length - 1 && (<GrayHr style={{ margin: '0 auto' }} />)}
+                                    </Contents>
+                                </Link>
                             ))
                         }
                     </div>

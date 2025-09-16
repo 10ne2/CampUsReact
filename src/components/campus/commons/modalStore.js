@@ -79,6 +79,11 @@ export const useLecNoticeRegistModalStore = create((set) => ({
   showModal: () => set({ visible: true }),
   hideModal: () => set({ visible: false }),
 }));
+export const useMailWriteModalStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
+}));
 export const useAuthStore = create(
   persist(
     set => ({

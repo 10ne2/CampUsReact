@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TopNav from './topNav/TopNav'
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import SideMenu from './menu/SideMenu'
 
@@ -96,6 +96,7 @@ function CampusMain() {
   const [checkingSession, setCheckingSession] = useState(true);
   const user = useAuthStore(state => state.user);
   const location = useLocation();
+  const { mail_id } = useParams();
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -121,7 +122,7 @@ function CampusMain() {
         <>
           <RedirectAfterLogin />
           <TopNav />
-          {location.pathname.startsWith('/mail') ? <MailNavBar /> : null}
+          {location.pathname.startsWith('/mail') && !location.pathname.includes('/detail') ? <MailNavBar /> : null}
           <SideMenu />
 
           <Routes>
@@ -165,14 +166,17 @@ function CampusMain() {
             </Route>
             <Route path='/mail' element={<MailWrapper />}>
               <Route index element={<MailDashBoard />}></Route>
-              <Route path='/mail/receive' element={<MailReceive />}></Route>
-              <Route path='/mail/send' element={<MailSend />}></Route>
-              <Route path='/mail/waste' element={<MailWaste />}></Route>
+              <Route path='receive' element={<MailReceive />}></Route>
+              <Route path='send' element={<MailSend />}></Route>
+              <Route path='waste' element={<MailWaste />}></Route>
+              <Route path='detail/:mail_id' element={<MailDetail />}></Route>
+              <Route path='detail/wasted/:mail_id' element={<MailWasteDetail />}></Route>
             </Route>
           </Routes>
 
           {user?.mem_auth?.includes("ROLE01") ? <Mypage /> : <MypagePro />}
-          {/* <MailDashBoard/>
+          <MailWrite />
+          {/*
       <LecturePlanModify/>
       <LecturePlanRegist/>
       <LecturePlanRegist/> */}
