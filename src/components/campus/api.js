@@ -15,10 +15,6 @@ function toFormData(obj = {}) {
   return fd;
 }
 
-export function getHomeworklist() {
-  return axios.get('/api/homework/list');
-}
-
 export function getStudent(memId){
   return axios.get(`/api/student?memId=${memId}`)
 }
@@ -43,6 +39,9 @@ export const getModifyCheck = (project_id) => {
 export const modifyProjectTeamCheck = (payload) => {
   return axios.post("/api/project/modify/pro", payload);
 
+};
+export const removeTeam = (team_id) => {
+  return axios.get("/api/project/remove", { params: { team_id } });
 };
 export const getProjectTeamListPro = (memId, page = 1, samester = '', projectName = '', projectStDate = '', projectEnDate = '', perPageNum = 3) => {
 
@@ -72,34 +71,12 @@ export const getProjectTeamList = (memId, page = 1, samester = '', projectName =
   });
 }
 
-export function checkSession() {
-  return axios.get('/api/login/check');
-}
 
 // ------------------------------------------ 공용
 
-// /* === 로그인/세션/로그아웃 === */
-// export async function loginUser(id, pwd) {
-//   try {
-//     return await axios.post("/api/login/index", { id, pwd });
-//   } catch (e) {
-//     if (e?.response?.status !== 404) throw e;
-//   }
-//   const form = new URLSearchParams({ id, pwd });
-//   return axios.post("/login/index", form, {
-//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//   });
-// }
-
-// export async function checkSession() {
-//   try {
-//     return await axios.get("/api/login/check");
-//   } catch (e) {
-//     if (e?.response?.status !== 404) throw e;
-//   }
-//   return axios.get("/login/check");
-// }
-
+export function checkSession() {
+  return axios.get('/api/login/check');
+}
 // 로그아웃
 export function logoutUser() {
   return axios.post('/api/login/logout', {});
@@ -113,14 +90,24 @@ export function loginUser(id, pwd) {
 export const getUserSession = () => {
   try {
     const user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) return { name: "", id: "", pictureUrl: "" };
+    if (!user) return { name: "", id: "", pictureUrl: "/img/user1.png" };
+
+    // 파일명만 뽑아내기
+    const fileName = user.picture ? user.picture.split("\\").pop().split("/").pop() : null;
 
     return {
       ...user,
-      pictureUrl: user.mem_id 
-        ? `http://localhost/campus/member/getPicture?id=${user.mem_id}` 
-        : ""
+      pictureUrl: fileName 
+        ? `/upload/profile/${fileName}`   // 서버 매핑된 URL로 변환
+        : "/img/user1.png"
     };
+
+    // return {
+    //   ...user,
+    //   pictureUrl: user.mem_id 
+    //     ? `http://localhost/campus/member/getPicture?id=${user.mem_id}` 
+    //     : ""
+    // };
   } catch (err) {
     console.error("세션에서 사용자 정보를 가져오는데 실패:", err);
     return { name: "", id: "", pictureUrl: "/img/user1.png" };
@@ -253,6 +240,38 @@ export async function downloadBoardFile(id) {
   const url = boardDownloadUrl(id);
   const res = await axios.get(url, { responseType: "blob" });
   return res.data;
+}
+
+// ------------------------------------------ 과제
+
+export function getHomeworklist(lecId, memId) {
+  return axios.get("/api/homework/list", {
+    params: { memId, lecId },
+  });
+}
+
+export function getStudentHomeworkDetail(hwNo, stuId) {
+  return axios.get("/api/homework/student/detail", {
+    params: { hwNo, stuId },
+  });
+}
+
+// ------------------------------------------ 마이페이지
+
+// 마이페이지
+export function getMypage(memId) {
+  return axios.get("/api/mypage", { params: { memId } });
+}
+
+// 프로필 업로드
+export function uploadProfile(memId, pictureFile) {
+  const formData = new FormData();
+  formData.append("memId", memId);
+  formData.append("pictureFile", pictureFile);
+
+  return axios.post("/api/member/profile", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 }
 
 // ------------------------------------------ 홈 대시보드

@@ -1,304 +1,333 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { clip } from "../img";
 
+/* ===== styled-components ===== */
 const MobileShell = styled.div`
   width: 100%;
   background: #f7f7f7;
 `;
-
-const TopBar = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const PageTitle = styled.div`
-  font-size: 18px;
-  margin-bottom: 5px;
-  margin-left: 10px;
-`;
-const TopActions = styled.div`
-  margin-left: auto;
-  display: flex;
-  gap: 8px;
-  margin-right: 10px;
-`;
-const DeleteBtn = styled.button`
-  width: 50px;
-  height: 26px;
-  padding: 0 12px;
-  font-size: 12px;
-  border: none;
-  background: #BEBEBE;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 8px;
-`;
-
+const TopBar = styled.div`display: flex; align-items: center;`;
+const PageTitle = styled.div`font-size: 18px; margin-bottom: 5px; margin-left: 10px;`;
+const TopActions = styled.div`margin-left: auto; display: flex; gap: 8px; margin-right: 10px;`;
 const ModifyBtn = styled.button`
-  width: 50px;
-  height: 26px;
-  padding: 0 12px;
-  font-size: 12px;
-  border: none;
-  background: #2EC4B6;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
+  width: 50px; height: 26px; padding: 0 12px; font-size: 12px; border: none;
+  background: #2EC4B6; color: #fff; border-radius: 5px; cursor: pointer;
 `;
-
 const PageDivider = styled.div`
-  height: 2px;
-  background: #2ec4b6;
-  opacity: .6;
-  border-radius: 2px;
-  margin-bottom: 15px;
+  height: 2px; background: #2ec4b6; opacity: .6; border-radius: 2px; margin-bottom: 15px;
 `;
-
 const Card = styled.div`
   background: #fff;
-  & + & {
-    position: relative;
-    margin-top: 20px;
-  }
-  & + &::before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: -12px;
-    height: 2px;
-    background: #2ec4b6;
-    border-radius: 2px;
-  }
+  & + & { position: relative; margin-top: 20px; }
+  & + &::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 2px; background: #2ec4b6; border-radius: 2px; }
 `;
-
-const CardTitle = styled.div`
-  font-size: 16px;
-  font-weight: 700;
-  margin: 2px 0 8px;
-  margin-left: 10px;
-`;
-const CardMeta = styled.div`
-  font-size: 12px;
-  color: #98a1a8;
-  margin-left: 10px;
-`;
-const CardHr = styled.div`
-  width: 372px;
-  height: 1px;
-  background: #D9D9D9;
-  border: 0;
-  margin: 16px 0 15px;
-`;
-const AssignBody = styled.div`
-  font-size: 14px;
-  color: #6b7680;
-  line-height: 1.7;
-  margin-bottom: 100px;
-  margin-left: 10px;
-  margin-right: 10px;
-`;
-
-const CardFooter = styled.div`
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-`;
+const CardTitle = styled.div`font-size: 16px; font-weight: 700; margin: 2px 0 8px; margin-left: 10px;`;
+const CardMeta = styled.div`font-size: 12px; color: #98a1a8; margin-left: 10px;`;
+const CardHr = styled.div`width: 372px; height: 1px; background: #D9D9D9; border: 0; margin: 16px 0 15px;`;
+const AssignBody = styled.div`font-size: 14px; color: #6b7680; line-height: 1.7; margin-bottom: 100px; margin-left: 10px; margin-right: 10px;`;
+const CardFooter = styled.div`margin-top: 12px; display: flex; justify-content: flex-end; gap: 8px;`;
 const Button = styled.button`
-  height: 28px;
-  padding: 0 12px;
-  font-size: 12px;
-  border: 1px solid #dfe5ea;
-  background: #fff;
-  color: #59636b;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-right: 10px;
+  height: 28px; padding: 0 12px; font-size: 12px; border: 1px solid #dfe5ea;
+  background: #fff; color: #59636b; border-radius: 8px; cursor: pointer; margin-right: 10px;
 `;
-
-/* ===== Section Header ===== */
-const SectionTitle = styled.h4`
-  font-size: 14px;
-  font-weight: 700;
-  margin: 15px 10px 6px;
-`;
-const SectionDivider = styled.div`
-  height: 2px;
-  background: #2ec4b6;
-  opacity: .6;
-  border-radius: 2px;
-  margin-bottom: 10px;
-`;
-
-/* ===== Submission list (학생 제출 목록) ===== */
-const List = styled.div`
-margin-left: 10px;
-`;
-
-const Row = styled.button`
-  width: 100%;
-  background: transparent;
-  border: none;
-  text-align: left;
-  padding: 10px 0;
-  display: grid;
-  grid-template-columns: 36px 1fr 16px;
-  gap: 10px;
-  cursor: pointer;
-  &:not(:first-child){
-    border-top: 1px solid #eceff1;
-  }
-  align-items: center;
+const SectionTitle = styled.h4`font-size: 14px; font-weight: 700; margin: 15px 10px 6px;`;
+const SectionDivider = styled.div`height: 2px; background: #2ec4b6; opacity: .6; border-radius: 2px; margin-bottom: 10px;`;
+const List = styled.div`margin-left: 10px;`;
+const Row = styled.div`
+  width: 100%; text-align: left; padding: 12px 0;
+  display: grid; grid-template-columns: 40px 1fr 20px; gap: 10px; align-items: flex-start;
+  border-bottom: 1px solid #eceff1;
 `;
 const Avatar = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #f2f4f6;
-  border: 1px solid #e3e7ec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: #6b7680;
-  overflow: hidden;
+  width: 36px; height: 36px; border-radius: 50%; background: #f2f4f6; border: 1px solid #e3e7ec;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; color: #6b7680; overflow: hidden;
 `;
-const AttachmentIcon = styled.img`
-  display: block;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  object-fit: contain;
-  margin-right: 10px;
-`;
-const AvImg = styled.img`
-  width: 100%; height: 100%; object-fit: cover;
-`;
-const RowMain = styled.div`
-  display: grid;
-  grid-template-rows: auto auto;
-`;
-const RowTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-const Name = styled.span`
-  font-size: 13px;
-  font-weight: 700;
-  color: #374151;
-`;
-const Time = styled.span`
-  font-size: 12px;
-  color: #98a1a8;
-`;
-const Text = styled.div`
-  font-size: 13px;
-  color: #6b7680;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+const AttachmentIcon = styled.img`display: block; width: 16px; height: 16px; object-fit: contain; margin-top: 4px;`;
+const AvImg = styled.img`width: 100%; height: 100%; object-fit: cover;`;
+const RowMain = styled.div`display: flex; flex-direction: column; gap: 4px;`;
+const RowTop = styled.div`display: flex; align-items: center; gap: 8px; font-size: 13px; color: #374151;`;
+const StuName = styled.span`font-weight: 700; color: #374151;`;
+const Time = styled.span`font-size: 12px; color: #98a1a8;`;
+const Text = styled.div`font-size: 13px; color: #6b7680; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`;
 
-const Meta = styled.div`
-  font-size: 12px;
-  color: #98a1a8;
-`;
+/* ===== util ===== */
+const toYMD = (v) => {
+  if (!v) return "";
+  const d = new Date(v);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
+const toHM = (v) => {
+  if (!v) return "";
+  const d = new Date(v);
+  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+};
+const fmtDateTime = (v) => (v ? new Date(v).toLocaleString() : "-");
 
 export default function LectureHomeworkProDetail() {
-  const submissions = [
-    {
-      id: 1,
-      name: "김민주",
-      time: "2025-08-31 14:20",
-      text: "안녕하세요. 교수님 과제 제출합니다.",
-      clip: true,
-      avatar: "/img/avatar1.png", 
-    },
-    {
-      id: 2,
-      name: "김선범",
-      time: "2025-08-30 22:49",
-      text: "안녕하세요. 20170102 김선범 입니다. 과제 제출합니다.",
-      clip: true,
-      avatar: "/img/avatar2.png",
-    },
-    {
-      id: 3,
-      name: "김원희",
-      time: "2025-08-29 23:12",
-      text: "과제 제출합니다.",
-      clip: true,
-      avatar: "/img/avatar3.png",
-    },
-    {
-      id: 4,
-      name: "권오규",
-      time: "2025-08-29 21:49",
-      text: "교수님 안녕하세요! 20171339 권오규입니다! 10주차 과제 제출합니다.",
-      clip: true,
-      avatar: "/img/avatar4.png",
-    },
-  ];
+  const { hwNo } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const openSubmission = (row) => {
-    alert(`${row.name} 제출물 열기`);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState({
+    hwName: "",
+    hwDesc: "",
+    startDate: "",
+    startTime: "",
+    endDate: "",
+    endTime: "",
+    lecsId: "",
+  });
+
+  const user = useMemo(() => {
+    try { return JSON.parse(sessionStorage.getItem("user") || "null"); }
+    catch { return null; }
+  }, []);
+  const isProfessor = !!user?.mem_auth?.includes?.("ROLE02");
+
+  const fetchDetail = async () => {
+    const res = await axios.get("/api/homeworksubmit/listByHwNo", { params: { hwNo } });
+    setData(res.data);
   };
 
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        await fetchDetail();
+      } catch (e) {
+        console.error("교수 상세 로드 실패:", e);
+        if (!ignore) setData(null);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    })();
+    return () => { ignore = true; };
+  }, [hwNo]);
+
+  if (loading) return <div>로딩중...</div>;
+  if (!data)   return <div style={{ padding: 16 }}>데이터를 불러오지 못했습니다.</div>;
+
+  const { homework, submitList = [] } = data || {};
+
+  const enterEdit = () => {
+    if (!homework) return;
+    setForm({
+      hwName: homework.hwName || "",
+      hwDesc: homework.hwDesc || "",
+      startDate: toYMD(homework.hwStartDate),
+      startTime: toHM(homework.hwStartDate),
+      endDate: toYMD(homework.hwEndDate),
+      endTime: toHM(homework.hwEndDate),
+      lecsId: homework.lecsId || homework.lecId || "",
+    });
+    setIsEditing(true);
+  };
+
+  const cancelEdit = () => setIsEditing(false);
+  const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const saveEdit = async () => {
+    try {
+      const payload = new URLSearchParams();
+      payload.append("hwName", form.hwName);
+      payload.append("lecsId", form.lecsId || homework.lecsId || homework.lecId || "");
+      payload.append("startDate", form.startDate);
+      payload.append("startTime", form.startTime);
+      payload.append("endDate", form.endDate);
+      payload.append("endTime", form.endTime);
+      payload.append("hwNo", String(homework.hwNo));
+      payload.append("hwDesc", form.hwDesc);
+
+      await axios.post("/api/homework/edit", payload, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
+
+      await fetchDetail();
+      setIsEditing(false);
+      alert("수정되었습니다.");
+    } catch (e) {
+      console.error(e);
+      alert("수정에 실패했습니다.");
+    }
+  };
+
+  const openSubmission = (s) => {
+    navigate(`/homework/stu/${s.hwsubHsno}?memId=${user.mem_id}`);
+  };
+  const downloadUrl = (filename) => `/api/homeworksubmit/download?filename=${encodeURIComponent(filename)}`;
+  const goBack = () => navigate(-1);
+
   return (
-      <MobileShell>
-        <div style={{backgroundColor:'#fff',marginBottom:'12px' ,padding:'1px 20px 24px'}}>
+    <MobileShell>
+      {/* 과제 설명 카드 */}
+      <div style={{backgroundColor:'#fff', marginBottom:'12px', padding:'1px 20px 24px'}}>
         <TopBar>
           <PageTitle>과제제출</PageTitle>
           <TopActions>
-            <DeleteBtn>삭제</DeleteBtn>
-            <ModifyBtn>수정</ModifyBtn>
+            {isProfessor && !isEditing && (
+              <ModifyBtn onClick={enterEdit}>수정</ModifyBtn>
+            )}
+            {isProfessor && isEditing && (
+              <>
+                <ModifyBtn onClick={saveEdit}>저장</ModifyBtn>
+                <ModifyBtn onClick={cancelEdit}>취소</ModifyBtn>
+              </>
+            )}
           </TopActions>
         </TopBar>
         <PageDivider />
 
         <Card>
-          <CardTitle>7주차 과제 입니다.</CardTitle>
-          <CardMeta>2025-08-05 16:00 ~ 2025-08-11 23:59</CardMeta>
-          <CardHr />
-          <AssignBody>
-            각 조는 택 1 주제를 선택하여 찬성/반대 중 하나의 입장을 정하고,
-            논리적 근거를 바탕으로 토론 준비
-            <br />팀원 간 역할 분담 (서론/논점 정리, 주장, 반론 대응 등) 필수
-            <br />토론 직후 개인별로 간단한 자기평가서(자유양식, A4 1장 내외) 제출
-          </AssignBody>
+          {!isEditing ? (
+  <>
+    <CardTitle>{homework?.hwName}</CardTitle>
+    <CardMeta>
+      {fmtDateTime(homework?.hwStartDate)} ~ {fmtDateTime(homework?.hwEndDate)}
+    </CardMeta>
+    <CardHr />
+    <AssignBody>{homework?.hwDesc}</AssignBody>
+  </>
+) : (
+  <div style={{ padding: "0 10px" }}>
+    <div style={{ marginBottom: 12 }}>
+      <label style={{ fontSize: 12, color: "#98a1a8" }}>과제명</label>
+      <input
+        type="text"
+        name="hwName"
+        value={form.hwName}
+        onChange={onChange}
+        style={{
+          width: "100%",
+          padding: 8,
+          borderRadius: 6,
+          border: "1px solid #d9d9d9",
+          marginTop: 4,
+        }}
+      />
+    </div>
+
+    <div style={{ marginBottom: 12 }}>
+      <label style={{ fontSize: 12, color: "#98a1a8" }}>설명</label>
+      <textarea
+        name="hwDesc"
+        value={form.hwDesc}
+        onChange={onChange}
+        rows={6}
+        style={{
+          width: "100%",
+          padding: 8,
+          borderRadius: 6,
+          border: "1px solid #d9d9d9",
+          marginTop: 4,
+        }}
+      />
+    </div>
+
+    <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
+      <div style={{ flex: 1 }}>
+        <label style={{ fontSize: 12, color: "#98a1a8" }}>시작일</label>
+        <input
+          type="date"
+          name="startDate"
+          value={form.startDate}
+          onChange={onChange}
+          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+        />
+      </div>
+      <div style={{ flex: 1 }}>
+        <label style={{ fontSize: 12, color: "#98a1a8" }}>시작 시간</label>
+        <input
+          type="time"
+          name="startTime"
+          value={form.startTime}
+          onChange={onChange}
+          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+        />
+      </div>
+    </div>
+
+    <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
+      <div style={{ flex: 1 }}>
+        <label style={{ fontSize: 12, color: "#98a1a8" }}>마감일</label>
+        <input
+          type="date"
+          name="endDate"
+          value={form.endDate}
+          onChange={onChange}
+          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+        />
+      </div>
+      <div style={{ flex: 1 }}>
+        <label style={{ fontSize: 12, color: "#98a1a8" }}>마감 시간</label>
+        <input
+          type="time"
+          name="endTime"
+          value={form.endTime}
+          onChange={onChange}
+          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
           <CardHr />
           <CardFooter>
-            <Button>목록</Button>
+            <Button onClick={goBack}>목록</Button>
           </CardFooter>
         </Card>
-        </div>
-        <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
+      </div>
+
+      {/* 제출 목록 카드 */}
+      <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
         <SectionTitle>제출 과제</SectionTitle>
         <SectionDivider />
         <Card>
           <List>
-            {submissions.map((s) => (
-              <Row key={s.id} onClick={() => openSubmission(s)}>
+            {submitList.length === 0 && (
+              <div style={{ padding: "12px 10px", color: "#98a1a8" }}>제출 내역이 없습니다.</div>
+            )}
+            {submitList.map((s) => (
+              <Row key={s.hwsubHsno} onClick={() => openSubmission(s)}>
                 <Avatar>
-                  {s.avatar ? <AvImg src={s.avatar} alt={s.name} /> : s.name[0]}
+                  {s.stuPicPath ? (
+                    <AvImg src={`/member/picture/upload/${s.stuPicPath}`} alt="학생 사진" />
+                  ) : (
+                    <span>{s.stuName ? s.stuName[0] : "?"}</span>
+                  )}
                 </Avatar>
                 <RowMain>
                   <RowTop>
-                    <Name>{s.name}</Name>
-                    <Meta>ㅣ</Meta>
-                    <Time>{s.time}</Time>
+                    <StuName>{s.stuName || "이름없음"}</StuName>
+                    <Time>{fmtDateTime(s.submittedAt)}</Time>
                   </RowTop>
-                  <Text>
-                    {s.text}
-                  </Text>
+                  <Text>{s.hwsubComment || "제출 내용 없음"}</Text>
                 </RowMain>
-                <AttachmentIcon src={clip}/>
+                {s.hwsubFilename ? (
+                  <a
+                    href={downloadUrl(s.hwsubFilename)}
+                    onClick={(e) => e.stopPropagation()}
+                    title={s.hwsubFilename}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <AttachmentIcon src={clip} alt="첨부" />
+                  </a>
+                ) : (
+                  <span />
+                )}
               </Row>
             ))}
           </List>
         </Card>
-        </div>
-      </MobileShell>
+      </div>
+    </MobileShell>
   );
 }

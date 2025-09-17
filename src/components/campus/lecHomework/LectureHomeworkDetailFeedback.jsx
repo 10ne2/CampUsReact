@@ -260,8 +260,8 @@ export default function LectureHomeworkDetailFeedback() {
               <TopBar>
                 <PageTitle>과제제출</PageTitle>
                 <TopActions>
-                  {/* <DeleteBtn>삭제</DeleteBtn>
-                  <ModifyBtn>수정</ModifyBtn> */}
+                  <DeleteBtn>삭제</DeleteBtn>
+                  <ModifyBtn>수정</ModifyBtn>
                 </TopActions>
               </TopBar>
               <PageDivider />

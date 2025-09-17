@@ -50,6 +50,7 @@ import LectureHomeworkStuDetail from './lecHomework/LectureHomeworkStuDetail'
 import LectureHomeworkStuDetailFeedbackSubmit from './lecHomework/LectureHomeworkStuDetailFeedbackSubmit'
 import LectureHomeworkSubmit from './lecHomework/LectureHomeworkSubmit'
 import LectureHomeworkWrapper from './lecHomework/LectureHomeworkWrapper'
+import LectureHomeworkDetail from './lecHomework/LectureHomeworkDetail';
 
 import LecturePdsWrapper from './lecPds/LecturePdsWrapper'
 import LecturePdsDetail from './lecPds/LecturePdsDetail'
@@ -87,10 +88,12 @@ import BoardList from './board/BoardList'
 import BoardModify from './board/BoardModify'
 import BoardRegist from './board/BoardRegist'
 import styled from 'styled-components'
-import { useAuthStore } from './commons/modalStore'
+import { useAuthStore, useToastStore } from './commons/modalStore'
 import Loading from './commons/Loading'
 import Login from './commons/Login'
 import { RedirectAfterLogin } from './home/RedirectAfterLogin'
+import Toast from './commons/Toast'
+import ConfirmModal from './commons/ConfirmModal';
 
 // /lecture → /notice 로 리다이렉트 (쿼리 유지)
 function LectureAliasRedirect() {
@@ -105,6 +108,7 @@ function CampusMain() {
   const [checkingSession, setCheckingSession] = useState(true);
   const user = useAuthStore(state => state.user);
   const location = useLocation();
+  const { message, hideToast } = useToastStore();
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -140,25 +144,28 @@ function CampusMain() {
             <Route path="/lecture" element={<LectureAliasRedirect />} />
             <Route path="/lecture/*" element={<LectureAliasRedirect />} /> */}
 
-            <Route path='/JAVA101/plan' element={<LecturePlanWrapper />}>
+            <Route path='/plan' element={<LecturePlanWrapper />}>
               <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanNoneData /> : <LecturePlanNoneDataPro />}></Route>
             </Route>
             <Route path='/notice' element={<LectureNoticeWrapper />}>
               <Route index element={<LectureNoticeList />}></Route>
               <Route path=':id' element={<LectureNoticeDetail />}></Route>
             </Route>
-            <Route path='/JAVA101/online' element={<LectureOnlineWrapper />}>
+            <Route path='/online' element={<LectureOnlineWrapper />}>
               <Route index element={<LectureOnlineList />}></Route>
               <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
             </Route>
-            <Route path='/JAVA101/atten' element={<LectureAttendanceWrapper />}>
+            <Route path='/atten' element={<LectureAttendanceWrapper />}>
               <Route index element={user.mem_auth === "ROLE01" ? <LectureAttendanceListStu /> : <LectureAttendanceListPro />}></Route>
             </Route>
-            <Route path='/JAVA101/homework' element={<LectureHomeworkWrapper />}>
+            <Route path='/homework' element={<LectureHomeworkWrapper />}>
               <Route index element={<LectureHomeworkList />}></Route>
-              <Route path=':hw_no' element={<LectureHomeworkDetailFeedback />}></Route>
+              <Route path=':hwNo/:stuId' element={<LectureHomeworkDetail />}></Route>
+              <Route path='pro/:hwNo' element={<LectureHomeworkProDetail />} />
+              <Route path='stu/:submitId' element={<LectureHomeworkStuDetail />} />
+              <Route path='write' element={<LectureHomeworkRegist />} />
             </Route>
-            <Route path='/JAVA101/pds' element={<LecturePdsWrapper />}>
+            <Route path='/pds' element={<LecturePdsWrapper />}>
               <Route index element={<LecturePdsList />}></Route>
               <Route path=':cf_no' element={<LecturePdsDetail />}></Route>
             </Route>
@@ -179,7 +186,7 @@ function CampusMain() {
               <Route path="modify/:id" element={<BoardModify />} />
               <Route path="write" element={<BoardRegist />} />
             </Route>
-            
+
             <Route path='/mail' element={<MailWrapper />}>
               <Route index element={<MailDashBoard />}></Route>
               <Route path='receive' element={<MailReceive />}></Route>
@@ -188,18 +195,22 @@ function CampusMain() {
               <Route path='detail/:mail_id' element={<MailDetail />}></Route>
               <Route path='detail/wasted/:mail_id' element={<MailWasteDetail />}></Route>
             </Route>
+            <Route path='/mypage' element={user.mem_auth.includes("ROLE01") ? <Mypage /> : <MypagePro />} />
           </Routes>
 
-          {user.mem_auth.includes("ROLE01") ? <Mypage /> : <MypagePro />}
+          <ConfirmModal />
+          <Mypage />
 
           <MailWrite />
           <ChangePasswordModal />
           <ProjectTeamModify />
           <ProjectTeamRegist />
+          <ProjectTeamDetail />
           <TeamSearch />
           <TeamMemberSearch />
           <ProfessorSearch />
           <ProjectTeamModifyCheck />
+          {message && <Toast message={message} onClose={hideToast} />}
         </>
       )}
 
@@ -208,21 +219,13 @@ function CampusMain() {
       <LecturePlanModify/>
       <LecturePlanRegist/>
       <LecturePlanRegist/>
-      <LectureNoticeModify/>
       <LectureOnlineRegist/>
       <LectureOnlineModify/>
-      <LectureHomeworkRegist/>
-      <LectureHomeworkStuDetail/>
-      <LectureHomeworkStuDetailFeedbackSubmit/>
-      <LectureHomeworkSubmit/>
-      <LecturePdsRegist/>
-      <LecturePdsModify/>
       <LectureAttendanceChange/>
       <LectureAttendanceModify/>
       <ProjectObjectFeedback/>
       <ProjectObjectRegist/>
-      <BoardModify/>
-      <BoardRegist/> */}
+      */}
 
     </>
   )

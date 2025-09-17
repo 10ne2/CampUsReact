@@ -111,6 +111,12 @@ export const useProjectTeamModifyCheckModalStore = create((set) => ({
   showModal: (id) => set({ visible: true, project_id: id }),
   hideModal: () => set({ visible: false, project_id: null }),
 }));
+export const useProjectDetailModalStore = create((set) => ({
+  visible: false,
+  project_id: null,
+  showModal: (id) => set({ visible: true, project_id: id }),
+  hideModal: () => set({ visible: false, project_id: null }),
+}));
 export const useProjectTeamRegistModalStore = create((set) => ({
   visible: false,
   showModal: () => set({ visible: true }),
@@ -142,6 +148,11 @@ export const useTeamProfessorModalStore = create((set) => ({
   showModal: () => set({ visible: true }),
   hideModal: () => set({ visible: false }),
   setSelectedProfessor: (prof) => set({ selectedProfessor: prof })
+}));
+export const useToastStore = create((set) => ({
+  message: "",
+  showToast: (msg) => set({ message: msg }),
+  hideToast: () => set({ message: "" }),
 }));
 
 export default useModalStore;

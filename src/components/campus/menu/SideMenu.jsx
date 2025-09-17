@@ -55,6 +55,7 @@ const UserImage = styled.img`
   margin-top: 5px;
   width: 59px;
   height: 59px;
+   border-radius: 50%;
   object-fit: cover;
 `
 
@@ -150,6 +151,9 @@ function SideMenu() {
   const query = new URLSearchParams(location.search);
   const memId = query.get('memId');
   const navigate = useNavigate();
+  const [selectedLecId, setSelectedLecId] = useState(''); 
+  const { lecId: lecIdFromPath } = useParams(); 
+  const currentLecId = selectedLecId || lecIdFromPath || '';
 
   const handleLectureChange = (e) => {
     const lecId = e.target.value;
@@ -209,19 +213,24 @@ function SideMenu() {
       <Overlay isOpen={isOpen} onClick={closeMenu} />
       <Container $isOpen={isOpen}>
         <div style={{ display: 'flex' }}>
-          <Profile>
-            <div style={{ width: "100%", height: "25px" }}></div>
-            <UserImage src={user.pictureUrl} className="img-circle img-md" alt="User Image" />
-            <div style={{ marginTop: "10px", display: "flex" }}>
-              <Text>&nbsp;&nbsp;&nbsp;&nbsp;{user.mem_name}&nbsp;&nbsp;</Text>
-              <Nonebutton onClick={showModal}>
-                <MypageIcon style={{ marginTop: '8px' }}></MypageIcon>
-              </Nonebutton>
+          <Profile 
+            style={{ display: "flex", alignItems: "center", marginTop: "25px", cursor: "pointer" }} onClick={() => showModal()}
+          >
+            <UserImage 
+              src={`/api/member/getPicture?memId=${user.mem_id}&v=${Date.now()}`} 
+              alt="프로필" 
+            />
+            <div style={{ marginLeft: "12px" }}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Text>{user.mem_name}</Text>
+                <MypageIcon style={{ marginTop: "3px", marginLeft: "5px" }} />
+              </div>
+              <div style={{ fontSize: "15px", color: "#909090", fontWeight: "500" }}>
+                {user.mem_id}
+              </div>
             </div>
-            <Text style={{ fontSize: "15px", color: "#909090", fontWeight: "500" }}>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{user.mem_id}
-            </Text>
           </Profile>
+          
           <Button style={{ marginTop: '47px', fontSize: "13px" }} onClick={() => { handleLogout(); closeMenu(); }}>로그아웃</Button>
         </div>
 
@@ -293,7 +302,7 @@ function SideMenu() {
                 </div>
               </div>
 
-              <StyledLink to='/JAVA101/plan' onClick={closeMenu}>
+              <StyledLink to={`/plan?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>강의계획서</p></li>
               </StyledLink>
               <StyledLink
@@ -305,16 +314,16 @@ function SideMenu() {
               <StyledLink to='/JAVA101/online' onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>실시간 강의</p></li>
               </StyledLink>
-              <StyledLink to='/JAVA101/atten' onClick={closeMenu}>
+              <StyledLink to={`/online?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>온라인 강의</p></li>
               </StyledLink>
-              <StyledLink to='/JAVA101/atten' onClick={closeMenu}>
+              <StyledLink to={`/atten?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>출결</p></li>
               </StyledLink>
-              <StyledLink to='/JAVA101/homework' onClick={closeMenu}>
+              <StyledLink to={`/homework?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>과제제출</p></li>
               </StyledLink>
-              <StyledLink to='/JAVA101/pds' onClick={closeMenu}>
+              <StyledLink to='/pds' onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>자료실</p></li>
               </StyledLink>
             </Submenu>
@@ -346,7 +355,7 @@ function SideMenu() {
               <StyledLink to={`/project/team?memId=${user.mem_id}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px', marginTop: '15px' }}>팀 목록</p></li>
               </StyledLink>
-              <StyledLink to='/project/object' onClick={closeMenu}>
+              <StyledLink to={`/project/object?memId=${user.mem_id}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px', marginTop: '15px' }}>결과물</p></li>
               </StyledLink>
             </Submenu>
