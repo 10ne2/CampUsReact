@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { clip } from "../img";
+import Toast from "../commons/Toast";
+import ConfirmModal from "../commons/ConfirmModal";
 
 /* ===== styled-components ===== */
 const MobileShell = styled.div`
@@ -57,12 +59,12 @@ const Text = styled.div`font-size: 13px; color: #6b7680; white-space: nowrap; ov
 const toYMD = (v) => {
   if (!v) return "";
   const d = new Date(v);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 const toHM = (v) => {
   if (!v) return "";
   const d = new Date(v);
-  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 };
 const fmtDateTime = (v) => (v ? new Date(v).toLocaleString() : "-");
 
@@ -84,6 +86,13 @@ export default function LectureHomeworkProDetail() {
     endTime: "",
     lecsId: "",
   });
+  const [toastMsg, setToastMsg] = useState("");
+
+  // 토스트
+  const showToast = (msg) => {
+    setToastMsg("");        // 먼저 초기화
+    setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
+  };
 
   const user = useMemo(() => {
     try { return JSON.parse(sessionStorage.getItem("user") || "null"); }
@@ -112,7 +121,7 @@ export default function LectureHomeworkProDetail() {
   }, [hwNo]);
 
   if (loading) return <div>로딩중...</div>;
-  if (!data)   return <div style={{ padding: 16 }}>데이터를 불러오지 못했습니다.</div>;
+  if (!data) return <div style={{ padding: 16 }}>데이터를 불러오지 못했습니다.</div>;
 
   const { homework, submitList = [] } = data || {};
 
@@ -151,10 +160,10 @@ export default function LectureHomeworkProDetail() {
 
       await fetchDetail();
       setIsEditing(false);
-      alert("수정되었습니다.");
+      showToast("수정되었습니다.");
     } catch (e) {
       console.error(e);
-      alert("수정에 실패했습니다.");
+      showToast("수정에 실패했습니다.");
     }
   };
 
@@ -165,169 +174,173 @@ export default function LectureHomeworkProDetail() {
   const goBack = () => navigate(-1);
 
   return (
-    <MobileShell>
-      {/* 과제 설명 카드 */}
-      <div style={{backgroundColor:'#fff', marginBottom:'12px', padding:'1px 20px 24px'}}>
-        <TopBar>
-          <PageTitle>과제제출</PageTitle>
-          <TopActions>
-            {isProfessor && !isEditing && (
-              <ModifyBtn onClick={enterEdit}>수정</ModifyBtn>
-            )}
-            {isProfessor && isEditing && (
+    <div>
+      <MobileShell>
+        {/* 과제 설명 카드 */}
+        <div style={{ backgroundColor: '#fff', marginBottom: '12px', padding: '1px 20px 24px' }}>
+          <TopBar>
+            <PageTitle>과제제출</PageTitle>
+            <TopActions>
+              {isProfessor && !isEditing && (
+                <ModifyBtn onClick={enterEdit}>수정</ModifyBtn>
+              )}
+              {isProfessor && isEditing && (
+                <>
+                  <ModifyBtn onClick={saveEdit}>저장</ModifyBtn>
+                  <ModifyBtn onClick={cancelEdit}>취소</ModifyBtn>
+                </>
+              )}
+            </TopActions>
+          </TopBar>
+          <PageDivider />
+
+          <Card>
+            {!isEditing ? (
               <>
-                <ModifyBtn onClick={saveEdit}>저장</ModifyBtn>
-                <ModifyBtn onClick={cancelEdit}>취소</ModifyBtn>
+                <CardTitle>{homework?.hwName}</CardTitle>
+                <CardMeta>
+                  {fmtDateTime(homework?.hwStartDate)} ~ {fmtDateTime(homework?.hwEndDate)}
+                </CardMeta>
+                <CardHr />
+                <AssignBody>{homework?.hwDesc}</AssignBody>
               </>
+            ) : (
+              <div style={{ padding: "0 10px" }}>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 12, color: "#98a1a8" }}>과제명</label>
+                  <input
+                    type="text"
+                    name="hwName"
+                    value={form.hwName}
+                    onChange={onChange}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 6,
+                      border: "1px solid #d9d9d9",
+                      marginTop: 4,
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 12, color: "#98a1a8" }}>설명</label>
+                  <textarea
+                    name="hwDesc"
+                    value={form.hwDesc}
+                    onChange={onChange}
+                    rows={6}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 6,
+                      border: "1px solid #d9d9d9",
+                      marginTop: 4,
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 12, color: "#98a1a8" }}>시작일</label>
+                    <input
+                      type="date"
+                      name="startDate"
+                      value={form.startDate}
+                      onChange={onChange}
+                      style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 12, color: "#98a1a8" }}>시작 시간</label>
+                    <input
+                      type="time"
+                      name="startTime"
+                      value={form.startTime}
+                      onChange={onChange}
+                      style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 12, color: "#98a1a8" }}>마감일</label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={form.endDate}
+                      onChange={onChange}
+                      style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 12, color: "#98a1a8" }}>마감 시간</label>
+                    <input
+                      type="time"
+                      name="endTime"
+                      value={form.endTime}
+                      onChange={onChange}
+                      style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
+                    />
+                  </div>
+                </div>
+              </div>
             )}
-          </TopActions>
-        </TopBar>
-        <PageDivider />
 
-        <Card>
-          {!isEditing ? (
-  <>
-    <CardTitle>{homework?.hwName}</CardTitle>
-    <CardMeta>
-      {fmtDateTime(homework?.hwStartDate)} ~ {fmtDateTime(homework?.hwEndDate)}
-    </CardMeta>
-    <CardHr />
-    <AssignBody>{homework?.hwDesc}</AssignBody>
-  </>
-) : (
-  <div style={{ padding: "0 10px" }}>
-    <div style={{ marginBottom: 12 }}>
-      <label style={{ fontSize: 12, color: "#98a1a8" }}>과제명</label>
-      <input
-        type="text"
-        name="hwName"
-        value={form.hwName}
-        onChange={onChange}
-        style={{
-          width: "100%",
-          padding: 8,
-          borderRadius: 6,
-          border: "1px solid #d9d9d9",
-          marginTop: 4,
-        }}
-      />
-    </div>
+            <CardHr />
+            <CardFooter>
+              <Button onClick={goBack}>목록</Button>
+            </CardFooter>
+          </Card>
+        </div>
 
-    <div style={{ marginBottom: 12 }}>
-      <label style={{ fontSize: 12, color: "#98a1a8" }}>설명</label>
-      <textarea
-        name="hwDesc"
-        value={form.hwDesc}
-        onChange={onChange}
-        rows={6}
-        style={{
-          width: "100%",
-          padding: 8,
-          borderRadius: 6,
-          border: "1px solid #d9d9d9",
-          marginTop: 4,
-        }}
-      />
-    </div>
-
-    <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
-      <div style={{ flex: 1 }}>
-        <label style={{ fontSize: 12, color: "#98a1a8" }}>시작일</label>
-        <input
-          type="date"
-          name="startDate"
-          value={form.startDate}
-          onChange={onChange}
-          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
-        />
-      </div>
-      <div style={{ flex: 1 }}>
-        <label style={{ fontSize: 12, color: "#98a1a8" }}>시작 시간</label>
-        <input
-          type="time"
-          name="startTime"
-          value={form.startTime}
-          onChange={onChange}
-          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
-        />
-      </div>
-    </div>
-
-    <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
-      <div style={{ flex: 1 }}>
-        <label style={{ fontSize: 12, color: "#98a1a8" }}>마감일</label>
-        <input
-          type="date"
-          name="endDate"
-          value={form.endDate}
-          onChange={onChange}
-          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
-        />
-      </div>
-      <div style={{ flex: 1 }}>
-        <label style={{ fontSize: 12, color: "#98a1a8" }}>마감 시간</label>
-        <input
-          type="time"
-          name="endTime"
-          value={form.endTime}
-          onChange={onChange}
-          style={{ width: "100%", padding: 6, borderRadius: 6, border: "1px solid #d9d9d9" }}
-        />
-      </div>
-    </div>
-  </div>
-)}
-
-          <CardHr />
-          <CardFooter>
-            <Button onClick={goBack}>목록</Button>
-          </CardFooter>
-        </Card>
-      </div>
-
-      {/* 제출 목록 카드 */}
-      <div style={{backgroundColor:'#fff', padding:'1px 20px 24px'}}>
-        <SectionTitle>제출 과제</SectionTitle>
-        <SectionDivider />
-        <Card>
-          <List>
-            {submitList.length === 0 && (
-              <div style={{ padding: "12px 10px", color: "#98a1a8" }}>제출 내역이 없습니다.</div>
-            )}
-            {submitList.map((s) => (
-              <Row key={s.hwsubHsno} onClick={() => openSubmission(s)}>
-                <Avatar>
-                  {s.stuPicPath ? (
-                    <AvImg src={`/member/picture/upload/${s.stuPicPath}`} alt="학생 사진" />
+        {/* 제출 목록 카드 */}
+        <div style={{ backgroundColor: '#fff', padding: '1px 20px 24px' }}>
+          <SectionTitle>제출 과제</SectionTitle>
+          <SectionDivider />
+          <Card>
+            <List>
+              {submitList.length === 0 && (
+                <div style={{ padding: "12px 10px", color: "#98a1a8" }}>제출 내역이 없습니다.</div>
+              )}
+              {submitList.map((s) => (
+                <Row key={s.hwsubHsno} onClick={() => openSubmission(s)}>
+                  <Avatar>
+                    {s.stuPicPath ? (
+                      <AvImg src={`/member/picture/upload/${s.stuPicPath}`} alt="학생 사진" />
+                    ) : (
+                      <span>{s.stuName ? s.stuName[0] : "?"}</span>
+                    )}
+                  </Avatar>
+                  <RowMain>
+                    <RowTop>
+                      <StuName>{s.stuName || "이름없음"}</StuName>
+                      <Time>{fmtDateTime(s.submittedAt)}</Time>
+                    </RowTop>
+                    <Text>{s.hwsubComment || "제출 내용 없음"}</Text>
+                  </RowMain>
+                  {s.hwsubFilename ? (
+                    <a
+                      href={downloadUrl(s.hwsubFilename)}
+                      onClick={(e) => e.stopPropagation()}
+                      title={s.hwsubFilename}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <AttachmentIcon src={clip} alt="첨부" />
+                    </a>
                   ) : (
-                    <span>{s.stuName ? s.stuName[0] : "?"}</span>
+                    <span />
                   )}
-                </Avatar>
-                <RowMain>
-                  <RowTop>
-                    <StuName>{s.stuName || "이름없음"}</StuName>
-                    <Time>{fmtDateTime(s.submittedAt)}</Time>
-                  </RowTop>
-                  <Text>{s.hwsubComment || "제출 내용 없음"}</Text>
-                </RowMain>
-                {s.hwsubFilename ? (
-                  <a
-                    href={downloadUrl(s.hwsubFilename)}
-                    onClick={(e) => e.stopPropagation()}
-                    title={s.hwsubFilename}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <AttachmentIcon src={clip} alt="첨부" />
-                  </a>
-                ) : (
-                  <span />
-                )}
-              </Row>
-            ))}
-          </List>
-        </Card>
-      </div>
-    </MobileShell>
+                </Row>
+              ))}
+            </List>
+          </Card>
+        </div>
+      </MobileShell>
+      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
+      <ConfirmModal />
+    </div>
   );
 }

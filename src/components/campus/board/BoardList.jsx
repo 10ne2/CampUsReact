@@ -33,7 +33,6 @@ function BoardList() {
   const [totalPage, setTotalPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const user = getUserSession();
 
   const formatDate = (v) => {
     try {
@@ -91,6 +90,7 @@ function BoardList() {
 
   const toggleSearchOpen = () => setSearchOpen(v => !v);
   const toggleListOpen = () => setListOpen(v => !v);
+  const user = getUserSession();
 
   const handleSearchSelect = (value) => { setSearchSelected(value); setSearchOpen(false); setPage(1); };
   const handleListSelect = (value) => { setListSelected(value); setListOpen(false); setPage(1); };
@@ -180,7 +180,7 @@ function BoardList() {
       )}
       {items.map((it) => {
         const hasFile = it.pfileName && it.pfileName !== 'none.pdf';
-        const titleText = `[${it.category || '일반'}] ${it.boardName || ''}`;
+        const titleText = `[${it.boardCat || '일반'}] ${it.boardName || ''}`;
         const writer = it.memName || it.writer || it.memId || '-';
         const view = typeof it.viewCnt === 'number' ? it.viewCnt : (it.viewCnt ? Number(it.viewCnt) : 0);
 
@@ -217,6 +217,7 @@ function BoardList() {
             <PageArrowButton onClick={goFirst}>
               <PageText href="#"><img src={pageArrow1} style={{width:"13px", height:"10px", marginLeft:'6px'}} alt="" /></PageText>
             </PageArrowButton>
+
             <PageArrowButton onClick={goPrev}>
               <PageText href="#"><img src={pageArrow2} style={{width:"6px", height:"10px", marginLeft:'10px'}} alt="" /></PageText>
             </PageArrowButton>
@@ -232,6 +233,7 @@ function BoardList() {
             <PageArrowButton onClick={goNext}>
               <PageText href="#"><img src={pageArrow3} style={{width:"6px", height:"10px", marginLeft:'10px'}} alt="" /></PageText>
             </PageArrowButton>
+            
             <PageArrowButton onClick={goLast}>
               <PageText href="#"><img src={pageArrow4} style={{width:"13px", height:"10px", marginLeft:'6px'}} alt="" /></PageText>
             </PageArrowButton>

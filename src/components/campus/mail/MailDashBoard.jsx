@@ -131,7 +131,7 @@ function MailDashBoard() {
                         {loading ? (<p>로딩 중...</p>) : (
                             data?.sendList?.map((sl, idx) =>
                                 <Link to={`/mail/detail/${sl.mail_id}?memId=${user.mem_id}`}>
-                                    <Contents key={idx} style={{ paddingTop: '13px' }}>
+                                    <Contents key={idx} style={{ paddingTop: '13px', height:'60px'}}>
                                         <Content>
                                             <div>
                                                 <LecText>{sl.receiver_name}</LecText>

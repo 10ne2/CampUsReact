@@ -104,70 +104,70 @@ function ProjectTeamList() {
   });
 
   useEffect(() => {
-    if (memId) getProjectTeamData(memId, 1,'', '','','');
+    if (memId) getProjectTeamData(memId, 1, '', '', '', '');
   }, [memId]);
   useEffect(() => {
-  window.refreshProjectTeamList = () => {
-    const stDate = startDate ? startDate.toISOString().split('T')[0] : '';
-    const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
-    getProjectTeamData(memId, 1, searchSamester, searchProjectName, stDate, enDate);
-  };
-  return () => { window.refreshProjectTeamList = undefined; };
-}, [memId, searchSamester, searchProjectName, startDate, endDate]);
-  const fetchProjectTeamData = async (memId, page = 1, samester = '', projectName = '',projectStdate = '', projectEndate = '') => {
-  setLoading(true);
-  try {
-    const response = await getProjectTeamList(memId, page, samester, projectName || '',projectStdate || '', projectEndate || ''); 
-    const resData = response.data;
-    console.log('API Response:', resData);
-    setData(resData.projectList || []); 
-    setEditStatusMap(resData.projectEditStatusMap || {});
-    setPageMaker(resData.pageMaker || {});
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
+    window.refreshProjectTeamList = () => {
+      const stDate = startDate ? startDate.toISOString().split('T')[0] : '';
+      const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
+      getProjectTeamData(memId, 1, searchSamester, searchProjectName, stDate, enDate);
+    };
+    return () => { window.refreshProjectTeamList = undefined; };
+  }, [memId, searchSamester, searchProjectName, startDate, endDate]);
+  const fetchProjectTeamData = async (memId, page = 1, samester = '', projectName = '', projectStdate = '', projectEndate = '') => {
+    setLoading(true);
+    try {
+      const response = await getProjectTeamList(memId, page, samester, projectName || '', projectStdate || '', projectEndate || '');
+      const resData = response.data;
+      console.log('API Response:', resData);
+      setData(resData.projectList || []);
+      setEditStatusMap(resData.projectEditStatusMap || {});
+      setPageMaker(resData.pageMaker || {});
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
-  const getProjectTeamData = async (memId, page = 1, samester = '', projectName = '',projectStdate = '', projectEndate = '') => {
-    await fetchProjectTeamData(memId, page, samester, projectName,projectStdate,projectEndate);
+  const getProjectTeamData = async (memId, page = 1, samester = '', projectName = '', projectStdate = '', projectEndate = '') => {
+    await fetchProjectTeamData(memId, page, samester, projectName, projectStdate, projectEndate);
   }
 
   const handleSelect = (value) => {
     setSelected(value);
-  if (value === "전체") {
-    setSearchSamester("");
-  } else {
-    setSearchSamester(value);
-  }
-  setOpen(false);
-};
+    if (value === "전체") {
+      setSearchSamester("");
+    } else {
+      setSearchSamester(value);
+    }
+    setOpen(false);
+  };
 
   const handleRegister = () => {
     showConfirm("정말 등록하시겠습니까?", () => {
       setToastMsg("팀이 등록되었습니다!");
     });
   }
-window.showToast = (message) => {
-  // state 기반으로 토스트 띄움
-  setToastMsg(message);
-};
-const formatDate = (dateValue) => dateValue ? new Date(dateValue).toLocaleDateString("sv-SE") : "";
+  window.showToast = (message) => {
+    // state 기반으로 토스트 띄움
+    setToastMsg(message);
+  };
+  const formatDate = (dateValue) => dateValue ? new Date(dateValue).toLocaleDateString("sv-SE") : "";
 
   const handlePageChange = (newPage) => {
-  if (!pageMaker) return;
-  if(newPage < 1 || newPage > pageMaker.realEndPage) return;
- const stDate = startDate ? startDate.toISOString().split('T')[0] : '';
-  const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
-
-  getProjectTeamData(memId, newPage, searchSamester, searchProjectName,stDate, enDate);
-}
-const handleSearch = () => {
+    if (!pageMaker) return;
+    if (newPage < 1 || newPage > pageMaker.realEndPage) return;
     const stDate = startDate ? startDate.toISOString().split('T')[0] : '';
-  const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
-  getProjectTeamData(memId, 1, searchSamester, searchProjectName, stDate, enDate); // 1페이지부터 검색
-}
+    const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
+
+    getProjectTeamData(memId, newPage, searchSamester, searchProjectName, stDate, enDate);
+  }
+  const handleSearch = () => {
+    const stDate = startDate ? startDate.toISOString().split('T')[0] : '';
+    const enDate = endDate ? endDate.toISOString().split('T')[0] : '';
+    getProjectTeamData(memId, 1, searchSamester, searchProjectName, stDate, enDate); // 1페이지부터 검색
+  }
   return (
     <>
       <div style={{ width: "100%", minHeight: "731px", backgroundColor: "#f7f7f7" }}>
@@ -216,8 +216,8 @@ const handleSearch = () => {
                 placeholder='검색어를 입력해 주세요.'
                 value={searchProjectName}
                 onChange={(e) => setSearchProjectName(e.target.value)}
-                onKeyDown={(e) => { if(e.key === 'Enter') handleSearch(); }}
-                />
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+              />
             </SearchBar>
           </FlexDiv>
         </ListHeader>
@@ -228,9 +228,9 @@ const handleSearch = () => {
             const isPastEndDate = new Date(project.project_endate) < new Date();
             const editStatus = projectEditStatusMap[project.project_id]?.[0];
             return (
-              <ContentBox key={project.project_id} 
-              onClick={() => showDetailModal(project.project_id)}
-              style={{ width: '386px', height: '160px', margin: '0 auto', border: '1px solid #ccc', marginBottom: '10px', marginTop: '13px' }}>
+              <ContentBox key={project.project_id}
+                onClick={() => showDetailModal(project.project_id)}
+                style={{ width: '386px', height: '160px', margin: '0 auto', border: '1px solid #ccc', marginBottom: '10px', marginTop: '13px' }}>
                 <Header style={{ paddingTop: '20px', paddingBottom: '11px', height: '37px', alignItems: 'center' }}>
                   <HeadText style={{ fontSize: '14px' }}>{project.samester}</HeadText>
                   <OverviewText style={{ marginLeft: '17px', marginBottom: '4px' }}>
@@ -265,9 +265,9 @@ const handleSearch = () => {
                     <ObjectBtn>결과물</ObjectBtn>
                   ) : (
                     editStatus === '요청중' ? <ModifyingBtn>요청중</ModifyingBtn> : <GreenBtn onClick={(e) => {
-    e.stopPropagation();
-    showModifyModal(project.project_id);
-  }}>수정 요청</GreenBtn>
+                      e.stopPropagation();
+                      showModifyModal(project.project_id);
+                    }}>수정 요청</GreenBtn>
                   )}
                 </div>
               </ContentBox>
@@ -287,35 +287,35 @@ const handleSearch = () => {
                 </PageText>
               </PageArrowButton>
 
-              
+
               <PageArrowButton disabled={!pageMaker.prev} onClick={() => handlePageChange(pageMaker.startPage - 1)}>
                 <PageText>
                   <img src={pageArrow2} style={{ width: "6px", height: "10px", marginLeft: '10px' }} alt="prev-block" />
                 </PageText>
               </PageArrowButton>
 
-             
-{Array.from({ length: pageMaker.endPage - pageMaker.startPage + 1 }, (_, i) => {
-  const page = pageMaker.startPage + i;
-  if(page > pageMaker.realEndPage) return null;
-  return (
-    <PageNumberButton
-      key={page}
-      active={page === pageMaker.page}
-      onClick={() => handlePageChange(page)}
-    >
-      {page}
-    </PageNumberButton>
-  );
-})}
-              
+
+              {Array.from({ length: pageMaker.endPage - pageMaker.startPage + 1 }, (_, i) => {
+                const page = pageMaker.startPage + i;
+                if (page > pageMaker.realEndPage) return null;
+                return (
+                  <PageNumberButton
+                    key={page}
+                    active={page === pageMaker.page}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </PageNumberButton>
+                );
+              })}
+
               <PageArrowButton disabled={!pageMaker.next} onClick={() => handlePageChange(pageMaker.endPage + 1)}>
                 <PageText>
                   <img src={pageArrow3} style={{ width: "6px", height: "10px", marginLeft: '10px' }} alt="next-block" />
                 </PageText>
               </PageArrowButton>
 
-              
+
               <PageArrowButton disabled={pageMaker.page === pageMaker.realEndPage} onClick={() => handlePageChange(pageMaker.realEndPage)}>
                 <PageText>
                   <img src={pageArrow4} style={{ width: "13px", height: "10px", marginLeft: '6px' }} alt="last" />
@@ -325,7 +325,7 @@ const handleSearch = () => {
           </nav>
         )}
 
-      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
+        {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
       </div>
     </>
   )

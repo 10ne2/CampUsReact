@@ -6,10 +6,10 @@ import {
   getUserSession,
   getLecNoticeDetail,
   updateLecNoticeMultipart,
-  updateLecNoticeJson,
   deleteLecNotice,
   downloadLecNoticeFile,
 } from "../api";
+import { FlexDiv } from "../commons/WHComponent";
 
 const MobileShell = styled.div`
   width: 100vw;
@@ -121,6 +121,7 @@ const BodyText = styled.div`
   line-height: 1.5;
   white-space: pre-line;
   margin-left: 10px;
+  margin-bottom: 100px;
 `;
 
 const Attachment = styled.button`
@@ -133,6 +134,7 @@ const Attachment = styled.button`
   background: transparent;
   cursor: pointer;
   padding: 0;
+  width: 360px;
 `;
 
 const AttachmentIcon = styled.img`
@@ -171,13 +173,12 @@ const OutlineBtn = styled.button`
 `;
 
 const TitleInput = styled.input`
-  width: 100%;
-  border: 0;
-  border-bottom: 1px solid #dcdcdc;
-  padding: 10px 2px;
+  width: 350px;
+  padding: 5px;
   font-size: 14px;
-  outline: none;
   margin-left: 10px;
+  border: 1px solid #ccc;
+  outline: none;
   ::placeholder { color: #bdbdbd; }
 `;
 
@@ -185,12 +186,12 @@ const ContentInput = styled.textarea`
   width: calc(100% - 20px);
   min-height: 220px;
   margin: 8px 10px 0 10px;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  border: 1px solid #ccc;
   padding: 12px;
   font-size: 13px;
   line-height: 1.5;
   resize: vertical;
+  outline: none;
 `;
 
 const FileRow = styled.div`
@@ -264,6 +265,7 @@ export default function LectureNoticeDetail() {
   const [desc, setDesc] = useState("");
   const [newFile, setNewFile] = useState(null);
   const fileInputRef = useRef(null);
+  const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
 
   const qs = new URLSearchParams(location.search);
   const urlMemId = qs.get("memId") || "";
@@ -296,7 +298,7 @@ export default function LectureNoticeDetail() {
       }
     };
     if (!item && noticeId) fetchDetail(noticeId);
-  }, [noticeId]); 
+  }, [noticeId]);
 
   const goBack = () => {
     const { memId, lec_id } = resolveListQuery();
@@ -336,31 +338,23 @@ export default function LectureNoticeDetail() {
     }
 
     try {
+      const form = new FormData();
+      form.append("lecNoticeName", title);
+      form.append("lecNoticeDesc", desc);
       if (newFile) {
-        const form = new FormData();
-        form.append("lecNoticeId", String(noticeId));
-        form.append("lecNoticeName", title);
-        form.append("lecNoticeDesc", desc);
         form.append("files", newFile);
-        const { data } = await updateLecNoticeMultipart(String(noticeId), form);
-        setItem((prev) => ({
-          ...prev,
-          lecNoticeName: data?.lecNoticeName ?? title,
-          lecNoticeDesc: data?.lecNoticeDesc ?? desc,
-          fileName: data?.fileName ?? prev?.fileName,
-          fileDetail: data?.fileDetail ?? prev?.fileDetail,
-        }));
-      } else {
-        await updateLecNoticeJson(String(noticeId), {
-          lecNoticeName: title,
-          lecNoticeDesc: desc,
-        });
-        setItem((prev) => ({
-          ...prev,
-          lecNoticeName: title,
-          lecNoticeDesc: desc,
-        }));
       }
+
+      const { data } = await updateLecNoticeMultipart(String(noticeId), form);
+
+      setItem((prev) => ({
+        ...prev,
+        lecNoticeName: data?.lecNoticeName ?? title,
+        lecNoticeDesc: data?.lecNoticeDesc ?? desc,
+        fileName: data?.fileName ?? prev?.fileName,
+        fileDetail: data?.fileDetail ?? prev?.fileDetail,
+      }));
+
       setEdit(false);
       alert("수정되었습니다.");
     } catch (e) {
@@ -378,7 +372,7 @@ export default function LectureNoticeDetail() {
     try {
       await deleteLecNotice(String(noticeId));
       alert("삭제되었습니다.");
-      goBack(); 
+      goBack();
     } catch (e) {
       console.error("공지 삭제 실패:", e.response?.data || e);
       alert("삭제에 실패했습니다.");
@@ -452,20 +446,27 @@ export default function LectureNoticeDetail() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="제목을 입력해주세요."
+
             />
           ) : (
-            <CardTitle>{item.lecNoticeName}</CardTitle>
+            <>
+              <FlexDiv>
+                <div style={{width:'310px'}}>
+                  <CardTitle>{item.lecNoticeName}</CardTitle>
+                  <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
+                </div>
+                <ViewCount>조회수: {item.viewCnt ?? 0}</ViewCount>
+              </FlexDiv>
+            </>
           )}
-          <ViewCount>조회수: {item.viewCnt ?? 0}</ViewCount>
         </CardHead>
 
-        <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
         <CardHr />
 
         {edit ? (
           <>
             <ContentInput
-              value={desc}
+              value={stripHtmlTags(desc)}
               onChange={(e) => setDesc(e.target.value)}
               placeholder="내용을 입력해주세요."
             />
@@ -485,7 +486,7 @@ export default function LectureNoticeDetail() {
           </>
         ) : (
           <>
-            <BodyText>{item.lecNoticeDesc}</BodyText>
+            <BodyText>{stripHtmlTags(item.lecNoticeDesc)}</BodyText>
             {(item.fileName || item.fileDetail) && (
               <Attachment onClick={onDownload}>
                 <AttachmentIcon src={clip} />

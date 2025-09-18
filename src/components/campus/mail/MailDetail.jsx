@@ -236,6 +236,7 @@ export default function MailDetail() {
   const params = new URLSearchParams(useLocation().search);
   const memId = params.get("memId"); // 쿼리에서 memId 가져오기
   const navigate = useNavigate();
+  const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -381,7 +382,7 @@ export default function MailDetail() {
               </Meta>
 
               <CardHr />
-              <BodyText>{data.detail.mail_desc}</BodyText>
+              <BodyText>{stripHtmlTags(data.detail.mail_desc)}</BodyText>
 
               {data.detail.mailFileList?.length > 0 && (
                 <Attachment>

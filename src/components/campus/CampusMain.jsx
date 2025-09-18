@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TopNav from './topNav/TopNav'
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useMatch, useNavigate, useParams } from 'react-router-dom'
 
 import SideMenu from './menu/SideMenu'
 
@@ -42,7 +42,6 @@ import LecturePlanRegist from './lecPlan/LecturePlanRegist'
 import LecturePlanNoneData from './lecPlan/LecturePlanNoneData'
 import LecturePlanNoneDataPro from './lecPlan/LecturePlanNoneDataPro'
 
-import LectureHomeworkDetailFeedback from './lecHomework/LectureHomeworkDetailFeedback'
 import LectureHomeworkList from './lecHomework/LectureHomeworkList'
 import LectureHomeworkProDetail from './lecHomework/LectureHomeworkProDetail'
 import LectureHomeworkRegist from './lecHomework/LectureHomeworkRegist'
@@ -95,6 +94,7 @@ import { RedirectAfterLogin } from './home/RedirectAfterLogin'
 import Toast from './commons/Toast'
 import ConfirmModal from './commons/ConfirmModal';
 
+
 // /lecture → /notice 로 리다이렉트 (쿼리 유지)
 function LectureAliasRedirect() {
   const { search } = useLocation();
@@ -109,6 +109,11 @@ function CampusMain() {
   const user = useAuthStore(state => state.user);
   const location = useLocation();
   const { message, hideToast } = useToastStore();
+  
+  const hideTopNav =
+  useMatch('/homework/write') ||
+  useMatch('/homework/stu/:submitId');
+  
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -123,27 +128,20 @@ function CampusMain() {
 
   if (checkingSession) return <Loading />;
 
-  const Container = styled.div`
-    width: 100vw;
-  `
+   
+
   return (
     <>
-
       {!isLoggedIn ? (<Login />
       ) : (
         <>
           <RedirectAfterLogin />
-          <TopNav />
+          {!hideTopNav && <TopNav />}
           {location.pathname.startsWith('/mail') && !location.pathname.includes('/detail') ? <MailNavBar /> : null}
           <SideMenu />
 
           <Routes>
             <Route path='/' element={user.mem_auth === "ROLE01" ? <HomeWrapper /> : <HomeWrapperPro />}></Route>
-
-            {/* /lecture로 들어오는 옛 링크 대응
-            <Route path="/lecture" element={<LectureAliasRedirect />} />
-            <Route path="/lecture/*" element={<LectureAliasRedirect />} /> */}
-
             <Route path='/plan' element={<LecturePlanWrapper />}>
               <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanNoneData /> : <LecturePlanNoneDataPro />}></Route>
             </Route>
@@ -203,20 +201,22 @@ function CampusMain() {
 
           <MailWrite />
           <ChangePasswordModal />
-          <ProjectTeamModify />
           <ProjectTeamRegist />
           <ProjectTeamDetail />
+          <ProjectTeamModify />
           <TeamSearch />
           <TeamMemberSearch />
           <ProfessorSearch />
           <ProjectTeamModifyCheck />
+
+          <LecturePlanRegist />
           {message && <Toast message={message} onClose={hideToast} />}
         </>
       )}
 
 
       {/* 
-      <LecturePlanModify/>
+      <LecturePlanModify />
       <LecturePlanRegist/>
       <LecturePlanRegist/>
       <LectureOnlineRegist/>

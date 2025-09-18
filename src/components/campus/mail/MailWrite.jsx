@@ -14,7 +14,7 @@ import { getUserSession, registMail } from "../api";
 import Toast from "../commons/Toast";
 import ConfirmModal from "../commons/ConfirmModal";
 
-const MailModal = styled.div`
+export const MailModal = styled.div`
   position: fixed;
   top: 0;
   left: 0;
