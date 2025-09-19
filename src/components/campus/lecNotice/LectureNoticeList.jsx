@@ -18,6 +18,7 @@ import {
   changeLecMajor
 } from "../api.js";
 import LectureNoticeRegist from "./LectureNoticeRegist";
+import { useToastStore } from "../commons/modalStore.js";
 
 function LectureNoticeList() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ function LectureNoticeList() {
   const [loading, setLoading] = useState(false);
 
   const [showRegist, setShowRegist] = useState(false);
+  const { showToast } = useToastStore();
 
   useEffect(() => {
     if (!showRegist) return;
@@ -180,7 +182,7 @@ function LectureNoticeList() {
   const handleRegistClick = async () => {
     const r = resolveIds();
     if (!r.memId || !r.lecId) {
-      alert("memId / lecId가 없어 글쓰기를 열 수 없습니다.");
+      showToast("memId / lecId가 없어 글쓰기를 열 수 없습니다.");
       return;
     }
     if (r.memId !== memId) setMemId(r.memId);

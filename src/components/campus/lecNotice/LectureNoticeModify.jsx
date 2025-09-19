@@ -8,6 +8,7 @@ import axios from "axios";
 
 import { Cancle } from "../img";
 import { updateLecNoticeMultipart } from "../api";
+import { useToastStore } from "../commons/modalStore";
 
 // ========== styled-components ==========
 const TopBar = styled.div`
@@ -101,7 +102,7 @@ export default function LectureNoticeModify({ lecNoticeId }) {
   const [title, setTitle] = useState("");
   const [html, setHtml] = useState("");
   const editorRef = useRef(null);
-  const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+  const { showToast } = useToastStore();
 
   // Summernote 초기화
   useEffect(() => {
@@ -153,13 +154,13 @@ export default function LectureNoticeModify({ lecNoticeId }) {
     try {
       const res = await updateLecNoticeMultipart(lecNoticeId, fd);
       if (res.data.ok) {
-        alert("수정 완료!");
+        showToast("수정 완료!");
       } else {
-        alert("수정 실패: " + res.data.reason);
+        showToast("수정 실패: " + res.data.reason);
       }
     } catch (err) {
       console.error("수정 에러:", err);
-      alert("수정에 실패했습니다.");
+      showToast("수정에 실패했습니다.");
     }
   };
   return (

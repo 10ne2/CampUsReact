@@ -20,7 +20,7 @@ import styled from 'styled-components'
 import { deleteMail, deleteMailAll, getMailWaste, getUserSession, updateMailWasteBack } from '../api'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Toast from '../commons/Toast'
-import useModalStore from '../commons/modalStore'
+import useModalStore, { useToastStore } from '../commons/modalStore'
 import ConfirmModal from '../commons/ConfirmModal'
 
 const MailContainer = styled.div`
@@ -100,7 +100,7 @@ function MailWaste() {
     });
     const navigate = useNavigate();
     const location = useLocation();
-    const [toastMsg, setToastMsg] = useState("");
+    const { showToast } = useToastStore();
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -211,14 +211,6 @@ function MailWaste() {
         getMailWasteList(1);        // 데이터 다시 불러오기
         setSearchTerm("");
     };
-
-    // 토스트
-    const showToast = (msg) => {
-        setToastMsg("");        // 먼저 초기화
-        setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-    };
-
-
 
     // 복구
     const handleWasteBack = async () => {
@@ -453,7 +445,6 @@ function MailWaste() {
                     </nav>
                 )}
             </div>
-            {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
             <ConfirmModal />
         </>
     )

@@ -16,6 +16,7 @@ import {
   createLecNoticeMultipart,
   changeLecMajor,
 } from "../api";
+import { useToastStore } from "../commons/modalStore";
 
 const Body = styled.div`padding:16px;box-sizing:border-box;`;
 const TitleInput = styled.input`
@@ -30,16 +31,17 @@ const EditorWrap = styled.div`
   .note-editable{min-height:305px;font-size:14px;line-height:1.5;}
 `;
 const FileRow = styled.div`margin-top:16px;padding-top:14px;border-top:1px solid #e5e5e5;`;
-const HiddenFile = styled.input.attrs({ type:"file", id:"lecPdsFile" })`display:none;`;
+const HiddenFile = styled.input.attrs({ type: "file", id: "lecPdsFile" })`display:none;`;
 const FileLabel = styled.label`
   width:74px;height:25px;text-align:center;align-content:center;display:inline-block;border:1px solid #bdbdbd;border-radius:5px;
   font-size:12px;cursor:pointer;user-select:none;background:#f4f4f4;margin-right:10px;
 `;
 const FileText = styled.span`font-size:12px;color:#707070;`;
 
-export default function LectureNoticeRegist({ onClose, memId:propMemId, lecId:propLecId }) {
+export default function LectureNoticeRegist({ onClose, memId: propMemId, lecId: propLecId }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { showToast } = useToastStore();
 
   const user = getUserSession();
   const auth = user?.mem_auth || "";
@@ -68,26 +70,26 @@ export default function LectureNoticeRegist({ onClose, memId:propMemId, lecId:pr
   const editorRef = useRef(null);
 
   useEffect(() => {
-    if (!isProfessor) { alert("작성 권한이 없습니다."); goBack(); return; }
+    if (!isProfessor) { showToast("작성 권한이 없습니다."); goBack(); return; }
     const $el = $(editorRef.current);
     $el.summernote({
-      placeholder:"내용을 입력해주세요.",
-      height:305, minHeight:305,
-      toolbar:[
-        ["style",["bold","underline","clear"]],
-        ["para",["ul","ol","paragraph"]],
-        ["insert",["picture","link"]],
-        ["view",["codeview"]],
+      placeholder: "내용을 입력해주세요.",
+      height: 305, minHeight: 305,
+      toolbar: [
+        ["style", ["bold", "underline", "clear"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["insert", ["picture", "link"]],
+        ["view", ["codeview"]],
       ],
     });
-    return () => { try { $el.summernote("destroy"); } catch(_){} };
+    return () => { try { $el.summernote("destroy"); } catch (_) { } };
   }, []);
 
   const getContentHtml = () => $(editorRef.current).summernote("code");
 
   const goBack = () => {
     if (typeof onClose === "function") { onClose(false); return; }
-    navigate(`/notice?memId=${resolvedProfesId}&lecId=${resolvedLecId}`, { replace:true });
+    navigate(`/notice?memId=${resolvedProfesId}&lecId=${resolvedLecId}`, { replace: true });
   };
 
   const handleFileChange = (e) => {
@@ -97,57 +99,57 @@ export default function LectureNoticeRegist({ onClose, memId:propMemId, lecId:pr
   };
 
   const handleSubmit = async () => {
-  if (submitting) return;
+    if (submitting) return;
 
-  const html = getContentHtml();
-  const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;|\s+/g, " ").trim();
+    const html = getContentHtml();
+    const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;|\s+/g, " ").trim();
 
-  if (!title.trim()) { alert("제목을 입력해주세요."); return; }
-  if (!text) { alert("내용을 입력해주세요."); return; }
-  if (!resolvedLecId) { alert("강의(전공) 선택 정보가 없습니다."); return; }
-  if (!resolvedProfesId) { alert("작성자 정보가 없습니다(로그인 세션 확인)."); return; }
+    if (!title.trim()) { showToast("제목을 입력해주세요."); return; }
+    if (!text) { showToast("내용을 입력해주세요."); return; }
+    if (!resolvedLecId) { showToast("강의(전공) 선택 정보가 없습니다."); return; }
+    if (!resolvedProfesId) { showToast("작성자 정보가 없습니다(로그인 세션 확인)."); return; }
 
-  try {
-    setSubmitting(true);
-    try { await changeLecMajor(resolvedLecId); } catch {}
+    try {
+      setSubmitting(true);
+      try { await changeLecMajor(resolvedLecId); } catch { }
 
-    const fd = new FormData();
-    fd.append("memId", resolvedProfesId)
-    fd.append("lecId", resolvedLecId);
-    fd.append("profesId", resolvedProfesId);
-    fd.append("lecNoticeName", title.trim());
-    fd.append("lecNoticeDesc", html);
-    if (file) fd.append("files", file);
+      const fd = new FormData();
+      fd.append("memId", resolvedProfesId)
+      fd.append("lecId", resolvedLecId);
+      fd.append("profesId", resolvedProfesId);
+      fd.append("lecNoticeName", title.trim());
+      fd.append("lecNoticeDesc", html);
+      if (file) fd.append("files", file);
 
-    const res = await createLecNoticeMultipart(fd);  
-    console.log("📌 등록 API 응답:", res);
-    if (res.ok) {
-      alert("등록되었습니다.");
-      if (typeof onClose === "function") onClose(true);
-      else navigate(`/notice?memId=${resolvedProfesId}&lecId=${resolvedLecId}`, { replace:true });
-    } else {
-      alert("등록 실패: " + (res.reason || "알 수 없는 오류"));
+      const res = await createLecNoticeMultipart(fd);
+      console.log("📌 등록 API 응답:", res);
+      if (res.data?.ok) {
+        showToast("등록되었습니다.");
+        if (typeof onClose === "function") onClose(true);
+        else navigate(`/notice?memId=${resolvedProfesId}&lecId=${resolvedLecId}`, { replace: true });
+      } else {
+        showToast("등록 실패: " + (res.reason || "알 수 없는 오류"));
+      }
+
+    } catch (e) {
+      console.error("공지 등록 실패:", e?.response?.data || e);
+      showToast("등록에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
     }
-
-  } catch (e) {
-    console.error("공지 등록 실패:", e?.response?.data || e);
-    alert("등록에 실패했습니다.");
-  } finally {
-    setSubmitting(false);
-  }
-};
+  };
 
   return (
     <div>
       <Container
         style={{
-          backgroundColor:"#fff",
-          display:"flex",
-          justifyContent:"space-between",
-          alignItems:"center",
+          backgroundColor: "#fff",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <img src={Cancle} alt="닫기" style={{ width:19, height:19, cursor:"pointer" }} onClick={goBack} />
+        <img src={Cancle} alt="닫기" style={{ width: 19, height: 19, cursor: "pointer" }} onClick={goBack} />
         <Button as="button" type="button" onClick={handleSubmit} disabled={submitting}>
           {submitting ? "등록 중..." : "등록"}
         </Button>
@@ -157,7 +159,7 @@ export default function LectureNoticeRegist({ onClose, memId:propMemId, lecId:pr
         <TitleInput
           placeholder="제목을 입력해주세요."
           value={title}
-          onChange={(e)=>setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <EditorWrap><div ref={editorRef} /></EditorWrap>
 

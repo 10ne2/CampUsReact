@@ -11,6 +11,7 @@ import {
   PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText
 } from "../commons/WHComponent";
 import { getUserSession } from "../api";
+import { useHomeworkProRegistStore } from "../commons/modalStore";
 
 // 날짜 포맷 (yyyy-MM-dd)
 function fmtDateYMD(v) {
@@ -41,6 +42,7 @@ function LectureHomeworkList() {
   const [totalPages, setTotalPages] = useState(1);
   const perPageNum = 10;
   const user = getUserSession();
+  const showModal = useHomeworkProRegistStore((state) => state.showModal);
 
   useEffect(() => {
     if (!lecId || !memId) return;
@@ -116,7 +118,7 @@ function LectureHomeworkList() {
         <FlexDiv>
           <CatTitle>과제제출</CatTitle>
           {role === "professor" && (
-            <Button onClick={() => navigate(`/homework/write?lec_id=${lecId || ""}?memId=${user.mem_id}`)}>
+            <Button onClick={showModal}>
               글쓰기
             </Button>
           )}

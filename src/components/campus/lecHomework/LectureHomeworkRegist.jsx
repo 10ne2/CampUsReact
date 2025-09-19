@@ -13,9 +13,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Cancle, calender } from "../img";
 import { Button } from "../commons/WHComponent";
 import { Container } from "../topNav/TopNav";
-import Toast from "../commons/Toast";
 import ConfirmModal from "../commons/ConfirmModal";
-import useModalStore from "../commons/modalStore";
+import useModalStore, { useHomeworkProRegistStore, useToastStore } from "../commons/modalStore";
+import { MailModal } from "../mail/MailWrite";
 
 /* ===== 스타일 ===== */
 const MJContainer = styled.div`width: 412px; margin: 0 auto; overflow-x: hidden;`;
@@ -124,7 +124,9 @@ export default function LectureHomeworkRegist() {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
 
-  const [toastMsg, setToastMsg] = useState("");
+  const { showToast } = useToastStore();
+  const visible = useHomeworkProRegistStore((state) => state.visible);
+  const hideModal = useHomeworkProRegistStore((state) => state.hideModal);
 
   useEffect(() => {
     const $el = $(editorRef.current);
@@ -150,14 +152,6 @@ export default function LectureHomeworkRegist() {
     return d;
   };
 
-
-
-  // 토스트
-  const showToast = (msg) => {
-    setToastMsg("");        // 먼저 초기화
-    setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-  };
-
   const handleSubmit = async () => {
     const html = $(editorRef.current).summernote("code");
     const rawHtml = $(editorRef.current).summernote("code");
@@ -175,11 +169,6 @@ export default function LectureHomeworkRegist() {
     const user = JSON.parse(sessionStorage.getItem("user") || "{}");
     const memId = user?.mem_id || user?.memId || "";
 
-    // // ✅ 확인창
-    // if (!window.confirm("과제를 등록하시겠습니까?")) {
-    //   return; // 취소 누르면 종료
-    // }
-
     const payload = new URLSearchParams();
     payload.append("hwName", title);
     payload.append("hwDesc", html);
@@ -191,110 +180,113 @@ export default function LectureHomeworkRegist() {
     payload.append("memId", memId);
 
     useModalStore.getState().showConfirm(
-          "과제를 등록하시겠습니까?",
-          async () => {
+      "과제를 등록하시겠습니까?",
+      async () => {
 
-    try {
-      const res = await axios.post("/api/homework/write", payload, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      });
+        try {
+          const res = await axios.post("/api/homework/write", payload, {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          });
 
-      if (res.data?.ok) {
-        showToast("과제가 등록되었습니다."); // ✅ 성공 메시지
-        navigate(`/homework?memId=${memId}&lec_id=${lecId}`);
-      } else {
-        showToast(res.data?.message || "등록에 실패했습니다.");
+          if (res.data?.ok) {
+            showToast("과제가 등록되었습니다."); // ✅ 성공 메시지
+            navigate(`/homework?memId=${memId}&lec_id=${lecId}`);
+          } else {
+            showToast(res.data?.message || "등록에 실패했습니다.");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast("등록 중 오류가 발생했습니다.");
+        }
       }
-    } catch (err) {
-      console.error(err);
-      showToast("등록 중 오류가 발생했습니다.");
-    }
-  }
-);
+    );
   };
 
   return (
-    <div>
-      <MJContainer>
-        <Container style={{ backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <img
-            src={Cancle}
-            style={{ width: '19px', height: '19px', cursor: 'pointer' }}
-            onClick={() => navigate(-1)}
-            alt="닫기"
-          />
-          <Button onClick={handleSubmit}>등록</Button>
-        </Container>
+    <>
+      <MailModal visible={visible}>
+        {visible && (
+          <MJContainer>
+            <Container style={{ backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <img
+                src={Cancle}
+                style={{ width: '19px', height: '19px', cursor: 'pointer' }}
+                onClick={hideModal}
+                alt="닫기"
+              />
+              <Button onClick={handleSubmit}>등록</Button>
+            </Container>
 
-        <Body>
-          <TitleInput
-            placeholder="제목을 입력해주세요."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+            <Body>
+              <TitleInput
+                placeholder="제목을 입력해주세요."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
 
-          <Row mt={16}>
-            <Label>시작일</Label>
-            <DateBox>
-              <DatePickerWrap>
-                <DatePicker
-                  selected={startDate}
-                  onChange={setStartDate}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<DPInput />}
+              <Row mt={16}>
+                <Label>시작일</Label>
+                <DateBox>
+                  <DatePickerWrap>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={setStartDate}
+                      dateFormat="yyyy-MM-dd"
+                      customInput={<DPInput />}
+                    />
+                  </DatePickerWrap>
+                  <TimeSelect value={startHour} onChange={e => setStartHour(+e.target.value)}>
+                    {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}</option>)}
+                  </TimeSelect>
+                  <Colon>:</Colon>
+                  <TimeSelect value={startMinute} onChange={e => setStartMinute(+e.target.value)}>
+                    {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, "0")}</option>)}
+                  </TimeSelect>
+                </DateBox>
+              </Row>
+
+              <Row>
+                <Label>마감일</Label>
+                <DateBox>
+                  <DatePickerWrap>
+                    <DatePicker
+                      selected={endDate}
+                      onChange={setEndDate}
+                      dateFormat="yyyy-MM-dd"
+                      customInput={<DPInput />}
+                    />
+                  </DatePickerWrap>
+                  <TimeSelect value={endHour} onChange={e => setEndHour(+e.target.value)}>
+                    {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}</option>)}
+                  </TimeSelect>
+                  <Colon>:</Colon>
+                  <TimeSelect value={endMinute} onChange={e => setEndMinute(+e.target.value)}>
+                    {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, "0")}</option>)}
+                  </TimeSelect>
+                </DateBox>
+              </Row>
+
+              <EditorWrap>
+                <div ref={editorRef} />
+              </EditorWrap>
+
+              <FileRow>
+                <FileDivider />
+                <HiddenFile
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    setFile(f || null);
+                    setFileName(f ? f.name : "선택된 파일이 없습니다.");
+                  }}
                 />
-              </DatePickerWrap>
-              <TimeSelect value={startHour} onChange={e => setStartHour(+e.target.value)}>
-                {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}</option>)}
-              </TimeSelect>
-              <Colon>:</Colon>
-              <TimeSelect value={startMinute} onChange={e => setStartMinute(+e.target.value)}>
-                {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, "0")}</option>)}
-              </TimeSelect>
-            </DateBox>
-          </Row>
-
-          <Row>
-            <Label>마감일</Label>
-            <DateBox>
-              <DatePickerWrap>
-                <DatePicker
-                  selected={endDate}
-                  onChange={setEndDate}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<DPInput />}
-                />
-              </DatePickerWrap>
-              <TimeSelect value={endHour} onChange={e => setEndHour(+e.target.value)}>
-                {hours.map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}</option>)}
-              </TimeSelect>
-              <Colon>:</Colon>
-              <TimeSelect value={endMinute} onChange={e => setEndMinute(+e.target.value)}>
-                {minutes.map(m => <option key={m} value={m}>{String(m).padStart(2, "0")}</option>)}
-              </TimeSelect>
-            </DateBox>
-          </Row>
-
-          <EditorWrap>
-            <div ref={editorRef} />
-          </EditorWrap>
-
-          <FileRow>
-            <FileDivider />
-            <HiddenFile
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                setFile(f || null);
-                setFileName(f ? f.name : "선택된 파일이 없습니다.");
-              }}
-            />
-            <FileLabel htmlFor="hwFile">파일선택</FileLabel>
-            <FileText>{fileName}</FileText>
-          </FileRow>
-        </Body>
-      </MJContainer>
-      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
+                <FileLabel htmlFor="hwFile">파일선택</FileLabel>
+                <FileText>{fileName}</FileText>
+              </FileRow>
+            </Body>
+          </MJContainer>
+        )}
+      </MailModal>
       <ConfirmModal />
-    </div>
+    </>
   );
 }

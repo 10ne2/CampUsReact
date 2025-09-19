@@ -10,6 +10,8 @@ import {
   downloadLecNoticeFile,
 } from "../api";
 import { FlexDiv } from "../commons/WHComponent";
+import useModalStore, { useToastStore } from "../commons/modalStore";
+import ConfirmModal from "../commons/ConfirmModal";
 
 const MobileShell = styled.div`
   width: 100vw;
@@ -276,6 +278,7 @@ export default function LectureNoticeDetail() {
 
   const stateMemId = state?.from?.memId;
   const stateLecId = state?.from?.lecId || state?.from?.lec_id;
+  const { showToast } = useToastStore();
 
   const fallbackLecId =
     item?.lecId ||
@@ -332,11 +335,11 @@ export default function LectureNoticeDetail() {
 
   const onSaveEdit = async () => {
     if (!noticeId) {
-      alert("잘못된 접근입니다(id 없음).");
+      showToast("잘못된 접근입니다(id 없음).");
       return;
     }
     if (!title.trim()) {
-      alert("제목을 입력해주세요.");
+      showToast("제목을 입력해주세요.");
       return;
     }
 
@@ -359,36 +362,39 @@ export default function LectureNoticeDetail() {
       }));
 
       setEdit(false);
-      alert("수정되었습니다.");
+      showToast("수정되었습니다.");
     } catch (e) {
       console.error("공지 수정 실패:", e.response?.data || e);
-      alert("수정에 실패했습니다.");
+      showToast("수정에 실패했습니다.");
     }
   };
 
   const onDelete = async () => {
     if (!noticeId) {
-      alert("잘못된 접근입니다(id 없음).");
+      showToast("잘못된 접근입니다(id 없음).");
       return;
     }
-    if (!window.confirm("게시글을 삭제하시겠습니까?")) return;
-    try {
-      await deleteLecNotice(String(noticeId));
-      alert("삭제되었습니다.");
-      goBack();
-    } catch (e) {
-      console.error("공지 삭제 실패:", e.response?.data || e);
-      alert("삭제에 실패했습니다.");
-    }
+    useModalStore.getState().showConfirm(
+      "정말로 삭제하시겠습니까?",
+      async () => {
+        try {
+          await deleteLecNotice(String(noticeId));
+          showToast("삭제되었습니다.");
+          goBack();
+        } catch (e) {
+          console.error("공지 삭제 실패:", e.response?.data || e);
+          showToast("삭제에 실패했습니다.");
+        }
+      });
   };
 
   const onDownload = async () => {
     if (!noticeId) {
-      alert("잘못된 접근입니다(id 없음).");
+      showToast("잘못된 접근입니다(id 없음).");
       return;
     }
     if (!item?.fileName && !item?.fileDetail) {
-      alert("첨부파일이 없습니다.");
+      showToast("첨부파일이 없습니다.");
       return;
     }
     try {
@@ -404,7 +410,7 @@ export default function LectureNoticeDetail() {
       window.URL.revokeObjectURL(url);
     } catch (e) {
       console.error("첨부 다운로드 실패:", e.response?.data || e);
-      alert("파일 다운로드에 실패했습니다.");
+      showToast("파일 다운로드에 실패했습니다.");
     }
   };
 
@@ -422,89 +428,92 @@ export default function LectureNoticeDetail() {
   if (loading || !item) return <div style={{ padding: 16 }}>불러오는 중…</div>;
 
   return (
-    <MobileShell>
-      <TopBar>
-        <PageTitle>공지사항</PageTitle>
+    <>
+      <MobileShell>
+        <TopBar>
+          <PageTitle>공지사항</PageTitle>
 
-        {isProfessor && !edit && (
-          <TopActions>
-            <MutedBtn onClick={onDelete}>삭제</MutedBtn>
-            <PrimaryBtn onClick={onClickModify}>수정</PrimaryBtn>
-          </TopActions>
-        )}
-        {isProfessor && edit && (
-          <TopActions>
-            <MutedBtn onClick={onCancelEdit}>취소</MutedBtn>
-            <PrimaryBtn onClick={onSaveEdit}>저장</PrimaryBtn>
-          </TopActions>
-        )}
-      </TopBar>
+          {isProfessor && !edit && (
+            <TopActions>
+              <MutedBtn onClick={onDelete}>삭제</MutedBtn>
+              <PrimaryBtn onClick={onClickModify}>수정</PrimaryBtn>
+            </TopActions>
+          )}
+          {isProfessor && edit && (
+            <TopActions>
+              <MutedBtn onClick={onCancelEdit}>취소</MutedBtn>
+              <PrimaryBtn onClick={onSaveEdit}>저장</PrimaryBtn>
+            </TopActions>
+          )}
+        </TopBar>
 
-      <PageDivider />
+        <PageDivider />
 
-      <Card>
-        <CardHead>
+        <Card>
+          <CardHead>
+            {edit ? (
+              <TitleInput
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="제목을 입력해주세요."
+
+              />
+            ) : (
+              <>
+                <FlexDiv>
+                  <div style={{ width: '290px' }}>
+                    <CardTitle>{item.lecNoticeName}</CardTitle>
+                    <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
+                  </div>
+                  <ViewCount>조회수: {item.viewCnt ?? 0}</ViewCount>
+                </FlexDiv>
+              </>
+            )}
+          </CardHead>
+
+          <CardHr />
+
           {edit ? (
-            <TitleInput
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="제목을 입력해주세요."
-
-            />
+            <>
+              <ContentInput
+                value={stripHtmlTags(desc)}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="내용을 입력해주세요."
+              />
+              <FileRow>
+                <HiddenFile
+                  ref={fileInputRef}
+                  id="lecNoticeFile"
+                  onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
+                />
+                <FileLabel htmlFor="lecNoticeFile">파일선택</FileLabel>
+                <FileText>
+                  {newFile
+                    ? newFile.name
+                    : item.fileName || item.fileDetail || "선택된 파일이 없습니다."}
+                </FileText>
+              </FileRow>
+            </>
           ) : (
             <>
-              <FlexDiv>
-                <div style={{width:'290px'}}>
-                  <CardTitle>{item.lecNoticeName}</CardTitle>
-                  <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
-                </div>
-                <ViewCount>조회수: {item.viewCnt ?? 0}</ViewCount>
-              </FlexDiv>
+              <BodyText>{stripHtmlTags(item.lecNoticeDesc)}</BodyText>
+              {(item.fileName || item.fileDetail) && (
+                <Attachment onClick={onDownload}>
+                  <AttachmentIcon src={clip} />
+                  <AttachmentName>{item.fileName || item.fileDetail}</AttachmentName>
+                </Attachment>
+              )}
             </>
           )}
-        </CardHead>
 
-        <CardHr />
+          <GrayLine />
 
-        {edit ? (
-          <>
-            <ContentInput
-              value={stripHtmlTags(desc)}
-              onChange={(e) => setDesc(e.target.value)}
-              placeholder="내용을 입력해주세요."
-            />
-            <FileRow>
-              <HiddenFile
-                ref={fileInputRef}
-                id="lecNoticeFile"
-                onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
-              />
-              <FileLabel htmlFor="lecNoticeFile">파일선택</FileLabel>
-              <FileText>
-                {newFile
-                  ? newFile.name
-                  : item.fileName || item.fileDetail || "선택된 파일이 없습니다."}
-              </FileText>
-            </FileRow>
-          </>
-        ) : (
-          <>
-            <BodyText>{stripHtmlTags(item.lecNoticeDesc)}</BodyText>
-            {(item.fileName || item.fileDetail) && (
-              <Attachment onClick={onDownload}>
-                <AttachmentIcon src={clip} />
-                <AttachmentName>{item.fileName || item.fileDetail}</AttachmentName>
-              </Attachment>
-            )}
-          </>
-        )}
-
-        <GrayLine />
-
-        <CardFooter>
-          <OutlineBtn onClick={goBack}>목록</OutlineBtn>
-        </CardFooter>
-      </Card>
-    </MobileShell>
+          <CardFooter>
+            <OutlineBtn onClick={goBack}>목록</OutlineBtn>
+          </CardFooter>
+        </Card>
+      </MobileShell>
+      <ConfirmModal />
+    </>
   );
 }

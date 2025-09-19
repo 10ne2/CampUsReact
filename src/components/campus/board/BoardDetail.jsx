@@ -81,6 +81,7 @@ const ReplyItem = styled.div`
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
   font-size: 14px;
+  margin-top: 8px;
 `;
 const ReplyTop = styled.div`
   display: flex;
@@ -111,18 +112,21 @@ const ReplyBtnSmall = styled.button`
 
 const ReplyInputBox = styled.div`margin-top: 15px;`;
 const ReplyHeader = styled.div`
-  font-size: 13px; font-weight: 600; color: #555; margin-bottom: 4px;
+  font-size: 13px; 
+  font-weight: 600; 
+  color: #555; 
+  margin-bottom: 4px;
 `;
 const ReplyTextarea = styled.textarea`
   width: 100%;
-  min-height: 60px;
+  min-height: 80px;
   resize: none;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
   color: #444;
-  &::placeholder { color: #EEE9E9; }
+  &::placeholder { color: #aaa; }
   outline: none;
 `;
 const ReplySubmitBtn = styled.button`
@@ -352,22 +356,12 @@ export default function BoardDetail() {
                   ) : (
                     <>
                       {/* 기본 상태: 삭제 + 수정 */}
-                      <ReplyBtnSmall
-                        onClick={async () => {
+                      <ReplyBtnSmall onClick={async () => {
                           if (!window.confirm("삭제하시겠습니까?")) return;
-                          await deleteReply(r.rno);
-                          setReplies(replies.filter((x) => x.rno !== r.rno));
-                        }}
-                      >
+                          await deleteReply(r.rno); setReplies(replies.filter((x) => x.rno !== r.rno)); }} >
                         삭제
                       </ReplyBtnSmall>
-                      <ReplyBtnSmall
-                        primary
-                        onClick={() => {
-                          setEditingId(r.rno);
-                          setEditText(r.replytext);
-                        }}
-                      >
+                      <ReplyBtnSmall primary onClick={() => { setEditingId(r.rno); setEditText(r.replytext); }} >
                         수정
                       </ReplyBtnSmall>
                     </>
@@ -379,7 +373,7 @@ export default function BoardDetail() {
                 <textarea
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
-                  style={{ width: "100%", minHeight: "60px", marginTop: "6px" }}
+                  style={{ width: "360px", minHeight: "60px", marginTop: "10px", padding:'5px 8px', marginLeft:'6px', outline:'none'}}
                 />
               ) : (
                 <ReplyText style={{marginLeft:'10px'}}>{r.replytext}</ReplyText>
@@ -390,7 +384,7 @@ export default function BoardDetail() {
 
         {/* 댓글 입력 */}
         <ReplyInputBox>
-          <ReplyHeader style={{marginLeft:'5px', marginBottom:'10px'}}>
+          <ReplyHeader style={{marginLeft:'5px', marginBottom:'10px', fontWeight:'500'}}>
             {loginName} ｜ {fmtDate(new Date())}
           </ReplyHeader>
           <ReplyTextarea

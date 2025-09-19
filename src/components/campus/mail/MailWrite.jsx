@@ -9,9 +9,8 @@ import "summernote/dist/summernote-lite.js";
 import { Cancle } from "../img";
 import { Container } from "../topNav/TopNav";
 import { Button } from "../commons/WHComponent";
-import useModalStore, { useMailWriteModalStore, useSideMenuStore } from "../commons/modalStore";
+import useModalStore, { useMailWriteModalStore, useSideMenuStore, useToastStore } from "../commons/modalStore";
 import { getUserSession, registMail } from "../api";
-import Toast from "../commons/Toast";
 import ConfirmModal from "../commons/ConfirmModal";
 
 export const MailModal = styled.div`
@@ -129,7 +128,7 @@ export default function MailWrite() {
   const editorRef = useRef(null);
   const { visible, hideModal } = useMailWriteModalStore();
   const user = getUserSession();
-  const [toastMsg, setToastMsg] = useState("");
+  const { showToast } = useToastStore();
 
   useEffect(() => {
     const $el = $(editorRef.current);
@@ -150,12 +149,6 @@ export default function MailWrite() {
     });
     return () => { try { $el.summernote("destroy"); } catch (_) { } };
   }, [visible]);
-
-  // 토스트
-  const showToast = (msg) => {
-    setToastMsg("");        // 먼저 초기화
-    setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-  };
 
   const handleSubmit = async () => {
 
@@ -189,7 +182,7 @@ export default function MailWrite() {
 
         try {
           const res = await registMail(formData);
-          if (res.data.success) showToast("등록이 완료됐습니다!");
+          if (res.data.success) showToast("메일을 보냈습니다.");
           hideModal(); // 모달 닫기
           // 필요하다면 상태 초기화
           setReceiver("");
@@ -200,7 +193,7 @@ export default function MailWrite() {
 
         } catch (err) {
           console.error(err);
-          showToast("등록을 실패했습니다.");
+          showToast("보내기를 실패했습니다.");
         }
       }
     );
@@ -249,7 +242,6 @@ export default function MailWrite() {
           </div>
         )}
       </MailModal>
-      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
       <ConfirmModal />
     </div>
   );

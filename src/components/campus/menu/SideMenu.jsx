@@ -158,9 +158,9 @@ function SideMenu() {
 
   const handleLectureChange = (e) => {
     const lecId = e.target.value;
-    if (lecId) {
-      navigate(`?memId=${memId}&lec_id=${lecId}`);
-    }
+    setSelectedLecId(lecId);
+    navigate(`?memId=${memId}&lec_id=${lecId}`);
+
   };
 
   useEffect(() => {
@@ -302,11 +302,11 @@ function SideMenu() {
                 </div>
               </div>
 
-              <StyledLink to={`/plan?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
+              <StyledLink to={`/plan?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(selectedLecId || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>강의계획서</p></li>
               </StyledLink>
               <StyledLink
-                to={`/notice?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`}
+                to={`/notice?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(selectedLecId || '')}`}
                 onClick={closeMenu}
               >
                 <li className="nav-item"><p style={{ marginLeft: 80 }}>공지사항</p></li>
@@ -314,16 +314,16 @@ function SideMenu() {
               <StyledLink to='/JAVA101/online' onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>실시간 강의</p></li>
               </StyledLink>
-              <StyledLink to={`/online?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
+              <StyledLink to={`/online?memId=${encodeURIComponent(memId)}&lec_id=${encodeURIComponent(selectedLecId || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>온라인 강의</p></li>
               </StyledLink>
-              <StyledLink to={ user.mem_auth === 'ROLE02' 
-                              ? `/attendance/professor?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`
-                              : `/attendance/student?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`
-                              } onClick={closeMenu} >
+              <StyledLink to={user.mem_auth === 'ROLE02'
+                ? `/attendance/professor?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(selectedLecId || '')}`
+                : `/attendance/student?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(selectedLecId || '')}`
+              } onClick={closeMenu} >
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>출결</p></li>
               </StyledLink>
-              <StyledLink to={`/homework?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
+              <StyledLink to={`/homework?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(selectedLecId || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>과제제출</p></li>
               </StyledLink>
               <StyledLink to='/pds' onClick={closeMenu}>

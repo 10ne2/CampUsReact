@@ -163,7 +163,7 @@ export default function ProjectObjectRegist() {
       <div>
        <Container style={{backgroundColor:'#fff',display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <img src={Cancle} style={{width:'19px', height:'19px', cursor:'pointer'}}></img>
-                <Button>제출</Button>
+                <Button>등록</Button>
             </Container>
       
         <Content>

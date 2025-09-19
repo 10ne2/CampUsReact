@@ -37,7 +37,7 @@ const EditorWrap = styled.div`
   .note-editable{ min-height:305px; font-size:14px; line-height:1.5; }
 `;
 const FileRow = styled.div`margin-top:16px; padding-top:14px; border-top:1px solid #e5e5e5;`;
-const HiddenFile = styled.input.attrs({ type:"file", id:"boardFile" })`display:none;`;
+const HiddenFile = styled.input.attrs({ type: "file", id: "boardFile" })`display:none;`;
 const FileLabel = styled.label`
   width:74px; height:25px; display:inline-block; text-align:center; align-content:center;
   border:1px solid #bdbdbd; border-radius:5px; background:#f4f4f4;
@@ -95,7 +95,7 @@ export default function BoardRegist({ onClose }) {
         ["view", ["codeview"]],
       ],
     });
-    return () => { try { $el.summernote("destroy"); } catch (_) {} };
+    return () => { try { $el.summernote("destroy"); } catch (_) { } };
   }, []);
 
   const getContentHtml = () => $(editorRef.current).summernote("code");
@@ -103,8 +103,8 @@ export default function BoardRegist({ onClose }) {
   const goBack = () => {
     if (typeof onClose === "function") { onClose(false); return; }
     const listPath = location.pathname.replace(/\/[^/]+$/, "");
-    if (listPath && listPath !== location.pathname) navigate(listPath, { replace:true });
-    else navigate("/board", { replace:true });
+    if (listPath && listPath !== location.pathname) navigate(listPath, { replace: true });
+    else navigate(`/board?memId=${user.mem_id}`, { replace: true });
   };
 
   const handleFileChange = (e) => {
@@ -126,7 +126,7 @@ export default function BoardRegist({ onClose }) {
       setSubmitting(true);
 
       // 세션 major 및 스토리지 동기화
-      try { await changeBoardMajor(lecId); } catch {}
+      try { await changeBoardMajor(lecId); } catch { }
       sessionStorage.setItem("lecId", lecId);
       sessionStorage.setItem("lec_id", lecId);
       localStorage.setItem("selectedLecId", lecId);
@@ -163,9 +163,9 @@ export default function BoardRegist({ onClose }) {
   return (
     <Fullscreen>
       <Container
-        style={{ backgroundColor:"#fff", display:"flex", justifyContent:"space-between", alignItems:"center" }}
+        style={{ backgroundColor: "#fff", display: "flex", justifyContent: "space-between", alignItems: "center" }}
       >
-        <img src={Cancle} alt="닫기" style={{ width:19, height:19, cursor:"pointer" }} onClick={goBack} />
+        <img src={Cancle} alt="닫기" style={{ width: 19, height: 19, cursor: "pointer" }} onClick={() => navigate(-1)} />
         <Button as="button" type="button" onClick={handleSubmit} disabled={submitting}>
           {submitting ? "등록 중..." : "등록"}
         </Button>
@@ -175,7 +175,7 @@ export default function BoardRegist({ onClose }) {
         <TitleInput
           placeholder="제목을 입력해주세요."
           value={title}
-          onChange={(e)=>setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <EditorWrap><div ref={editorRef} /></EditorWrap>
 

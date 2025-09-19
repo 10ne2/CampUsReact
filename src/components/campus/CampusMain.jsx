@@ -46,7 +46,6 @@ import LectureHomeworkList from './lecHomework/LectureHomeworkList'
 import LectureHomeworkProDetail from './lecHomework/LectureHomeworkProDetail'
 import LectureHomeworkRegist from './lecHomework/LectureHomeworkRegist'
 import LectureHomeworkStuDetail from './lecHomework/LectureHomeworkStuDetail'
-import LectureHomeworkStuDetailFeedbackSubmit from './lecHomework/LectureHomeworkStuDetailFeedbackSubmit'
 import LectureHomeworkSubmit from './lecHomework/LectureHomeworkSubmit'
 import LectureHomeworkWrapper from './lecHomework/LectureHomeworkWrapper'
 import LectureHomeworkDetail from './lecHomework/LectureHomeworkDetail';
@@ -93,6 +92,8 @@ import Login from './commons/Login'
 import { RedirectAfterLogin } from './home/RedirectAfterLogin'
 import Toast from './commons/Toast'
 import ConfirmModal from './commons/ConfirmModal';
+import ProjectObjectFeedbackModify from './proObject/ProjectObjectFeedbackModify'
+import ProjectObjectDetail from './proObject/ProjectObjectDetail'
 
 
 // /lecture → /notice 로 리다이렉트 (쿼리 유지)
@@ -111,7 +112,6 @@ function CampusMain() {
   const { message, hideToast } = useToastStore();
 
   const hideTopNav =
-    useMatch('/homework/write') ||
     useMatch('/homework/stu/:submitId');
 
 
@@ -149,9 +149,14 @@ function CampusMain() {
               <Route index element={<LectureNoticeList />}></Route>
               <Route path=':id' element={<LectureNoticeDetail />}></Route>
             </Route>
-            <Route path='/online' element={<LectureOnlineWrapper />}>
-              <Route index element={<LectureOnlineList />}></Route>
-              <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
+            <Route path='/course/:lecId/online' element={<LectureOnlineWrapper />}>
+          <Route index element={<LectureOnlineList />} />
+          <Route path=':lecvid_id' element={<LectureOnlineDetail />} />
+        </Route>
+        <Route path='/online' element={<LectureOnlineWrapper />}>
+          <Route index element={<LectureOnlineList />} />
+          <Route path=':lecvid_id' element={<LectureOnlineDetail />} />
+          <Route path=':lecvid_id/modify' element={<LectureOnlineModify />} />
             </Route>
             <Route path="/attendance/professor" element={<LectureAttendanceListPro />} />
             <Route path="/attendance/student" element={<LectureAttendanceListStu />} />
@@ -160,7 +165,6 @@ function CampusMain() {
               <Route path=':hwNo/:stuId' element={<LectureHomeworkDetail />}></Route>
               <Route path='pro/:hwNo' element={<LectureHomeworkProDetail />} />
               <Route path='stu/:submitId' element={<LectureHomeworkStuDetail />} />
-              <Route path='write' element={<LectureHomeworkRegist />} />
             </Route>
             <Route path='/pds' element={<LecturePdsWrapper />}>
               <Route index element={<LecturePdsList />}></Route>
@@ -172,11 +176,11 @@ function CampusMain() {
               <Route path=':team_id' element={<ProjectTeamDetail />}></Route>
             </Route>
             <Route path='/project/object' element={<ProjectObjectWrapper />}>
-              <Route index element={<ProjectObjectProjectList />}></Route>
-              <Route path=':project_id/list' element={<ProjectObjectList />}>
-                <Route path=':rm_id' element={<ProjectObjectDetailFeedback />}></Route>
-              </Route>
-            </Route>
+          <Route index element={<ProjectObjectProjectList />}></Route>
+          <Route path=':project_id/list' element={<ProjectObjectList />}></Route>
+            <Route path=':project_id/list/:rm_id/detail' element={<ProjectObjectDetail/>}></Route> 
+          
+        </Route>
             <Route path="/board" element={<BoardWrapper />}>
               <Route index element={<BoardList />} />
               <Route path="detail/:id" element={<BoardDetail />} />
@@ -207,7 +211,9 @@ function CampusMain() {
           <TeamMemberSearch />
           <ProfessorSearch />
           <ProjectTeamModifyCheck />
-
+          <LectureHomeworkRegist />
+           <ProjectObjectFeedback/>
+           <ProjectObjectFeedbackModify/>
           <LecturePlanRegist />
           {message && <Toast message={message} onClose={hideToast} />}
         </>

@@ -153,9 +153,6 @@ function MailDashBoard() {
                         }
                     </div>
                 </MailDashBox>
-                {/* <Post>
-        <img src={go} style={{width:"70%", height: "70%", objectFit:'contain'}}/>
-    </Post> */}
             </MainContainer>
         </>
 

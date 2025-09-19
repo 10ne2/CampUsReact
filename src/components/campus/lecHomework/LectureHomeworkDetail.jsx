@@ -4,8 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { clip } from "../img";
 import ConfirmModal from "../commons/ConfirmModal";
-import Toast from "../commons/Toast";
 import { FlexDiv } from "../commons/WHComponent";
+import { useToastStore } from "../commons/modalStore";
 
 
 /* ============ style ============ */
@@ -228,13 +228,7 @@ export default function LectureHomeworkDetail() {
   const [existingFileName, setExistingFileName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-
-  // 토스트
-  const showToast = (msg) => {
-    setToastMsg("");        // 먼저 초기화
-    setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-  };
+  const { showToast } = useToastStore();
 
   const user = (() => {
     try { return JSON.parse(sessionStorage.getItem("user") || "null"); }
@@ -311,7 +305,7 @@ export default function LectureHomeworkDetail() {
             <AssignBody>{stripHtml(homework?.hwDesc)}</AssignBody>
             <CardHr />
             <CardFooter>
-              {isSubmitted && <Button type="button" onClick={() => navigate(-1)}>목록</Button>}
+              <Button type="button" onClick={() => navigate(-1)}>목록</Button>
             </CardFooter>
           </Card>
         </div>
@@ -326,16 +320,11 @@ export default function LectureHomeworkDetail() {
                 <Meta>ㅣ</Meta>
                 <SubmissionTime>제출 시간 : {fmtDate(submit.submittedAt)}</SubmissionTime>
                 <SubmissionActions>
-                  <ChipBrand
-                    onClick={() => {
-                      setComment(submit.hwsubComment || "");
-                      setExistingFileName(submit.hwsubFilename || "");
-                      setFile(null);
-                      setEditing(true);
-                    }}
-                  >
+                  {!submit?.hwsubFeedback ? (
+                  <ChipBrand onClick={() => { setComment(submit.hwsubComment || ""); setExistingFileName(submit.hwsubFilename || ""); setFile(null); setEditing(true); }} >
                     수정
                   </ChipBrand>
+                  ) : (null)}
                 </SubmissionActions>
               </SubmissionHead>
               <SubmissionText>{stripHtml(submit?.hwsubComment)}</SubmissionText>
@@ -360,7 +349,7 @@ export default function LectureHomeworkDetail() {
                 <label style={{ fontSize: '14px', color: "#98a1a8", fontWeight:'600' }}>내용</label>
                 <textarea
                   rows={6}
-                  style={{marginLeft:'-6px', width: "365px", resize: "vertical", padding: 8, borderRadius: 8, border: "1px solid #ccc", borderRadius:'4px', outline:'none' }}
+                  style={{marginLeft:'-6px', width: "365px", resize: "vertical", padding: 8, border: "1px solid #ccc", borderRadius:'4px', outline:'none' }}
                   placeholder="내용을 입력하세요"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
@@ -409,7 +398,6 @@ export default function LectureHomeworkDetail() {
           </div>
         )}
       </MobileShell>
-      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
       <ConfirmModal />
     </div>
   );

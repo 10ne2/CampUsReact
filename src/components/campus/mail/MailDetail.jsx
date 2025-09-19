@@ -5,6 +5,8 @@ import { Container } from "../topNav/TopNav";
 import { getMailDetail, getUserSession, updateMailDetailWaste, updateMailReceiveImpToggle, updateMailSendImpToggle, updateMailWaste } from "../api";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../commons/WHComponent";
+import Toast from "../commons/Toast";
+import { useToastStore } from "../commons/modalStore";
 
 const MobileShell = styled.div`
   width: 100vw;
@@ -237,6 +239,7 @@ export default function MailDetail() {
   const memId = params.get("memId"); // 쿼리에서 memId 가져오기
   const navigate = useNavigate();
   const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+  const { showToast } = useToastStore();
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -281,15 +284,15 @@ export default function MailDetail() {
       console.log("res.data:", res.data);
 
       if (res.data?.success) {
-        alert("휴지통으로 이동했습니다.");
+        showToast("휴지통으로 이동했습니다.");
 
         navigate(-1);
       } else {
-        alert("휴지통 이동 실패");
+        showToast("휴지통 이동 실패");
       }
     } catch (e) {
       console.error(e);
-      alert("에러가 발생했습니다.");
+      showToast("에러가 발생했습니다.");
     }
   };
 
@@ -341,70 +344,71 @@ export default function MailDetail() {
 
 
   return (
-    <MobileShell>
-      <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-        {!loading && data &&
-          data.detail &&
-          < div style={{ padding: '5px 20px 24px' }}>
-            <SubHeader>
-              <TimeText>{formatDate(data.detail.mail_sender === user.mem_id ? data.detail.mail_sdate : data.detail.mail_rdate)}</TimeText>
-              <BoxButton type='button' style={{ backgroundImage: `url(${trash})`, cursor: 'pointer' }} onClick={handleWaste}></BoxButton>
-            </SubHeader>
+    <>
+      <MobileShell>
+        <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+          {!loading && data &&
+            data.detail &&
+            < div style={{ padding: '5px 20px 24px' }}>
+              <SubHeader>
+                <TimeText>{formatDate(data.detail.mail_sender === user.mem_id ? data.detail.mail_sdate : data.detail.mail_rdate)}</TimeText>
+                <BoxButton type='button' style={{ backgroundImage: `url(${trash})`, cursor: 'pointer' }} onClick={handleWaste}></BoxButton>
+              </SubHeader>
 
-            <PageDivider />
+              <PageDivider />
 
-            <Card>
-              <TitleRow>
-                <StarBtn >
-                  <StarImg src={(data?.detail?.mail_rimp === 0 && data?.detail?.mail_simp === 0) ? unImp : imp} onClick={handleToggleImp} />
-                </StarBtn>
-                <div>
-                  <MailTitle>{data.detail.mail_name}</MailTitle>
-                </div>
-              </TitleRow>
+              <Card>
+                <TitleRow>
+                  <StarBtn >
+                    <StarImg src={(data?.detail?.mail_rimp === 0 && data?.detail?.mail_simp === 0) ? unImp : imp} onClick={handleToggleImp} />
+                  </StarBtn>
+                  <div>
+                    <MailTitle>{data.detail.mail_name}</MailTitle>
+                  </div>
+                </TitleRow>
 
-              <Meta>
-                <MetaLabel>보낸 사람</MetaLabel>
-                <ChipRow>
-                  <Chip>
-                    <ChipName>{data.detail.sender_name}</ChipName>
-                    <ChipEmail>{data.detail.sender_email}</ChipEmail>
-                  </Chip>
-                </ChipRow>
+                <Meta>
+                  <MetaLabel>보낸 사람</MetaLabel>
+                  <ChipRow>
+                    <Chip>
+                      <ChipName>{data.detail.sender_name}</ChipName>
+                      <ChipEmail>{data.detail.sender_email}</ChipEmail>
+                    </Chip>
+                  </ChipRow>
 
-                <MetaLabel>받는 사람</MetaLabel>
-                <ChipRow>
-                  <Chip>
-                    <ChipName>{data.detail.receiver_name}</ChipName>
-                    <ChipEmail>{data.detail.receiver_email}</ChipEmail>
-                  </Chip>
-                </ChipRow>
-              </Meta>
+                  <MetaLabel>받는 사람</MetaLabel>
+                  <ChipRow>
+                    <Chip>
+                      <ChipName>{data.detail.receiver_name}</ChipName>
+                      <ChipEmail>{data.detail.receiver_email}</ChipEmail>
+                    </Chip>
+                  </ChipRow>
+                </Meta>
 
-              <CardHr />
-              <BodyText>{stripHtmlTags(data.detail.mail_desc)}</BodyText>
+                <CardHr />
+                <BodyText>{stripHtmlTags(data.detail.mail_desc)}</BodyText>
 
-              {data.detail.mailFileList?.length > 0 && (
-                <Attachment>
-                  <AttachmentIcon src={clip} />
-                  <AttachmentName href={`/api/message/getFile?mafile_no=${data.detail.mailFileList[0].mafile_no}`}
-                    fileName={data.detail.mailFileList[0].mafile_name.split('$$')[1]} onMouseDown={(e) => e.preventDefault()}>
-                    {data.detail.mailFileList[0].mafile_name.split('$$')[1]}
-                  </AttachmentName>
-                </Attachment>
-              )}
+                {data.detail.mailFileList?.length > 0 && (
+                  <Attachment>
+                    <AttachmentIcon src={clip} />
+                    <AttachmentName href={`/api/message/getFile?mafile_no=${data.detail.mailFileList[0].mafile_no}`}
+                      fileName={data.detail.mailFileList[0].mafile_name.split('$$')[1]} onMouseDown={(e) => e.preventDefault()}>
+                      {data.detail.mailFileList[0].mafile_name.split('$$')[1]}
+                    </AttachmentName>
+                  </Attachment>
+                )}
 
-              <CardHr />
+                <CardHr />
 
-              <CardFooter>
-                <Button onClick={() => navigate(-1)}>목록</Button>
-              </CardFooter>
-            </Card>
-          </div>
+                <CardFooter>
+                  <Button onClick={() => navigate(-1)}>목록</Button>
+                </CardFooter>
+              </Card>
+            </div>
 
-
-        }
-      </div>
-    </MobileShell >
+          }
+        </div>
+      </MobileShell >
+    </>
   );
 }

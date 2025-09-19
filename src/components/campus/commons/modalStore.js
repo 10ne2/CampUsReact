@@ -28,6 +28,7 @@ export const usePasswordModalStore = create((set) => ({
 
   hideModal: () => set({ visible: false, message: "", onConfirm: null, onCancel: null }),
 }));
+
 export const useAttendanceModalStore = create((set) => ({
   visible: false,       // 모달 보이기 여부
   message: "",          // 모달 메시지
@@ -37,11 +38,24 @@ export const useAttendanceModalStore = create((set) => ({
   hideModal: () =>
     set({ visible: false, message: "", onCancel: null }),
 }));
-
-export const useProjectFeedbackModalStore = create((set) => ({
+export const useProjectFeedbackModifyModalStore = create((set) => ({
   visible: false,
-  showModal: () => set({ visible: true }),
-  hideModal: () => set({ visible: false }),
+  rm_id: null,
+  project_id: null,
+  eval_id: null,
+  memId: null,
+  showModal: ({ rm_id, project_id, eval_id, memId }) =>
+    set({ visible: true, rm_id, project_id, eval_id, memId }),
+  hideModal: () =>
+    set({ visible: false, rm_id: null, project_id: null, eval_id: null, memId: null }),
+}));
+export const useProjectFeedbackModalStore = create((set) => ({
+    visible: false,
+    rm_id: null,
+    project_id: null,
+    memId: null,
+    showModal: ({ rm_id, project_id, memId }) => set({ visible: true, rm_id, project_id, memId }),
+    hideModal: () => set({ visible: false, rm_id: null, project_id: null, memId: null }),
 }));
 
 export const useMypageModalStore = create((set) => ({
@@ -151,7 +165,12 @@ export const useTeamProfessorModalStore = create((set) => ({
 }));
 export const useToastStore = create((set) => ({
   message: "",
-  showToast: (msg) => set({ message: msg }),
+  duration: 3000,
+  showToast: (msg, time) => {
+    set({ message: "" }); // 먼저 초기화
+    setTimeout(() => set({ message: msg }), 50); // 50ms 뒤에 다시 메시지 표시
+    setTimeout(() => set({ message: "" }), (time || 3000) + 50); // 표시 시간 후 숨기기
+  },
   hideToast: () => set({ message: "" }),
 }));
 
@@ -165,6 +184,12 @@ export const useAttendanceModifyStore = create((set) => ({
   visible: false,
   show: () => set({ visible: true }),
   hide: () => set({ visible: false }),
+}));
+
+export const useHomeworkProRegistStore = create((set) => ({
+  visible: false,
+  showModal: () => set({ visible: true }),
+  hideModal: () => set({ visible: false }),
 }));
 
 export default useModalStore;

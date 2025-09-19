@@ -4,12 +4,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Cancle, searchIcon, calender, radioCheck, searchbtn } from "../img";
-import { Container } from "../topNav/TopNav";
-import { Button, CustomInput, FlexDiv, MJCustomInput } from "../commons/WHComponent";
-import { ExitButton } from "../lecAtten/AttendanceModal";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 import { useProjectTeamModifyModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore } from "../commons/modalStore";
 import { getProjectDetail, requestProjectModify } from "../api";
+import { Container } from "../topNav/TopNav";
+import { ExitButton } from "../lecAtten/AttendanceModal";
+import { Button, FlexDiv, MJCustomInput } from "../commons/WHComponent";
 
 const GlobalFix = createGlobalStyle`
   .react-datepicker-wrapper,
@@ -214,6 +214,7 @@ const [samester, setSamester] = useState(""); // 학기
 const [projectDesc, setProjectDesc] = useState("");
 const [leaderName, setLeaderName] = useState("");
 const [memberNames, setMemberNames] = useState([]);
+const [memberIds, seMemberIds] = useState([]);
 
 useEffect(() => {
   if (visible && project_id) {
@@ -232,6 +233,9 @@ useEffect(() => {
       setMemberNames(
         Array.isArray(p?.mem_name) ? p.mem_name : (p?.mem_name ? [p.mem_name] : [])
       );
+      setMemberIds(
+        Array.isArray(p?.mem_id) ? p.mem_id : (p?.mem_id ? [p.mem_id] : [])
+      )
     })
     .finally(() => setLoading(false));
   }
@@ -253,7 +257,9 @@ const handleSubmit = async () => {
     ? endDate.toISOString().split("T")[0]
     : project.project_endate,
   team_id: project.team_id,
-  team_member_ids: project.mem_id || "",
+ team_member_ids: selectedTeamMember?.length > 0
+  ? selectedTeamMember.map(m => m.mem_id).join(",")
+  : memberIds.join(","),
   team_member_names:
     selectedTeamMember?.length > 0
       ? selectedTeamMember.map((m) => m.mem_name).join(", ")
@@ -264,10 +270,10 @@ const handleSubmit = async () => {
 };
     await requestProjectModify(payload);
     alert("수정 요청이 등록되었습니다.");
+    hideModal();
     if (typeof window.refreshProjectTeamList === "function") {
       window.refreshProjectTeamList();
     }
-    hideModal();
   } catch (err) {
     console.error("수정 요청 실패:", err);
     alert("수정 요청에 실패했습니다.");

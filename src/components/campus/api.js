@@ -58,6 +58,29 @@ export const getProjectTeamListPro = (memId, page = 1, samester = '', projectNam
 
   });
 }
+export const getProjectTeamListStu = (
+  memId, 
+  page = 1, 
+  samester = '', 
+  projectName = '', 
+  projectStDate = '', 
+  projectEnDate = '',
+  evalStatus,
+    perPageNum  = 3
+) => {
+  return axios.get('/api/roadmap/projectlist/stu', {  // @RestController 경로
+    params: {
+      memId,
+      page,
+      samester,
+      project_name: projectName || '',
+      project_stdate: projectStDate || '',
+      project_endate: projectEnDate || '',
+      eval_status : evalStatus,
+      perPageNum
+    }
+  });
+};
 export const getProjectTeamList = (memId, page = 1, samester = '', projectName = '', projectStDate = '', projectEnDate = '') => {
   return axios.get('/api/project/list/stu', {
     params: {
@@ -70,8 +93,74 @@ export const getProjectTeamList = (memId, page = 1, samester = '', projectName =
     }
   });
 }
+export const getProjectObjectList = (projectId, memId, rmCategory = '', rmName = '', rmStdate = '', rmEndate = '', page = 1) => {
+  return axios.get('/api/roadmap/list/stu', {
+    params: {
+      project_id: projectId,
+      memId: memId,
+      rm_category: rmCategory,
+      rm_name: rmName,
+      rm_stdate: rmStdate,
+      rm_endate: rmEndate,
+      page
+    }
+  });
+};
+export const getProjectTeamListProRest = (
+  memId,
+  page = 1,
+  samester = '',
+  projectName = '',
+  projectStDate = '',
+  projectEnDate = '',
+  modifyRequest = false
 
+) => {
+  return axios.get('/api/roadmap/projectlist/pro', {
+    params: {
+      memId, // session에서 서버가 받아야 하지만, axios에서는 보내도 무방
+      page,
+      samester,
+      project_name: projectName || '',
+      project_stdate: projectStDate || '',
+      project_endate: projectEnDate || '',
+      modifyRequest
+    }
+  });
+};
+export const getRoadMapDetail = async (rm_id, memId, pageMakers = {}, pageMaker = {}) => {
+  try {
+    const params = {
+      rm_id,
+      memId,
+      ...pageMakers,
+      ...pageMaker
+    };
 
+    const res = await axios.get("/api/roadmap/detail", { params });
+    return res.data;
+  } catch (err) {
+    console.error("로드맵 상세 조회 실패:", err.response?.data || err);
+    throw err;
+  }
+};
+export const getEvaluationForm = (rm_id) => {
+  return axios.get("/api/roadmap/evaluation/form", {
+    params: { rm_id }
+  })
+};
+export const registerEvaluation = (payload) => {
+  return axios.post(`/api/roadmap/evaluation/regist?memId=${payload.profes_id}`, payload)
+};
+export const getEvaluationForModify = (eval_id, rm_id) => {
+  return axios.get(`/api/roadmap/modify?eval_id=${eval_id}&rm_id=${rm_id}`);
+};
+export const modifyEvaluation = (payload) => {
+  return axios.post(
+    `/api/roadmap/modify?eval_id=${payload.eval_id}&rm_id=${payload.rm_id}&memId=${payload.profes_id}`,
+    payload
+  );
+};
 // ------------------------------------------ 공용
 
 export function checkSession() {
@@ -172,6 +261,61 @@ export async function downloadLecNoticeFile(id, which = 1) {
   const url = lecNoticeDownloadUrl(id, which);
   const res = await axios.get(url, { responseType: "blob" });
   return res.data;
+}
+
+
+// 영상 목록 조회
+export function getLectureVideoList(lecId, memId, week = "1주차") {
+  return axios.get("/api/lecture/vidlist", {
+    params: { lecId, memId, week },
+  });
+}
+
+// 영상 상세 조회
+export function getLectureVideoDetail(lecId, lecvidId, memId) {
+  return axios.get("/api/lecture/detail", {
+    params: { lecId, lecvidId, memId },
+  });
+}
+
+// 영상 등록
+export function registerLectureVideo(lecId, title, videoFile, thumbFile) {
+  const formData = new FormData();
+  formData.append("lecId", lecId);
+  formData.append("title", title);
+  formData.append("videoFile", videoFile);
+  formData.append("thumbFile", thumbFile);
+
+  return axios.post("/api/lecture/register", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
+
+// 영상 수정
+export function modifyLectureVideo(lecvidId, title, detail, week, videoFile, thumbFile) {
+  const formData = new FormData();
+  formData.append("lecvidId", lecvidId);
+  formData.append("title", title);
+  formData.append("detail", detail);
+  formData.append("week", week);
+
+  if (videoFile instanceof File) {
+    formData.append("videoFile", videoFile);
+  }
+  if (thumbFile instanceof File) {
+    formData.append("thumbFile", thumbFile);
+  }
+
+  return axios.post("/api/lecture/modify", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
+
+// 진행도 업데이트
+export function updateLectureProgress(aNo, progress) {
+  return axios.post("/api/lecture/progress", null, {
+    params: { aNo, progress },
+  });
 }
 
 // ------------------------------------------ 게시판

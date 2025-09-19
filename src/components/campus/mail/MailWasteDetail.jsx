@@ -5,6 +5,8 @@ import { Container } from "../topNav/TopNav";
 import { deleteMail, getMailDetail, getUserSession, updateMailWasteBack } from "../api";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../commons/WHComponent";
+import ConfirmModal from "../commons/ConfirmModal";
+import useModalStore, { useToastStore } from "../commons/modalStore";
 
 const MobileShell = styled.div`
   width: 100vw;
@@ -155,6 +157,9 @@ export default function MailWasteDetail() {
   const params = new URLSearchParams(useLocation().search);
   const memId = params.get("memId"); // 쿼리에서 memId 가져오기
   const navigate = useNavigate();
+  const { showToast } = useToastStore();
+  const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -196,96 +201,103 @@ export default function MailWasteDetail() {
       const res = await updateMailWasteBack(mail_id);
 
       if (res.data.success) {
-        alert("복구했습니다.");
+        showToast("복구했습니다.");
         // 실패 시 롤백
         navigate(-1);
       } else {
-        alert("휴지통 이동 실패");
+        showToast("휴지통 이동 실패");
       }
     } catch (e) {
       console.error(e);
-      alert("에러가 발생했습니다.");
+      showToast("에러가 발생했습니다.");
     }
   };
 
   // 삭제
   const handleDelete = async () => {
 
-    try {
-      const res = await deleteMail(mail_id);
+    useModalStore.getState().showConfirm(
+      "복구가 불가능합니다. 정말 삭제하시겠습니까?",
+      async () => {
+        try {
+          const res = await deleteMail(mail_id);
 
-      if (res.data.success) {
-        alert("삭제했습니다.");
-        // 실패 시 롤백
-        navigate(-1);
-      } else {
-        alert("삭제 실패");
-      }
-    } catch (e) {
-      console.error(e);
-      alert("에러가 발생했습니다.");
-    }
+          if (res.data.success) {
+            showToast("삭제했습니다.");
+            // 실패 시 롤백
+            navigate(-1);
+          } else {
+            showToast("삭제 실패");
+          }
+        } catch (e) {
+          console.error(e);
+          showToast("에러가 발생했습니다.");
+        }
+      })
   };
 
   return (
-    <MobileShell>
-      <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-        {!loading && data &&
-          data.detail &&
-          <div style={{ padding: '5px 20px 24px' }}>
-            <SubHeader>
-              <TimeText>{formatDate(data.detail.mail_ddate)}</TimeText>
-              <Button style={{marginTop:'2px', fontSize:'13px', height:'24px', marginLeft: '0', backgroundColor: '#fff', border: '1px solid #aaa', color: '#aaa', width: '40px' }} onClick={handleWasteBack}>복구</Button>
-              <Button style={{marginTop:'2px', height:'24px', marginLeft: '1px', backgroundColor: '#fff', border: '1px solid #aaa', color: '#aaa', width: '60px' }} onClick={handleDelete}>영구삭제</Button>
-            </SubHeader>
+    <>
+      <MobileShell>
+        <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+          {!loading && data &&
+            data.detail &&
+            <div style={{ padding: '5px 20px 24px' }}>
+              <SubHeader>
+                <TimeText>{formatDate(data.detail.mail_ddate)}</TimeText>
+                <Button style={{ marginTop: '2px', fontSize: '13px', height: '24px', marginLeft: '0', backgroundColor: '#fff', border: '1px solid #aaa', color: '#aaa', width: '40px' }} onClick={handleWasteBack}>복구</Button>
+                <Button style={{ marginTop: '2px', height: '24px', marginLeft: '1px', backgroundColor: '#fff', border: '1px solid #aaa', color: '#aaa', width: '60px' }} onClick={handleDelete}>영구삭제</Button>
+              </SubHeader>
 
-            <PageDivider />
+              <PageDivider />
 
-            <Card>
-              <TitleRow>
-                <div>
-                  <MailTitle>{data.detail.mail_name}</MailTitle>
-                </div>
-              </TitleRow>
+              <Card>
+                <TitleRow>
+                  <div>
+                    <MailTitle>{data.detail.mail_name}</MailTitle>
+                  </div>
+                </TitleRow>
 
-              <Meta>
-                <MetaLabel>보낸 사람</MetaLabel>
-                <ChipRow>
-                  <Chip>
-                    <ChipName>{data.detail.sender_name}</ChipName>
-                    <ChipEmail>{data.detail.sender_email}</ChipEmail>
-                  </Chip>
-                </ChipRow>
+                <Meta>
+                  <MetaLabel>보낸 사람</MetaLabel>
+                  <ChipRow>
+                    <Chip>
+                      <ChipName>{data.detail.sender_name}</ChipName>
+                      <ChipEmail>{data.detail.sender_email}</ChipEmail>
+                    </Chip>
+                  </ChipRow>
 
-                <MetaLabel>받는 사람</MetaLabel>
-                <ChipRow>
-                  <Chip>
-                    <ChipName>{data.detail.receiver_name}</ChipName>
-                    <ChipEmail>{data.detail.receiver_email}</ChipEmail>
-                  </Chip>
-                </ChipRow>
-              </Meta>
-              <CardHr />
-              <BodyText>{data.detail.mail_desc}</BodyText>
+                  <MetaLabel>받는 사람</MetaLabel>
+                  <ChipRow>
+                    <Chip>
+                      <ChipName>{data.detail.receiver_name}</ChipName>
+                      <ChipEmail>{data.detail.receiver_email}</ChipEmail>
+                    </Chip>
+                  </ChipRow>
+                </Meta>
+                <CardHr />
+                <BodyText>{stripHtmlTags(data.detail.mail_desc)}</BodyText>
 
-              {data.detail.mailFileList?.length > 0 && (
-                <Attachment>
-                  <AttachmentIcon src={clip} />
-                  <AttachmentName href={`/api/message/getFile?mafile_no=${data.detail.mailFileList[0].mafile_no}`}
-                    fileName={data.detail.mailFileList[0].mafile_name.split('$$')[1]} onMouseDown={(e) => e.preventDefault()}>
-                    {data.detail.mailFileList[0].mafile_name.split('$$')[1]}
-                  </AttachmentName>
-                </Attachment>
-              )}
+                {data.detail.mailFileList?.length > 0 && (
+                  <Attachment>
+                    <AttachmentIcon src={clip} />
+                    <AttachmentName href={`/api/message/getFile?mafile_no=${data.detail.mailFileList[0].mafile_no}`}
+                      fileName={data.detail.mailFileList[0].mafile_name.split('$$')[1]} onMouseDown={(e) => e.preventDefault()}>
+                      {data.detail.mailFileList[0].mafile_name.split('$$')[1]}
+                    </AttachmentName>
+                  </Attachment>
+                )}
 
-              <CardHr />
-              <CardFooter>
-                <Button onClick={() => navigate(-1)}>목록</Button>
-              </CardFooter>
-            </Card>
-          </div>
-        }
-      </div>
-    </MobileShell>
+                <CardHr />
+                <CardFooter>
+                  <Button onClick={() => navigate(-1)}>목록</Button>
+                </CardFooter>
+              </Card>
+            </div>
+          }
+        </div>
+      </MobileShell>
+      <ConfirmModal />
+    </>
   );
 }

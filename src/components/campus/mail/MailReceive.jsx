@@ -21,6 +21,7 @@ import styled from 'styled-components'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getMailReceive, getUserSession, updateMailReceiveImpToggle, updateMailReceiveLockToggle, updateMailWaste } from '../api'
 import Toast from '../commons/Toast'
+import { useToastStore } from '../commons/modalStore'
 
 const MailContainer = styled.div`
     width: 100%;
@@ -99,7 +100,7 @@ function MailReceive() {
     });
     const navigate = useNavigate();
     const location = useLocation();
-    const [toastMsg, setToastMsg] = useState("");
+    const { showToast } = useToastStore();
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -233,13 +234,6 @@ function MailReceive() {
             setBoxChecked(allIds);
         }
     }
-
-    // 토스트
-    const showToast = (msg) => {
-        setToastMsg("");        // 먼저 초기화
-        setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-    };
-
 
     // 잠금 토글
     const handleToggleLock = async (mail_id) => {
@@ -407,7 +401,7 @@ function MailReceive() {
                                             <CheckBox type='checkbox' name="check" value={rml.mail_id} checked={boxChecked.includes(rml.mail_id)} onChange={handleCheckboxChange} />
                                             <CheckMark />
                                         </label>
-                                        <div  style={{ width: '240px' }}>
+                                        <div style={{ width: '240px' }}>
                                             <Link to={`/mail/detail/${rml.mail_id}?memId=${user.mem_id}`}>
                                                 <FlexDiv>
                                                     <MailTitle style={{ marginLeft: '10px', marginTop: '-2px' }} unread={rml.mail_rread === 0}>{rml.sender_name}</MailTitle>
@@ -484,7 +478,6 @@ function MailReceive() {
                     </nav>
                 )}
             </div >
-            {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
         </>
     )
 }

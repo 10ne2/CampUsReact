@@ -21,11 +21,11 @@ const Container = styled.div`
     }
 `
 
-function MailNavItem({name, active}) {
+function MailNavItem({ name, active }) {
   return (
     <Container>
-        <Text active={active}>{name}</Text>
-        </Container>
+      <Text active={active}>{name}</Text>
+    </Container>
   )
 }
 

@@ -52,32 +52,32 @@ function MailNavBar() {
     const user = getUserSession();
     const showModal = useMailWriteModalStore((state) => state.showModal);
 
-  return (
-    <>
-    <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
-    <NavContainer style={{ alignItems:'center'}}>
-        <StyleLink to={`/mail?memId=${user.mem_id}`} end>
-            {({ isActive }) => <MailNavItem name='전체 메일' active={isActive} />}
-        </StyleLink>
-        <StyleLink to={`/mail/receive?memId=${user.mem_id}`}>
-            {({ isActive }) => <MailNavItem name='받은 메일함' active={isActive} />}
-        </StyleLink>
-        <StyleLink to={`/mail/send?memId=${user.mem_id}`}>
-            {({ isActive }) => <MailNavItem name='보낸 메일함' active={isActive} />}
-        </StyleLink>
-        <StyleLink to={`/mail/waste?memId=${user.mem_id}`}>
-            {({ isActive }) => <MailNavItem name='휴지통' active={isActive} />}
-        </StyleLink>
-    </NavContainer>
-    <GrayHr style={{margin:0, backgroundColor:'#ddd'}}/>
+    return (
+        <>
+            <GrayHr style={{ margin: 0, backgroundColor: '#ddd' }} />
+            <NavContainer style={{ alignItems: 'center' }}>
+                <StyleLink to={`/mail?memId=${user.mem_id}`} end>
+                    {({ isActive }) => <MailNavItem name='전체 메일' active={isActive} />}
+                </StyleLink>
+                <StyleLink to={`/mail/receive?memId=${user.mem_id}`}>
+                    {({ isActive }) => <MailNavItem name='받은 메일함' active={isActive} />}
+                </StyleLink>
+                <StyleLink to={`/mail/send?memId=${user.mem_id}`}>
+                    {({ isActive }) => <MailNavItem name='보낸 메일함' active={isActive} />}
+                </StyleLink>
+                <StyleLink to={`/mail/waste?memId=${user.mem_id}`}>
+                    {({ isActive }) => <MailNavItem name='휴지통' active={isActive} />}
+                </StyleLink>
+            </NavContainer>
+            <GrayHr style={{ margin: 0, backgroundColor: '#ddd' }} />
 
-    <div onClick={showModal}>
-        <WriteBox >
-            <WriteIcon src={mailWrite} />
-        </WriteBox>
-    </div>
-    </>
-  )
+            <div onClick={showModal}>
+                <WriteBox >
+                    <WriteIcon src={mailWrite} />
+                </WriteBox>
+            </div>
+        </>
+    )
 }
 
 export default MailNavBar

@@ -5,8 +5,8 @@ import axios from "axios";
 import { clip, Cancle } from "../img";
 import { Container } from "../topNav/TopNav";
 import { Button } from "../commons/WHComponent";
-import Toast from "../commons/Toast";
 import ConfirmModal from "../commons/ConfirmModal";
+import { useToastStore } from "../commons/modalStore";
 
 /* ===== 스타일 정의 (기존 그대로) ===== */
 const MobileShell = styled.div`width: 100%; background: #f7f7f7;`;
@@ -23,8 +23,18 @@ const Name = styled.span`font-size:13px;font-weight:700;color:#374151;`;
 const Time = styled.span`font-size:12px;color:#9ca3af;`;
 const Meta = styled.div`font-size:12px;color:#98a1a8;`;
 const FileLine = styled.div`display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280;margin-left:15px;`;
-const FileLink = styled.a`font-size:12px;color:#707070;cursor:pointer;text-decoration:underline;`;
-const BodyText = styled.p`font-size:13px;color:#6b7280;line-height:1.7;white-space:pre-line;margin:10px 15px 20px;`;
+const FileLink = styled.a`
+  font-size:13px;
+  color:#707070;
+  cursor:pointer;
+  text-decoration:none;
+`;
+const BodyText = styled.p`
+  font-size:14px;
+  line-height:1.7;
+  white-space:pre-line;
+  margin:10px 15px 100px;
+`;
 const AttachmentIcon = styled.img`width:14px;height:14px;object-fit:contain;`;
 const CardFooterRight = styled.div`display:flex;justify-content:flex-end;margin-top:12px;`;
 const CardHr = styled.div`width:100%;height:1px;background:#D9D9D9;margin:10px 0 15px;`;
@@ -53,15 +63,9 @@ export default function LectureHomeworkStuDetail() {
   const [submit, setSubmit] = useState(null);
   // const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(true);
-  const [toastMsg, setToastMsg] = useState("");
+  const { showToast } = useToastStore();
   const [feedback, setFeedback] = useState(""); // 실제 저장된 피드백
   const [draftFeedback, setDraftFeedback] = useState("");
-
-  // 토스트
-  const showToast = (msg) => {
-    setToastMsg("");        // 먼저 초기화
-    setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-  };
 
   const user = (() => {
     try { return JSON.parse(sessionStorage.getItem("user") || "null"); }
@@ -189,7 +193,6 @@ export default function LectureHomeworkStuDetail() {
           </div>
         )}
       </MobileShell>
-      {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
       <ConfirmModal />
     </div>
   );

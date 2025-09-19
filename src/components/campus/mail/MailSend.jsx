@@ -20,6 +20,7 @@ import styled from 'styled-components'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { getMailSend, getUserSession, updateMailSendImpToggle, updateMailSnedLockToggle, updateMailWaste } from '../api'
 import Toast from '../commons/Toast'
+import { useToastStore } from '../commons/modalStore'
 
 const BoxButton = styled.input`
     width: 22px;
@@ -87,7 +88,7 @@ function MailSend() {
     });
     const navigate = useNavigate();
     const location = useLocation();
-    const [toastMsg, setToastMsg] = useState("");
+     const { showToast } = useToastStore();
 
 
     function useQuery() {
@@ -220,11 +221,6 @@ function MailSend() {
         }
     }
 
-    // 토스트
-    const showToast = (msg) => {
-        setToastMsg("");        // 먼저 초기화
-        setTimeout(() => setToastMsg(msg), 50); // 짧게 지연 후 다시 설정
-    };
 
     // 잠금 토글
     const handleToggleLock = async (mail_id) => {
@@ -471,7 +467,6 @@ function MailSend() {
                     </nav>
                 )}
             </div>
-            {toastMsg && <Toast message={toastMsg} onClose={() => setToastMsg("")} />}
         </>
     )
 }
