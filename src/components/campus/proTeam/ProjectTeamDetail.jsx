@@ -4,7 +4,7 @@ import { Container } from "../topNav/TopNav";
 import { Cancle } from "../img";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 import { useProjectDetailModalStore, useToastStore } from "../commons/modalStore";
-import { ExitButton } from "../lecAtten/AttandanceModal";
+import { ExitButton } from "../lecAtten/AttendanceModal";
 import { getProjectDetail, removeTeam } from "../api";
 import Toast from "../commons/Toast";
 

@@ -109,11 +109,11 @@ function CampusMain() {
   const user = useAuthStore(state => state.user);
   const location = useLocation();
   const { message, hideToast } = useToastStore();
-  
+
   const hideTopNav =
-  useMatch('/homework/write') ||
-  useMatch('/homework/stu/:submitId');
-  
+    useMatch('/homework/write') ||
+    useMatch('/homework/stu/:submitId');
+
 
   useEffect(() => {
     // 세션 스토리지에 로그인 정보가 있으면 로그인 처리
@@ -128,7 +128,7 @@ function CampusMain() {
 
   if (checkingSession) return <Loading />;
 
-   
+
 
   return (
     <>
@@ -153,9 +153,8 @@ function CampusMain() {
               <Route index element={<LectureOnlineList />}></Route>
               <Route path=':lecvid_id' element={<LectureOnlineDetail />}></Route>
             </Route>
-            <Route path='/atten' element={<LectureAttendanceWrapper />}>
-              <Route index element={user.mem_auth === "ROLE01" ? <LectureAttendanceListStu /> : <LectureAttendanceListPro />}></Route>
-            </Route>
+            <Route path="/attendance/professor" element={<LectureAttendanceListPro />} />
+            <Route path="/attendance/student" element={<LectureAttendanceListStu />} />
             <Route path='/homework' element={<LectureHomeworkWrapper />}>
               <Route index element={<LectureHomeworkList />}></Route>
               <Route path=':hwNo/:stuId' element={<LectureHomeworkDetail />}></Route>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { ExitButton } from '../lecAtten/AttandanceModal';
+import { ExitButton } from '../lecAtten/AttendanceModal';
 import { Container } from '../topNav/TopNav';
 import { CatTitle, FlexDiv, RegistButton } from '../commons/WHComponent';
 import { Cancle } from '../img'

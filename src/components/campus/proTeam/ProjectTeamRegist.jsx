@@ -9,7 +9,7 @@ import { Button } from "../commons/WHComponent";
 import { RadioButton, RadioLabel, RadioMark, RadioWrap } from "./ProjectTeamModify";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 import { useProjectTeamRegistModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore } from "../commons/modalStore";
-import { ExitButton } from "../lecAtten/AttandanceModal";
+import { ExitButton } from "../lecAtten/AttendanceModal";
 import { getUserSession, registerProject } from "../api";
 
 const Page = styled.div`

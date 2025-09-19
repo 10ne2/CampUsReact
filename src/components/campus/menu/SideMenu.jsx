@@ -151,9 +151,10 @@ function SideMenu() {
   const query = new URLSearchParams(location.search);
   const memId = query.get('memId');
   const navigate = useNavigate();
-  const [selectedLecId, setSelectedLecId] = useState(''); 
-  const { lecId: lecIdFromPath } = useParams(); 
+  const [selectedLecId, setSelectedLecId] = useState('');
+  const { lecId: lecIdFromPath } = useParams();
   const currentLecId = selectedLecId || lecIdFromPath || '';
+  const [attUser, setAttUser] = useState(getUserSession());
 
   const handleLectureChange = (e) => {
     const lecId = e.target.value;
@@ -162,23 +163,19 @@ function SideMenu() {
     }
   };
 
-  // ✅ 전공 선택 시 세션에 major 세팅 + 목록 라우트로 이동
-  // const handleLectureChange = async (e) => {
-  //   const lecId = e.target.value;
-  //   if (!lecId) return;
-  //   try {
-  //     await changeLecMajor(lecId);                       // 서버 세션에 major 설정
-  //     localStorage.setItem('selectedLecId', lecId);      // 클라에도 저장
-  //     sessionStorage.setItem('lecId', lecId);
-  //     sessionStorage.setItem('lec_id', lecId);
+  useEffect(() => {
+    const updateUser = () => {
+      setAttUser(getUserSession()); // 세션에서 다시 불러옴
+    };
+    window.addEventListener("userUpdated", updateUser);
+    return () => window.removeEventListener("userUpdated", updateUser);
+  }, []);
 
-  //     navigate(`/lecture?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(lecId)}`);
-  //     // closeMenu();
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert('전공을 설정하지 못했습니다.');
-  //   }
-  // };
+  useEffect(() => {
+    if (memId) {
+      getStudentData(memId);
+    }
+  }, [memId]);
 
   useEffect(() => {
     if (memId) {
@@ -208,17 +205,20 @@ function SideMenu() {
       setToastMsg('로그아웃 실패');
     }
   };
+
+  if (!attUser) return null;
+
   return (
     <>
       <Overlay isOpen={isOpen} onClick={closeMenu} />
       <Container $isOpen={isOpen}>
         <div style={{ display: 'flex' }}>
-          <Profile 
+          <Profile
             style={{ display: "flex", alignItems: "center", marginTop: "25px", cursor: "pointer" }} onClick={() => showModal()}
           >
-            <UserImage 
-              src={`/api/member/getPicture?memId=${user.mem_id}&v=${Date.now()}`} 
-              alt="프로필" 
+            <UserImage
+              src={`/api/member/getPicture?memId=${user.mem_id}&v=${Date.now()}`}
+              alt="프로필"
             />
             <div style={{ marginLeft: "12px" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -230,7 +230,7 @@ function SideMenu() {
               </div>
             </div>
           </Profile>
-          
+
           <Button style={{ marginTop: '47px', fontSize: "13px" }} onClick={() => { handleLogout(); closeMenu(); }}>로그아웃</Button>
         </div>
 
@@ -317,7 +317,10 @@ function SideMenu() {
               <StyledLink to={`/online?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>온라인 강의</p></li>
               </StyledLink>
-              <StyledLink to={`/atten?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>
+              <StyledLink to={ user.mem_auth === 'ROLE02' 
+                              ? `/attendance/professor?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`
+                              : `/attendance/student?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`
+                              } onClick={closeMenu} >
                 <li className="nav-item"><p style={{ marginLeft: '80px' }}>출결</p></li>
               </StyledLink>
               <StyledLink to={`/homework?memId=${encodeURIComponent(memId)}&lecId=${encodeURIComponent(localStorage.getItem('selectedLecId') || '')}`} onClick={closeMenu}>

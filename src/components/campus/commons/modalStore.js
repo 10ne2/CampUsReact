@@ -155,4 +155,16 @@ export const useToastStore = create((set) => ({
   hideToast: () => set({ message: "" }),
 }));
 
+export const useAttendanceChangeStore = create((set) => ({
+  visible: false,
+  show: () => set({ visible: true }),
+  hide: () => set({ visible: false }),
+}));
+
+export const useAttendanceModifyStore = create((set) => ({
+  visible: false,
+  show: () => set({ visible: true }),
+  hide: () => set({ visible: false }),
+}));
+
 export default useModalStore;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MemberList, ModalBackground, Overlay, UserImage, UserName, UserNameText, Wrap } from './TeamSearch'
 import { Container } from '../topNav/TopNav'
-import { ExitButton } from '../lecAtten/AttandanceModal'
+import { ExitButton } from '../lecAtten/AttendanceModal'
 import { CatTitle, FlexDiv, RegistButton } from '../commons/WHComponent'
 import { Hr } from '../menu/SideMenu'
 import { Flex, GrayHr } from '../home/HomeWrapperPro'

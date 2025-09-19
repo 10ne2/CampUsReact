@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Cancle, searchIcon, calender, radioCheck, searchbtn } from "../img";
 import { Container } from "../topNav/TopNav";
 import { Button, CustomInput, FlexDiv, MJCustomInput } from "../commons/WHComponent";
-import { ExitButton } from "../lecAtten/AttandanceModal";
+import { ExitButton } from "../lecAtten/AttendanceModal";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 import { useProjectTeamModifyModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore } from "../commons/modalStore";
 import { getProjectDetail, requestProjectModify } from "../api";

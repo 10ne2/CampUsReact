@@ -91,6 +91,8 @@ const ViewCount = styled.span`
   font-size: 13px;
   color: #98a1a8;
   margin-right: 10px;
+  width: 70px;
+  text-align: right;
 `;
 
 const DateText = styled.div`
@@ -121,7 +123,8 @@ const BodyText = styled.div`
   line-height: 1.5;
   white-space: pre-line;
   margin-left: 10px;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
+  width: 350px;
 `;
 
 const Attachment = styled.button`
@@ -451,7 +454,7 @@ export default function LectureNoticeDetail() {
           ) : (
             <>
               <FlexDiv>
-                <div style={{width:'310px'}}>
+                <div style={{width:'290px'}}>
                   <CardTitle>{item.lecNoticeName}</CardTitle>
                   <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
                 </div>

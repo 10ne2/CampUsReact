@@ -208,18 +208,8 @@ export default function LectureHomeworkProDetail() {
               <div style={{ padding: "0 10px" }}>
                 <div style={{ marginBottom: 12 }}>
                   <label style={{ fontSize: 12, color: "#98a1a8" }}>과제명</label>
-                  <input
-                    type="text"
-                    name="hwName"
-                    value={form.hwName}
-                    onChange={onChange}
-                    style={{
-                      width: "100%",
-                      padding: 8,
-                      borderRadius: 6,
-                      border: "1px solid #d9d9d9",
-                      marginTop: 4,
-                    }}
+                  <input type="text" name="hwName" value={form.hwName} onChange={onChange}
+                      style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #d9d9d9", marginTop: 4, }}
                   />
                 </div>
 

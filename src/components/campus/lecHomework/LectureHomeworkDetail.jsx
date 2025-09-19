@@ -5,6 +5,7 @@ import axios from "axios";
 import { clip } from "../img";
 import ConfirmModal from "../commons/ConfirmModal";
 import Toast from "../commons/Toast";
+import { FlexDiv } from "../commons/WHComponent";
 
 
 /* ============ style ============ */
@@ -293,7 +294,7 @@ export default function LectureHomeworkDetail() {
       <MobileShell>
         <div style={{ padding: "5px 20px 24px", backgroundColor: "#fff" }}>
           <TopBar>
-            <PageTitle>과제제출</PageTitle>
+            <PageTitle onClick={() => navigate(-1)}>과제제출</PageTitle>
             <TopActions>
               {isProfessor && (
                 <ModifyBtn type="button">수정</ModifyBtn>
@@ -348,42 +349,33 @@ export default function LectureHomeworkDetail() {
             </Card>
           </div>
         ) : (
-          <div style={{ padding: "1px 20px 24px", backgroundColor: "#fff", marginTop: "20px" }}>
+          <div style={{ padding: "10px 20px", backgroundColor: "#fff", marginTop: "20px" }}>
             <PageDivider />
-            <Card style={{ padding: 12 }}>
+            <Card style={{ padding: '0px 10px' }}>
               <div style={{ fontWeight: 700, marginBottom: 10 }}>
                 {editing ? "과제 수정" : "과제 제출"}
               </div>
+              <CardHr style={{width:'368px', marginLeft:'-8px'}}/>
               <div style={{ marginBottom: 10 }}>
-                <label style={{ fontSize: 12, color: "#98a1a8" }}>내용</label>
+                <label style={{ fontSize: '14px', color: "#98a1a8", fontWeight:'600' }}>내용</label>
                 <textarea
                   rows={6}
-                  style={{
-                    width: "100%",
-                    resize: "vertical",
-                    padding: 8,
-                    borderRadius: 8,
-                    border: "1px solid #e3e7ec",
-                  }}
+                  style={{marginLeft:'-6px', width: "365px", resize: "vertical", padding: 8, borderRadius: 8, border: "1px solid #ccc", borderRadius:'4px', outline:'none' }}
                   placeholder="내용을 입력하세요"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
               </div>
-              <div style={{ marginBottom: 14 }}>
-                <label className="btn btn-outline-secondary" style={{ cursor: "pointer" }}>
+              <FlexDiv >
+                <label className="btn btn-outline-secondary" style={{ cursor: "pointer", fontSize:'13px', padding:'3px 8px' }}>
                   파일 선택
-                  <input
-                    type="file"
-                    hidden
-                    onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  />
+                  <input type="file" hidden onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </label>
-                <span style={{ marginLeft: 8 }}>
+                <span style={{ marginLeft: 8, fontSize:'13px', marginTop:'0px', display:'block', width:'270px' }}>
                   {file ? file.name : existingFileName ? existingFileName : "(첨부 없음)"}
                 </span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+              </FlexDiv>
+              <div style={{ display: "flex", justifyContent: "end"}}>
                 <PrimaryButton type="button" onClick={onSubmit} disabled={submitting}>
                   {submitting ? (editing ? "수정 중..." : "제출 중...") : (editing ? "수정" : "제출")}
                 </PrimaryButton>
