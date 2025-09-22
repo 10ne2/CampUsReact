@@ -57,7 +57,12 @@ export const useProjectFeedbackModalStore = create((set) => ({
     showModal: ({ rm_id, project_id, memId }) => set({ visible: true, rm_id, project_id, memId }),
     hideModal: () => set({ visible: false, rm_id: null, project_id: null, memId: null }),
 }));
-
+export const useObjectRegist = create((set) => ({
+  visible: false,
+  projectId: null,           // 선택한 프로젝트 ID 추가
+  showModal: (id) => set({ visible: true, projectId: id }), // 열 때 projectId 설정
+  hideModal: () => set({ visible: false, projectId: null }), // 닫으면 초기화
+}));
 export const useMypageModalStore = create((set) => ({
   visible: false,
   showModal: () => set({ visible: true }),

@@ -453,10 +453,12 @@ function MailReceive() {
                                 const page = pageMaker.startPage + i;
                                 if (page > pageMaker.realEndPage) return null; // 존재하지 않는 페이지는 렌더링 안함
                                 return (
-                                    <PageNumberButton key={page} active={page === pageMaker.page} onClick={() => handlePageChange(page)}>
-                                        <PageNumText key={page} active={page === pageMaker.page} style={{ fontWeight: page === pageMaker.page ? 'bold' : 'normal' }}>
+                                    <PageNumberButton key={page} 
+                                                        active={page === pageMaker.page} 
+                                                        onClick={() => handlePageChange(page)}>
+                                        {/* <PageNumText key={page} active={page === pageMaker.page} style={{ fontWeight: page === pageMaker.page ? 'bold' : 'normal' }}> */}
                                             {page}
-                                        </PageNumText>
+                                        {/* </PageNumText> */}
                                     </PageNumberButton>
                                 );
                             })}

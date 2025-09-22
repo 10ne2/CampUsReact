@@ -101,8 +101,14 @@ function Login() {
         <Logo src={campus} alt="CAMPUS" />
         <MiddleMent>회원님의 아이디와 비밀번호를 정확히 입력해주세요.</MiddleMent>
 
-        <Input type="text" placeholder="ID" value={id} onChange={e => setId(e.target.value)}/>
-        <Input type="password" placeholder="PASSWORD" value={pw} onChange={e => setPw(e.target.value)} />
+        <Input type="text" placeholder="ID" value={id} onChange={e => setId(e.target.value)} 
+        onKeyDown={(e) => {
+        if (e.key === "Enter") handleLogin();
+        }}/>
+        <Input type="password" placeholder="PASSWORD" value={pw} onChange={e => setPw(e.target.value)} 
+        onKeyDown={(e) => {
+        if (e.key === "Enter") handleLogin();
+        }}/>
         
         <Help>
           <span>비밀번호를 잊어버리셨나요?</span>

@@ -213,6 +213,7 @@ function CampusMain() {
           <ProjectTeamModifyCheck />
           <LectureHomeworkRegist />
            <ProjectObjectFeedback/>
+           <ProjectObjectRegist/>
            <ProjectObjectFeedbackModify/>
           <LecturePlanRegist />
           {message && <Toast message={message} onClose={hideToast} />}

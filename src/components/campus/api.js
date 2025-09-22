@@ -161,6 +161,17 @@ export const modifyEvaluation = (payload) => {
     payload
   );
 };
+export const getRegistForm = (mem_id, project_id) => {
+  return axios.get("/api/roadmap/regist", {
+    params: {
+      mem_id,
+      project_id,
+    },
+  });
+};
+export const registRoadmap = (formData) => {
+  return axios.post("/api/roadmap/regist", formData);
+};
 // ------------------------------------------ 공용
 
 export function checkSession() {

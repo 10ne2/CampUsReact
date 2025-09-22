@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Cancle, calender, searchbtn, radioCheck } from "../img";
-import { useProjectTeamModifyCheckModalStore } from "../commons/modalStore";
+import { useProjectTeamModifyCheckModalStore, useToastStore } from "../commons/modalStore";
 import { getModifyCheck, modifyProjectTeamCheck } from "../api";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 
@@ -133,7 +133,7 @@ export default function ProjectTeamModifyCheck() {
   const [loading, setLoading] = useState(false);
   const [projectData, setProjectData] = useState(null);
   const [editList, setEditList] = useState([]);
-
+  const { showToast } = useToastStore();
   const { visible, hideModal, project_id } = useProjectTeamModifyCheckModalStore();
 
   const fetchModifyCheck = async (project_id) => {
@@ -181,7 +181,7 @@ const payload = {
 
     const res = await modifyProjectTeamCheck(payload);
     if (res.data.status === "success") {
-      alert("프로젝트 수정 승인 완료");
+      showToast("프로젝트 수정요청을 승인하였습니다.");
       if (typeof window.refreshProjectTeamList === "function") {
         window.refreshProjectTeamList();
       }
@@ -189,7 +189,7 @@ const payload = {
     }
   } catch (err) {
     console.error("승인 처리 실패:", err);
-    alert("승인 처리 실패");
+    showToast("승인 처리 실패");
   } finally {
     setLoading(false);
   }
@@ -210,11 +210,11 @@ const payload = {
         team_member_ids: [],
         before_id: edit.before_id
       });
-      alert("수정 거부 완료");
+      showToast("프로젝트 수정요청을 거부하였습니다.");
       hideModal();
     } catch (err) {
       console.error(err);
-      alert("거부 처리 실패");
+      showToast("거부 처리 실패");
     } finally {
       setLoading(false);
     }

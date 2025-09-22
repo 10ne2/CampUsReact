@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { Cancle, searchIcon, calender, radioCheck, searchbtn } from "../img";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
-import { useProjectTeamModifyModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore } from "../commons/modalStore";
+import { useProjectTeamModifyModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore, useToastStore } from "../commons/modalStore";
 import { getProjectDetail, requestProjectModify } from "../api";
 import { Container } from "../topNav/TopNav";
 import { ExitButton } from "../lecAtten/AttendanceModal";
@@ -215,7 +215,7 @@ const [projectDesc, setProjectDesc] = useState("");
 const [leaderName, setLeaderName] = useState("");
 const [memberNames, setMemberNames] = useState([]);
 const [memberIds, seMemberIds] = useState([]);
-
+const { showToast } = useToastStore();
 useEffect(() => {
   if (visible && project_id) {
     setLoading(true); 
@@ -269,14 +269,14 @@ const handleSubmit = async () => {
   edit_content: reason,
 };
     await requestProjectModify(payload);
-    alert("수정 요청이 등록되었습니다.");
+    showToast("수정 요청이 등록되었습니다.");
     hideModal();
     if (typeof window.refreshProjectTeamList === "function") {
       window.refreshProjectTeamList();
     }
   } catch (err) {
     console.error("수정 요청 실패:", err);
-    alert("수정 요청에 실패했습니다.");
+    showToast("수정 요청에 실패했습니다.");
   }
 };
   if (!visible) return null;

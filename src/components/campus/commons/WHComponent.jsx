@@ -116,6 +116,7 @@ export const PageNation = styled.ul`
     flex-direction: row;
     justify-content: center;
     gap: 8px;
+    margin-bottom: 0px;
     margin-top: 23px;
     list-style: none;
     padding: 0;
