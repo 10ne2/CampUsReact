@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { pageArrow1, pageArrow2, pageArrow3, pageArrow4 } from '../img'
 import { 
@@ -9,6 +9,7 @@ import {
     from '../commons/WHComponent'
 import { useNavigate } from "react-router-dom";
 import { useAttendanceChangeStore, useAttendanceModalStore } from "../commons/modalStore";
+import AttendanceModal from './AttendanceModal';
 
 const AttenDate = styled.div`
     font-size: 12px;
@@ -32,6 +33,13 @@ function LectureAttendanceList() {
     const navigate = useNavigate();
     const { viewModal } = useAttendanceModalStore();
     const { show } = useAttendanceChangeStore();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalText, setModalText] = useState("");
+
+    const handlePassClick = () => {
+    setModalText("이의 신청이 반려되었습니다.");
+    setModalOpen(true);
+    };
 
   return (
     <>
@@ -112,25 +120,25 @@ function LectureAttendanceList() {
                 </AttenBox>
             </WHContainer>
             <WHContainer style={{height:'76px'}}>
-                <div>
-                    <FlexDiv>
-                        <Title>2주차</Title>
-                        <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(08-25 ~ 08-29)</DateBox>
-                    </FlexDiv>
-                    <FlexDiv>
-                        <AttenChange onClick={() => show()}>이의신청</AttenChange>
-                        <AttenPass onClick={() => viewModal("이의 신청이 반려되었습니다.")}/>
-                    </FlexDiv>
-                </div>
-                <AttenBox style={{backgroundColor:'#FFB8B8'}}>
-                    <AttenDate>08-25 (월)</AttenDate>
-                    <AttenText>결석</AttenText>
-                </AttenBox>
-                <AttenBox>
-                    <AttenDate>08-27 (수)</AttenDate>
-                    <AttenText>출석</AttenText>
-                </AttenBox>
-            </WHContainer>
+                    <div>
+                        <FlexDiv>
+                            <Title>2주차</Title>
+                            <DateBox style={{marginLeft:'10px', marginTop:'1px'}}>(08-25 ~ 08-29)</DateBox>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <AttenChange onClick={() => show()}>이의신청</AttenChange>
+                            <AttenPass onClick={handlePassClick}/>
+                        </FlexDiv>
+                    </div>
+                    <AttenBox style={{backgroundColor:'#FFB8B8'}}>
+                        <AttenDate>08-25 (월)</AttenDate>
+                        <AttenText>결석</AttenText>
+                    </AttenBox>
+                    <AttenBox>
+                        <AttenDate>08-27 (수)</AttenDate>
+                        <AttenText>출석</AttenText>
+                    </AttenBox>
+                </WHContainer>
             <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
@@ -149,32 +157,38 @@ function LectureAttendanceList() {
                 </AttenBox>
             </WHContainer>
             <nav>
-                <PageNation>
-                    <PageArrowButton>
-                        <PageText href="#">
-                            <img src={pageArrow1} style={{width:"13px", height:"10px", marginLeft:'6px'}}></img>
-                        </PageText>
-                    </PageArrowButton>
-                    <PageArrowButton>
-                        <PageText href="#">
-                            <img src={pageArrow2} style={{width:"6px", height:"10px", marginLeft:'10px'}}></img>
-                        </PageText>
-                    </PageArrowButton>
-                    <PageNumberButton>
-                        <PageNumText href="#">1</PageNumText>
-                    </PageNumberButton>
-                    <PageArrowButton>
-                        <PageText href="#">
-                            <img src={pageArrow3} style={{width:"6px", height:"10px", marginLeft:'10px'}}></img>
-                        </PageText>
-                    </PageArrowButton>
-                    <PageArrowButton>
-                        <PageText href="#">
-                            <img src={pageArrow4} style={{width:"13px", height:"10px", marginLeft:'6px'}}></img>
-                        </PageText>
-                    </PageArrowButton>
-                </PageNation>
-            </nav>
+                    <PageNation>
+                        <PageArrowButton>
+                            <PageText href="#">
+                                <img src={pageArrow1} style={{width:"13px", height:"10px", marginLeft:'6px'}} />
+                            </PageText>
+                        </PageArrowButton>
+                        <PageArrowButton>
+                            <PageText href="#">
+                                <img src={pageArrow2} style={{width:"6px", height:"10px", marginLeft:'10px'}} />
+                            </PageText>
+                        </PageArrowButton>
+                        <PageNumberButton>
+                            <PageNumText href="#">1</PageNumText>
+                        </PageNumberButton>
+                        <PageArrowButton>
+                            <PageText href="#">
+                                <img src={pageArrow3} style={{width:"6px", height:"10px", marginLeft:'10px'}} />
+                            </PageText>
+                        </PageArrowButton>
+                        <PageArrowButton>
+                            <PageText href="#">
+                                <img src={pageArrow4} style={{width:"13px", height:"10px", marginLeft:'6px'}} />
+                            </PageText>
+                        </PageArrowButton>
+                    </PageNation>
+                </nav>
+                {modalOpen && (
+                <AttendanceModal
+                    text={modalText}        // 보여줄 메시지
+                    onClose={() => setModalOpen(false)}  // 닫기
+                />
+                )}
         </div>
 
     </>

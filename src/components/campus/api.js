@@ -290,17 +290,39 @@ export function getLectureVideoDetail(lecId, lecvidId, memId) {
 }
 
 // 영상 등록
-export function registerLectureVideo(lecId, title, videoFile, thumbFile) {
+export function registerLectureVideo(lecId, lecvidName, detail, week, videoFile, thumbFile, deadline) {
   const formData = new FormData();
   formData.append("lecId", lecId);
-  formData.append("title", title);
-  formData.append("videoFile", videoFile);
-  formData.append("thumbFile", thumbFile);
+  formData.append("lecvidName", lecvidName);
+  formData.append("detail", detail);
+  formData.append("week", week);
+  formData.append("deadline", deadline);
+
+  if (videoFile) formData.append("videoFile", videoFile);
+  if (thumbFile) formData.append("thumbFile", thumbFile);
 
   return axios.post("/api/lecture/register", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 }
+export const updateAttendanceProgress = async (aNo, progress) => {
+  try {
+    const res = await axios.post("/api/lecture/progress", {
+      aNo,
+      progress
+    }, {
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (res.data.ok) {
+      console.log("진행도 업데이트 성공!");
+    } else {
+      console.error("업데이트 실패:", res.data.message);
+    }
+  } catch (err) {
+    console.error("서버 요청 에러:", err);
+  }
+};
 
 // 영상 수정
 export function modifyLectureVideo(lecvidId, title, detail, week, videoFile, thumbFile) {

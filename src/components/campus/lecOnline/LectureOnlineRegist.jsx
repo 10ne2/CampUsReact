@@ -9,6 +9,7 @@ import { DropHeader, DropList, DropOption, SearchDrop, RegistButton } from '../c
 import useModalStore from '../commons/modalStore'
 import Toast from '../commons/Toast'
 import { registerLectureVideo } from '../api'
+import { useSearchParams } from 'react-router-dom'
 
 export const Wrap = styled.div`
     width: 100%;
@@ -61,7 +62,9 @@ export const RegistTextarea = styled.textarea`
         resize: none ;
         outline:none;
 `
-function LectureOnlineRegist({ onClose }) {
+function LectureOnlineRegist({ onClose, onRegisterSuccess }) {
+     const [searchParams] = useSearchParams();
+     const lecId = searchParams.get('lec_id');
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState("주차선택");
     const [file, setFile] = useState(null);
@@ -71,7 +74,9 @@ function LectureOnlineRegist({ onClose }) {
     const [toastMsg, setToastMsg] = useState("");
     const toggleOpen = () => setOpen(!open);
     const { showConfirm } = useModalStore();
-
+    const [deadline, setDeadline] = useState("");
+    const [lecvidName, setLecvidName] = useState("");
+    const [detail, setDetail] = useState("");
     // 옵션 선택
     const handleSelect = (value) => {
         setSelected(value);
@@ -107,11 +112,38 @@ function LectureOnlineRegist({ onClose }) {
             setThumbFile(selectedFile);
         }
     };
-    const handleRegister = () => {
-        showConfirm("온라인 강의를 등록하시겠습니까?", () => {
+    const handleRegister = async () => {
+    if (!file) return setToastMsg("영상 파일을 선택하세요.");
+    if (!thumbFile) return setToastMsg("썸네일을 선택하세요.");
+    if (selected === "주차선택") return setToastMsg("주차를 선택하세요.");
+    if (!deadline) return setToastMsg("마감일을 선택하세요.");
+
+    showConfirm("온라인 강의를 등록하시겠습니까?", async () => {
+        try {
+            const res = await registerLectureVideo(
+                lecId,        // lecId
+                lecvidName,   // title
+                detail,       // detail
+                selected,     // week
+                file,         // videoFile
+                thumbFile,    // thumbFile
+                deadline      // 마감일
+            );
+            console.log("등록 성공:", res.data);
             setToastMsg("강의가 등록되었습니다!");
-        });
-    };
+
+            // props로 받은 콜백 실행 (있으면)
+            if (onRegisterSuccess) onRegisterSuccess();
+            
+            // 모달 닫기
+            onClose();
+
+        } catch (err) {
+            console.error("등록 실패:", err);
+            setToastMsg("등록 중 오류가 발생했습니다.");
+        }
+    });
+};
 
     // async function handleRegister() {
     //     try {
@@ -180,13 +212,41 @@ function LectureOnlineRegist({ onClose }) {
                         {thumbFile ? (<Filefont>{thumbFile.name}</Filefont>) : (<Filefont style={{ color: "#888" }}>선택된 파일이 없습니다.</Filefont>)}
                     </Flex>
                 </ContentBox>
+                <ContentBox style={{ padding: '0 20px', marginBottom: '10px' }}>
+            <Head>
+                <Headtext>마감일</Headtext>
+            </Head>
+            <Flex style={{ padding: '10px 0' }}>
+                <input
+                type="date"   // ✅ 날짜만 선택 가능
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+                style={{
+                    width: "100%",
+                    fontSize: "13px",
+                    padding: "6px",
+                    border: "1px solid #aaa",
+                    borderRadius: "5px",
+                }}
+                />
+            </Flex>
+            </ContentBox>
                 <ContentBox style={{ height: '473px', padding: '0 20px' }}>
                     <Head style={{ paddingTop: '19px' }}>
-                        <RegistInput placeholder='제목을 입력하세요.'></RegistInput>
+                       <RegistInput
+  placeholder='제목을 입력하세요.'
+  value={lecvidName}
+  onChange={(e) => setLecvidName(e.target.value)}
+/>
+
                     </Head>
                     <GrayHr style={{ width: '369px', margin: '0 auto', marginTop: '14px' }}></GrayHr>
                     <Head style={{ paddingTop: '19px' }}>
-                        <RegistTextarea placeholder='내용을 입력하세요.'></RegistTextarea>
+                        <RegistTextarea
+  placeholder='내용을 입력하세요.'
+  value={detail}
+  onChange={(e) => setDetail(e.target.value)}
+/>
                     </Head>
                 </ContentBox>
 

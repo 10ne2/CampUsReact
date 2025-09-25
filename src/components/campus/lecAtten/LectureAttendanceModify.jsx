@@ -219,9 +219,9 @@ const Meta = styled.div`
 `;
 
 export default function LectureAttendanceModify({
-  onClose = () => {},
-  onSubmit = (payload) => { alert(JSON.stringify(payload, null, 2)); }
+  onSubmit = (payload) => {}
 }) {
+  const [visible, setVisible] = useState(false); // Modal 보이기 상태
   const [mode, setMode] = useState("modify");
   const [status, setStatus] = useState("결석");
   const [memo, setMemo] = useState("");
@@ -248,7 +248,10 @@ export default function LectureAttendanceModify({
       status,
       reason: memo.trim() || null
     });
+    setVisible(false); // 제출 후 Modal 닫기
   };
+
+  if (!visible) return null;
 
   return (
     <FullModal>
@@ -258,7 +261,7 @@ export default function LectureAttendanceModify({
           src={Cancle}
           alt="닫기"
           style={{width:'19px', height:'19px', cursor:'pointer'}}
-          onClick={onClose}
+          onClick={() => setVisible(false)} // X버튼 클릭 시 Modal 닫기
         />
       </Container>
 

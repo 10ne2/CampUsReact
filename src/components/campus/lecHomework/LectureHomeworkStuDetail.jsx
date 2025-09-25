@@ -49,8 +49,8 @@ const FbCard = styled(Card)``;
 const FbHeader = styled.div`display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:center;margin-left:15px;`;
 const FbHeaderRight = styled.div`display:flex;align-items:center;gap:8px;`;
 const FbText = styled.div`margin-top:8px;font-size:13px;color:#6b7280;line-height:1.8;margin:0 15px 15px;`;
+const getPictureUrl = (memId) => `/api/member/getPicture?memId=${memId}&v=${Date.now()}`;
 
-// 파일명 깔끔하게 만드는 함수
 const cleanFilename = (full) => {
   if (!full) return "";
   const idx = full.indexOf("_");
@@ -126,9 +126,23 @@ export default function LectureHomeworkStuDetail() {
 
           <Card>
             <SubHeader>
-              <Avatar>{submit.stuName ? submit.stuName[0] : (submit.stuId ? submit.stuId[0] : "?")}</Avatar>
+              <Avatar>
+                {submit.stuId ? (
+                  <AvImg 
+                    src={getPictureUrl(submit.stuId)} 
+                    alt="학생 사진"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      // fallback: 이니셜 표시
+                      e.currentTarget.insertAdjacentHTML("afterend", `<span>${submit.writer ? submit.writer[0] : "?"}</span>`);
+                    }}
+                  />
+                ) : (
+                  <span>?</span>
+                )}
+              </Avatar>
               <NameTimeRow>
-                <Name>{submit.stuName || submit.stuId}</Name>
+                <Name>{submit.writer || submit.stuId}</Name>
                 <Meta>ㅣ</Meta>
                 <Time>{new Date(submit.submittedAt).toLocaleString()}</Time>
               </NameTimeRow>
@@ -167,7 +181,23 @@ export default function LectureHomeworkStuDetail() {
 
             <FbCard>
               <FbHeader>
-                <Avatar>{user?.mem_name ? user.mem_name[0] : "P"}</Avatar>
+                <Avatar>
+                {user?.mem_id ? (
+                  <AvImg
+                    src={getPictureUrl(user.mem_id)}
+                    alt="교수 사진"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.insertAdjacentHTML(
+                        "afterend",
+                        `<span>${user?.mem_name ? user.mem_name[0] : "P"}</span>`
+                      );
+                    }}
+                  />
+                ) : (
+                  <span>P</span>
+                )}
+              </Avatar>
                 <FbHeaderRight>
                   <Name>{user?.mem_name || "교수"}</Name>
                   <Meta>ㅣ</Meta>

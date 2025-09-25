@@ -5,7 +5,7 @@ import { Flex, GrayHr } from '../home/HomeWrapperPro'
 import { Hr } from '../menu/SideMenu'
 import { unRead, read, go, Cancle } from '../img'
 import { useMailModalStore } from '../commons/modalStore'
-import { Button, MailDashBox, RegistButton } from '../commons/WHComponent'
+import { Button, RegistButton } from '../commons/WHComponent'
 import { Container } from '../topNav/TopNav'
 import MailNavBar from './MailNavBar'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -34,6 +34,17 @@ const Post = styled.div`
     display: flex;               
     justify-content: center;      
     align-items: center; 
+`
+const MailDashBox = styled.div`
+    width: 370px;
+    height: 209px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    &:last-child {
+    margin-bottom: 0; 
+  }
 `
 function MailDashBoard() {
     const navigate = useNavigate();

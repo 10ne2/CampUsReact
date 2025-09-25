@@ -61,6 +61,7 @@ const RowTop = styled.div`display: flex; align-items: center; gap: 8px; font-siz
 const StuName = styled.span`font-weight: 700; color: #374151;`;
 const Time = styled.span`font-size: 12px; color: #98a1a8;`;
 const Text = styled.div`font-size: 13px; color: #6b7680; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`;
+const getPictureUrl = (memId) => `/api/member/getPicture?memId=${memId}&v=${Date.now()}`;
 
 /* ===== util ===== */
 const toYMD = (v) => {
@@ -273,15 +274,19 @@ export default function LectureHomeworkProDetail() {
                 {submitList.map((s) => (
                   <Row key={s.hwsubHsno} onClick={() => openSubmission(s)}>
                     <Avatar>
-                      {s.stuPicPath ? (
-                        <AvImg src={`/member/picture/upload/${s.stuPicPath}`} alt="학생 사진" />
-                      ) : (
-                        <span>{s.stuName ? s.stuName[0] : "?"}</span>
-                      )}
-                    </Avatar>
+                    <AvImg
+                      src={getPictureUrl(s.stuId)}
+                      alt="학생 사진"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        // fallback: 이름 첫 글자
+                        e.target.insertAdjacentHTML("afterend", `<span>${s.writer ? s.writer[0] : "?"}</span>`);
+                      }}
+                    />
+                  </Avatar>
                     <RowMain>
                       <RowTop>
-                        <StuName>{s.stuName || "이름없음"}</StuName>
+                        <StuName>{s.writer || "이름없음"}</StuName>
                         <Time>{fmtDateTime(s.submittedAt)}</Time>
                       </RowTop>
                       <Text>{s.hwsubComment || "제출 내용 없음"}</Text>

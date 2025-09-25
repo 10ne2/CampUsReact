@@ -229,7 +229,12 @@ export default function LectureHomeworkDetail() {
   const [submitting, setSubmitting] = useState(false);
   const [editing, setEditing] = useState(false);
   const { showToast } = useToastStore();
-
+  
+  const cleanFilename = (full) => {
+    if (!full) return "";
+    const idx = full.indexOf("_");
+    return idx >= 0 ? full.substring(idx + 1) : full;
+  };
   const user = (() => {
     try { return JSON.parse(sessionStorage.getItem("user") || "null"); }
     catch { return null; }
@@ -316,7 +321,7 @@ export default function LectureHomeworkDetail() {
             <PageDivider />
             <Card>
               <SubmissionHead>
-                <SubmissionAuthor>{stuId}</SubmissionAuthor>
+                <SubmissionAuthor>{submit?.writer || stuId}</SubmissionAuthor>
                 <Meta>ㅣ</Meta>
                 <SubmissionTime>제출 시간 : {fmtDate(submit.submittedAt)}</SubmissionTime>
                 <SubmissionActions>
@@ -330,11 +335,25 @@ export default function LectureHomeworkDetail() {
               <SubmissionText>{stripHtml(submit?.hwsubComment)}</SubmissionText>
               <CardHr />
               {submit?.hwsubFilename && (
-                <Attachment>
-                  <AttachmentIcon src={clip} />
-                  <AttachmentName>{submit.hwsubFilename}</AttachmentName>
-                </Attachment>
-              )}
+              <Attachment>
+                <AttachmentIcon src={clip} />
+                <a
+                  href={`/api/homeworksubmit/download?filename=${encodeURIComponent(submit.hwsubFilename)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: "13px",
+                    color: "#444",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    textDecoration: "none",
+                  }}
+                >
+                  {cleanFilename(submit.hwsubFilename)}
+                </a>
+              </Attachment>
+            )}
             </Card>
           </div>
         ) : (
@@ -381,17 +400,24 @@ export default function LectureHomeworkDetail() {
             <Card>
               <FeedbackHead>
                 <Avatar>
-                  {submit.professorPicPath ? (
-                    <img
-                      src={`/member/picture/upload/${submit.professorPicPath}`}
-                      alt="교수 사진"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                  ) : (
-                    <span>교</span>
-                  )}
-                </Avatar>
-                <FeedbackName>{submit.professorName || "교수"}</FeedbackName>
+                {user?.mem_id ? (
+                <img
+                  src={`/api/member/getPicture?memId=${user.mem_id}&v=${Date.now()}`}
+                  alt="교수 사진"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    e.currentTarget.insertAdjacentHTML(
+                      "afterend",
+                      `<span>${user?.mem_name ? user.mem_name[0] : "P"}</span>`
+                    );
+                  }}
+                />
+              ) : (
+                <span>P</span>
+              )}
+              </Avatar>
+              <FeedbackName>{submit.professorName || "교수"}</FeedbackName>
               </FeedbackHead>
               <FeedbackText>{submit.hwsubFeedback}</FeedbackText>
             </Card>

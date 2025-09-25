@@ -88,7 +88,7 @@ export default function LectureHomeworkRegist() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL에서 lec_id, memId 확보
-  const lecId = searchParams.get("lec_id") || "";
+  const lecId = searchParams.get("lecId") || "";
   const memIdFromUrl = searchParams.get("memId");
 
   // memId 없으면 sessionStorage에서 채워넣기
@@ -128,7 +128,9 @@ export default function LectureHomeworkRegist() {
   const visible = useHomeworkProRegistStore((state) => state.visible);
   const hideModal = useHomeworkProRegistStore((state) => state.hideModal);
 
+  // summernote는 모달이 열릴 때 초기화
   useEffect(() => {
+    if (!visible) return;
     const $el = $(editorRef.current);
     $el.summernote({
       placeholder: "내용을 입력해주세요.",
@@ -141,7 +143,7 @@ export default function LectureHomeworkRegist() {
       ],
     });
     return () => { try { $el.summernote("destroy"); } catch (_) { } };
-  }, []);
+  }, [visible]);
 
   const pad2 = (n) => String(n).padStart(2, "0");
   const fmtYMD = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
@@ -153,54 +155,55 @@ export default function LectureHomeworkRegist() {
   };
 
   const handleSubmit = async () => {
-    const html = $(editorRef.current).summernote("code");
-    const rawHtml = $(editorRef.current).summernote("code");
-    const textContent = rawHtml.replace(/<[^>]*>/g, "").trim();
+  const html = $(editorRef.current).summernote("code");
+  const rawHtml = $(editorRef.current).summernote("code");
+  const textContent = rawHtml.replace(/<[^>]*>/g, "").trim();
 
-    if (!lecId) { showToast("lec_id가 없습니다."); return; }
-    if (!title.trim()) { showToast("제목을 입력해주세요."); return; }
-    if (!textContent) { showToast("내용을 입력해주세요."); return; }
+  if (!lecId) { showToast("lec_id가 없습니다."); return; }
+  if (!title.trim()) { showToast("제목을 입력해주세요."); return; }
+  if (!textContent) { showToast("내용을 입력해주세요."); return; }
 
-    const s = makeDateTime(startDate, startHour, startMinute);
-    const e = makeDateTime(endDate, endHour, endMinute);
-    if (e < s) { showToast("마감일은 시작일 이후여야 합니다."); return; }
+  const s = makeDateTime(startDate, startHour, startMinute);
+  const e = makeDateTime(endDate, endHour, endMinute);
+  if (e < s) { showToast("마감일은 시작일 이후여야 합니다."); return; }
 
-    // ✅ 세션스토리지에서 memId 꺼내기
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const memId = user?.mem_id || user?.memId || "";
+  // ✅ 세션스토리지에서 memId 꺼내기
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const memId = user?.mem_id || user?.memId || "";
 
-    const payload = new URLSearchParams();
-    payload.append("hwName", title);
-    payload.append("hwDesc", html);
-    payload.append("startDate", fmtYMD(s));
-    payload.append("startTime", fmtHM(s));
-    payload.append("endDate", fmtYMD(e));
-    payload.append("endTime", fmtHM(e));
-    payload.append("lecId", lecId);
-    payload.append("memId", memId);
+  const payload = new URLSearchParams();
+  payload.append("hwName", title);
+  payload.append("hwDesc", html);
+  payload.append("startDate", fmtYMD(s));
+  payload.append("startTime", fmtHM(s));
+  payload.append("endDate", fmtYMD(e));
+  payload.append("endTime", fmtHM(e));
+  payload.append("lecId", lecId);
+  payload.append("memId", memId);
 
-    useModalStore.getState().showConfirm(
-      "과제를 등록하시겠습니까?",
-      async () => {
+  useModalStore.getState().showConfirm(
+    "과제를 등록하시겠습니까?",
+    async () => {
+      try {
+        const res = await axios.post("/api/homework/write", payload, {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        });
 
-        try {
-          const res = await axios.post("/api/homework/write", payload, {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          });
+        if (res.data?.ok) {
+          showToast("과제가 등록되었습니다."); // ✅ 성공 메시지
 
-          if (res.data?.ok) {
-            showToast("과제가 등록되었습니다."); // ✅ 성공 메시지
-            navigate(`/homework?memId=${memId}&lec_id=${lecId}`);
-          } else {
-            showToast(res.data?.message || "등록에 실패했습니다.");
-          }
-        } catch (err) {
-          console.error(err);
-          showToast("등록 중 오류가 발생했습니다.");
+          // ✅ 리스트 페이지로 이동하면서 강제 새로고침
+          window.location.href = `/homework?memId=${memId}&lecId=${lecId}`;
+        } else {
+          showToast(res.data?.message || "등록에 실패했습니다.");
         }
+      } catch (err) {
+        console.error(err);
+        showToast("등록 중 오류가 발생했습니다.");
       }
-    );
-  };
+    }
+  );
+};
 
   return (
     <>

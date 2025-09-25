@@ -16,7 +16,7 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 5000;
 
 `;
 
@@ -70,7 +70,7 @@ const Line = styled.div`
     color: #aaa;
     font-size: 12px;
  `
-function AttendanceModal() {
+function AttendanceModal( {text, onClose }) {
     const { visible, message, onCancel, hideModal } = useAttendanceModalStore();
 
      if (!visible) return null;
@@ -84,16 +84,12 @@ function AttendanceModal() {
         <Overlay>
       <ModalBox>
         <Flex style={{padding:'0 20px 0 20px', height:'48px',alignItems:'center'}}>
-          <span style={{fontSize:'14px'}}>이의 신청이 반려되었습니다.</span>
-        
-        <ExitButton onClick={handleCancel}>
-          <img src={Cancle} style={{width:'100%', height:'100%', objectFit:'contain'}} />
-        </ExitButton>
+          <span style={{fontSize:'14px'}}>{text}</span>
+          <ExitButton onClick={onClose}>
+            <img src={Cancle} style={{width:'100%', height:'100%', objectFit:'contain'}} />
+          </ExitButton>
         </Flex>
-        <GrayHr style={{width: '319px', margin:'0 auto'}}></GrayHr>
-        <Flex style={{justifyContent:'start', marginTop:'17px', marginLeft:'20px'}}>
-        {message && <p style={{fontSize:'13px'}}>{message}</p>}
-        </Flex>
+        <GrayHr style={{width: '319px', margin:'0 auto'}} />
       </ModalBox>
     </Overlay>
     </>

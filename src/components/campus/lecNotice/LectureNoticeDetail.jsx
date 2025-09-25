@@ -242,6 +242,12 @@ const fmtDate = (v) => {
   }
 };
 
+const cleanFilename = (full) => {
+    if (!full) return "";
+    const idx = full.indexOf("_");
+    return idx >= 0 ? full.substring(idx + 1) : full;
+  };
+
 export default function LectureNoticeDetail() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -500,7 +506,7 @@ export default function LectureNoticeDetail() {
               {(item.fileName || item.fileDetail) && (
                 <Attachment onClick={onDownload}>
                   <AttachmentIcon src={clip} />
-                  <AttachmentName>{item.fileName || item.fileDetail}</AttachmentName>
+                  <AttachmentName>{cleanFilename(item.fileName || item.fileDetail)}</AttachmentName>
                 </Attachment>
               )}
             </>

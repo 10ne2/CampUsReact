@@ -94,6 +94,7 @@ import Toast from './commons/Toast'
 import ConfirmModal from './commons/ConfirmModal';
 import ProjectObjectFeedbackModify from './proObject/ProjectObjectFeedbackModify'
 import ProjectObjectDetail from './proObject/ProjectObjectDetail'
+import AttendanceModal from './lecAtten/AttendanceModal'
 
 
 // /lecture → /notice 로 리다이렉트 (쿼리 유지)
@@ -143,7 +144,7 @@ function CampusMain() {
           <Routes>
             <Route path='/' element={user.mem_auth === "ROLE01" ? <HomeWrapper /> : <HomeWrapperPro />}></Route>
             <Route path='/plan' element={<LecturePlanWrapper />}>
-              <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanNoneData /> : <LecturePlanNoneDataPro />}></Route>
+              <Route index element={user.mem_auth === "ROLE01" ? <LecturePlanDetail /> : <LecturePlanNoneDataPro />}></Route>
             </Route>
             <Route path='/notice' element={<LectureNoticeWrapper />}>
               <Route index element={<LectureNoticeList />}></Route>
@@ -216,6 +217,9 @@ function CampusMain() {
            <ProjectObjectRegist/>
            <ProjectObjectFeedbackModify/>
           <LecturePlanRegist />
+          <LectureAttendanceChange/>
+          <LectureAttendanceModify/>
+          <AttendanceModal/>
           {message && <Toast message={message} onClose={hideToast} />}
         </>
       )}
@@ -227,8 +231,6 @@ function CampusMain() {
       <LecturePlanRegist/>
       <LectureOnlineRegist/>
       <LectureOnlineModify/>
-      <LectureAttendanceChange/>
-      <LectureAttendanceModify/>
       <ProjectObjectFeedback/>
       <ProjectObjectRegist/>
       */}
