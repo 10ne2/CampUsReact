@@ -185,13 +185,8 @@ function LectureHomeworkList() {
           </PageArrowButton>
           
           {getPageNumbers().map(num => (
-            <PageNumberButton key={num} onClick={() => setPage(num)}>
-              <PageNumText style={{
-                color: num === page ? "#2EC4B6" : "#000",
-                fontWeight: num === page ? "bold" : "normal"
-              }}>
+            <PageNumberButton key={num} active={page === num} onClick={() => setPage(num)}>
                 {num}
-              </PageNumText>
             </PageNumberButton>
           ))}
 

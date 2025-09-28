@@ -365,7 +365,6 @@ export default function LectureHomeworkDetail() {
               </div>
               <CardHr style={{width:'368px', marginLeft:'-8px'}}/>
               <div style={{ marginBottom: 10 }}>
-                <label style={{ fontSize: '14px', color: "#98a1a8", fontWeight:'600' }}>내용</label>
                 <textarea
                   rows={6}
                   style={{marginLeft:'-6px', width: "365px", resize: "vertical", padding: 8, border: "1px solid #ccc", borderRadius:'4px', outline:'none' }}

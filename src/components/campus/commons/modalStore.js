@@ -103,6 +103,8 @@ export const useMailWriteModalStore = create((set) => ({
   visible: false,
   showModal: () => set({ visible: true }),
   hideModal: () => set({ visible: false }),
+  refreshFlag: false,
+  triggerRefresh: () => set((state) => ({ refreshFlag: !state.refreshFlag }))
 }));
 export const useAuthStore = create(
   persist(

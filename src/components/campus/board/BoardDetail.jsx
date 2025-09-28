@@ -9,10 +9,12 @@ import {
   createReply,
   deleteReply,
   updateReply,
-  getUserSession,   // ✅ 수정 API 추가
+  getUserSession,   // ✅ 유지
 } from "../api";
 import { clip } from "../img";
 import { FlexDiv } from "../commons/WHComponent";
+import Toast from "../commons/Toast";
+import useModalStore, { useToastStore } from "../commons/modalStore";
 
 // ===== styled-components =====
 const MobileShell = styled.div`width: 100vw; background: #f7f7f7;`;
@@ -143,7 +145,6 @@ const ReplySubmitBtn = styled.button`
   font-weight: 600;
 `;
 
-// 날짜 포맷 함수
 const fmtDate = (v) => {
   if (!v) return "";
   try {
@@ -172,9 +173,12 @@ export default function BoardDetail() {
   const [replies, setReplies] = useState([]);
   const [newReply, setNewReply] = useState("");
 
-  const [editingId, setEditingId] = useState(null); // ✅ 수정 중인 댓글
-  const [editText, setEditText] = useState("");     // ✅ 수정 텍스트
+  const [editingId, setEditingId] = useState(null); 
+  const [editText, setEditText] = useState(""); 
   const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+
+  const { showConfirm } = useModalStore();
+  const [toastMsg, setToastMsg] = useState("");
 
   // 댓글 목록 불러오기 함수
   const loadReplies = async () => {
@@ -259,6 +263,22 @@ export default function BoardDetail() {
     }
   };
 
+
+  const askDeleteReply = (rno) => {
+    showConfirm("정말로 삭제하시겠습니까?", async () => {
+      try {
+        await deleteReply(rno);
+        setReplies((prev) => prev.filter((x) => x.rno !== rno));
+        setToastMsg("삭제되었습니다.");           // Toast 표시
+        setTimeout(() => setToastMsg(""), 3000);   // 3초 뒤 자동 닫기
+      } catch (e) {
+        console.error("댓글 삭제 실패:", e);
+        setToastMsg("삭제에 실패했습니다.");
+        setTimeout(() => setToastMsg(""), 3000);
+      }
+    });
+  };
+
   if (loading) return <div style={{ padding: 16 }}>불러오는 중…</div>;
 
   if (!item) {
@@ -325,7 +345,7 @@ export default function BoardDetail() {
         </Card>
       </div>
 
-      {/* 댓글 섹션 */}
+
       <ReplySection>
         <ReplyTitle>댓글 {replies.length}</ReplyTitle>
 
@@ -342,7 +362,6 @@ export default function BoardDetail() {
                 <ReplyActions style={{marginRight:'5px'}}>
                   {editingId === r.rno ? (
                     <>
-                      {/* 취소 → 저장 순서 */}
                       <ReplyBtnSmall onClick={() => setEditingId(null)}>
                         취소
                       </ReplyBtnSmall>
@@ -355,10 +374,8 @@ export default function BoardDetail() {
                     </>
                   ) : (
                     <>
-                      {/* 기본 상태: 삭제 + 수정 */}
-                      <ReplyBtnSmall onClick={async () => {
-                          if (!window.confirm("삭제하시겠습니까?")) return;
-                          await deleteReply(r.rno); setReplies(replies.filter((x) => x.rno !== r.rno)); }} >
+                  
+                      <ReplyBtnSmall onClick={() => askDeleteReply(r.rno)}>
                         삭제
                       </ReplyBtnSmall>
                       <ReplyBtnSmall primary onClick={() => { setEditingId(r.rno); setEditText(r.replytext); }} >
@@ -382,7 +399,6 @@ export default function BoardDetail() {
           ))
         )}
 
-        {/* 댓글 입력 */}
         <ReplyInputBox>
           <ReplyHeader style={{marginLeft:'5px', marginBottom:'10px', fontWeight:'500'}}>
             {loginName} ｜ {fmtDate(new Date())}
@@ -395,6 +411,8 @@ export default function BoardDetail() {
           <ReplySubmitBtn onClick={onReplySubmit} style={{marginRight:'5px'}}>등록</ReplySubmitBtn>
         </ReplyInputBox>
       </ReplySection>
+
+      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
     </MobileShell>
   );
 }

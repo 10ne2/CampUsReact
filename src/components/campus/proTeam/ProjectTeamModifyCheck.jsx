@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Cancle, calender, searchbtn, radioCheck } from "../img";
-import { useProjectTeamModifyCheckModalStore, useToastStore } from "../commons/modalStore";
+import useModalStore, { useProjectTeamModifyCheckModalStore, useToastStore } from "../commons/modalStore";
 import { getModifyCheck, modifyProjectTeamCheck } from "../api";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
 
@@ -135,7 +135,7 @@ export default function ProjectTeamModifyCheck() {
   const [editList, setEditList] = useState([]);
   const { showToast } = useToastStore();
   const { visible, hideModal, project_id } = useProjectTeamModifyCheckModalStore();
-
+  const showConfirm = useModalStore((state) => state.showConfirm);
   const fetchModifyCheck = async (project_id) => {
     try {
       const res = await getModifyCheck(project_id);
@@ -152,47 +152,50 @@ export default function ProjectTeamModifyCheck() {
     }
   };
 
- const handleApprove = async () => {
+const handleApprove = () => {
   if (!projectData || !edit) return;
-  setLoading(true);
 
-  try {
-    // team_member_ids 문자열 → 배열 처리
-    const teamMemberIds = edit.team_member_ids.split(',').map(id => id.trim());
+  showConfirm("이 프로젝트 수정 요청을 승인하시겠습니까?", async () => {
+    setLoading(true);
+    try {
+      // team_member_ids 문자열 → 배열 처리
+      const teamMemberIds = edit.team_member_ids
+        .split(',')
+        .map(id => id.trim());
 
-// 문자열로 합치지 말고 개별 ID 그대로 배열 유지
-const payload = {
-  project: {
-    ...projectData,
-    ...edit,
-    team_id: edit.team_id || projectData.team_id,
-  },
-  team: {
-    ...projectData.team,
-    ...(edit.team || {}),
-    team_id: edit.team_id || projectData.team?.team_id,
-    team_leader: edit.team_leader || projectData.team_leader,
-  },
-  team_member_ids: teamMemberIds, // 배열 그대로
-  before_id: edit.before_id,
-};
+      const payload = {
+        project: {
+          ...projectData,
+          ...edit,
+          team_id: edit.team_id || projectData.team_id,
+        },
+        team: {
+          ...projectData.team,
+          ...(edit.team || {}),
+          team_id: edit.team_id || projectData.team?.team_id,
+          team_leader: edit.team_leader || projectData.team_leader,
+        },
+        team_member_ids: teamMemberIds, // 배열 그대로
+        before_id: edit.before_id,
+      };
 
-    console.log("승인 요청 payload:", payload);
+      console.log("승인 요청 payload:", payload);
 
-    const res = await modifyProjectTeamCheck(payload);
-    if (res.data.status === "success") {
-      showToast("프로젝트 수정요청을 승인하였습니다.");
-      if (typeof window.refreshProjectTeamList === "function") {
-        window.refreshProjectTeamList();
+      const res = await modifyProjectTeamCheck(payload);
+      if (res.data.status === "success") {
+        showToast("프로젝트 수정요청을 승인하였습니다.");
+        if (typeof window.refreshProjectTeamList === "function") {
+          window.refreshProjectTeamList();
+        }
+        hideModal();
       }
-      hideModal();
+    } catch (err) {
+      console.error("승인 처리 실패:", err);
+      showToast("승인 처리 실패");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("승인 처리 실패:", err);
-    showToast("승인 처리 실패");
-  } finally {
-    setLoading(false);
-  }
+  });
 };
 
 

@@ -6,7 +6,7 @@ import { CatTitle, FlexDiv, RegistButton } from '../commons/WHComponent';
 import { Cancle } from '../img'
 import { Flex, GrayHr } from '../home/HomeWrapperPro';
 import { Label, SearchBtn, TextInput } from './ProjectTeamRegist';
-import { useTeamSearchModalStore } from '../commons/modalStore';
+import { useTeamSearchModalStore, useToastStore } from '../commons/modalStore';
 import { Hr } from '../menu/SideMenu';
 import { getProjectRegistData } from '../api';
 
@@ -67,7 +67,7 @@ function TeamSearch() {
     const { visible, hideModal, selectedTeamLeader, setSelectedTeamLeader } = useTeamSearchModalStore();
     const [teamLeaderList, setTeamLeaderList] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
-
+    const { showToast } = useToastStore();
     useEffect(() => {
         if (!visible) return;
         getProjectRegistData()
@@ -83,7 +83,7 @@ function TeamSearch() {
 
 const handleConfirm = () => {
   if (!selectedTeamLeader) {
-    alert("학생을 선택해주세요.");
+    showToast("학생을 선택해주세요.");
     return;
   }
   setSelectedTeamLeader(selectedTeamLeader)
@@ -128,7 +128,7 @@ const handleSearchChange = (e) => {
                    }}
                    onClick={() => handleSelect(prof)}
                  >
-                   <UserImage src={prof.picture} alt='userimg' />
+                   <UserImage  src={`/api/member/getPicture?memId=${prof.mem_id}&v=${Date.now()}`} alt='userimg' />
                    <UserName>
                      <UserNameText>{prof.mem_name}</UserNameText>
                    </UserName>

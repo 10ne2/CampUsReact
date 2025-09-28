@@ -106,7 +106,7 @@ function ChangePasswordModal() {
         setToastMsg("비밀번호가 변경되었습니다. 다시 로그인해주세요.");
         sessionStorage.clear();
         setTimeout(() => {
-          window.location.href = "/login"; // 로그인 페이지 경로 맞게 수정
+          window.location.href = "/"; // 로그인 페이지 경로 맞게 수정
         }, 1500);
       } else {
         setToastMsg(res.data.message || "비밀번호 변경 실패");

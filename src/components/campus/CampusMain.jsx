@@ -61,6 +61,7 @@ import LectureAttendanceChange from './lecAtten/LectureAttendanceChange'
 import LectureAttendanceListPro from './lecAtten/LectureAttendanceListPro'
 import LectureAttendanceListStu from './lecAtten/LectureAttendanceListStu'
 import LectureAttendanceModify from './lecAtten/LectureAttendanceModify'
+import AttendanceModal from './lecAtten/AttendanceModal';
 
 import ProjectObjectList from './proObject/ProjectObjectList'
 import ProjectObjectWrapper from './proObject/ProjectObjectWrapper'
@@ -94,7 +95,7 @@ import Toast from './commons/Toast'
 import ConfirmModal from './commons/ConfirmModal';
 import ProjectObjectFeedbackModify from './proObject/ProjectObjectFeedbackModify'
 import ProjectObjectDetail from './proObject/ProjectObjectDetail'
-import AttendanceModal from './lecAtten/AttendanceModal'
+import { useAttendanceModifyStore } from './commons/modalStore';
 
 
 // /lecture → /notice 로 리다이렉트 (쿼리 유지)
@@ -111,7 +112,8 @@ function CampusMain() {
   const user = useAuthStore(state => state.user);
   const location = useLocation();
   const { message, hideToast } = useToastStore();
-
+  const { visible } = useAttendanceModifyStore();
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const hideTopNav =
     useMatch('/homework/stu/:submitId');
 
@@ -218,9 +220,10 @@ function CampusMain() {
            <ProjectObjectFeedbackModify/>
           <LecturePlanRegist />
           <LectureAttendanceChange/>
-          <LectureAttendanceModify/>
           <AttendanceModal/>
           {message && <Toast message={message} onClose={hideToast} />}
+          {visible && <LectureAttendanceModify onClose={() => useAttendanceModifyStore.getState().hide()} />}
+            {loginModalOpen && <Login onClose={() => setLoginModalOpen(false)} />}
         </>
       )}
 

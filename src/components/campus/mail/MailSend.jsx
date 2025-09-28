@@ -20,7 +20,7 @@ import styled from 'styled-components'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { getMailSend, getUserSession, updateMailSendImpToggle, updateMailSnedLockToggle, updateMailWaste } from '../api'
 import Toast from '../commons/Toast'
-import { useToastStore } from '../commons/modalStore'
+import { useMailWriteModalStore, useToastStore } from '../commons/modalStore'
 
 const BoxButton = styled.input`
     width: 22px;
@@ -89,6 +89,7 @@ function MailSend() {
     const navigate = useNavigate();
     const location = useLocation();
      const { showToast } = useToastStore();
+     const { refreshFlag} = useMailWriteModalStore();
 
 
     function useQuery() {
@@ -128,7 +129,7 @@ function MailSend() {
         setSearchTerm(keyword);
 
         getMailSendList(page, filter, keyword);
-    }, [location.search])
+    }, [location.search, refreshFlag])
 
     async function getMailSendList(page = 1, filter = "", keyword = "") {
 

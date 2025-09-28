@@ -8,8 +8,8 @@ import { Cancle } from "../img";
 import { Button } from "../commons/WHComponent";
 import { useAttendanceChangeStore } from "../commons/modalStore";
 import useModalStore from "../commons/modalStore";
+import { useToastStore } from "../commons/modalStore";
 
-// ================== 모달 기본 ==================
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -61,6 +61,7 @@ function LectureAttendanceChange() {
   const { showConfirm } = useModalStore();
   const editorRef = useRef(null);
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
+  const { showToast } = useToastStore();
 
   useEffect(() => {
     if (!visible) return;
@@ -85,7 +86,10 @@ function LectureAttendanceChange() {
     const current = $(editorRef.current).summernote("code");
     showConfirm("이의신청을 하시겠습니까?", () => {
       console.log("제출 HTML:", current);
-      hide();   // 모달 닫기
+
+      showToast("이의신청이 완료되었습니다.");
+
+      hide();
     });
   };
 

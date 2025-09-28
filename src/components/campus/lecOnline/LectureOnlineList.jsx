@@ -155,7 +155,7 @@ function LectureOnlineList() {
                 videoList.map((video) => (
                     <WHContainer
                         key={video.lecvidId}
-                        style={{ height: auth?.mem_auth?.includes("ROLE02") ? "95px" : "140px",  flexDirection: "column", cursor: "pointer" }}
+                        style={{ height: auth?.mem_auth?.includes("ROLE02") ? "95px" : "120px",  flexDirection: "column", cursor: "pointer" }}
                         onClick={() =>
                             navigate(
                                 `/online/detail?lec_id=${lecId}&lecvid_id=${video.lecvidId}&memId=${memId}`
@@ -179,10 +179,10 @@ function LectureOnlineList() {
                       {!(auth?.mem_auth?.includes("ROLE02")) && (
   <div style={{ marginTop: "10px" }}>
     <div style={{ width: "372px", height: "20px", background: "#ddd", borderRadius: "10px", overflow: "hidden", }} >
-      <div style={{ width: `${video.progress || 0}%`, height: "100%", 
+      <div style={{ width: `${video.progress || 0}%`, height: "100%",
                     background: video.progress >= 90 ? "#2EC4B6" : "#FFE99A",
                     textAlign: "center", lineHeight: "20px", color: "#212121", }} >
-        {video.progress || 0}%
+        {video.progress > 0 ? `${video.progress}%` : null}
       </div>
     </div>
   </div>

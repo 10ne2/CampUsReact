@@ -21,7 +21,7 @@ import styled from 'styled-components'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getMailReceive, getUserSession, updateMailReceiveImpToggle, updateMailReceiveLockToggle, updateMailWaste } from '../api'
 import Toast from '../commons/Toast'
-import { useToastStore } from '../commons/modalStore'
+import { useMailWriteModalStore, useToastStore } from '../commons/modalStore'
 
 const MailContainer = styled.div`
     width: 100%;
@@ -101,6 +101,7 @@ function MailReceive() {
     const navigate = useNavigate();
     const location = useLocation();
     const { showToast } = useToastStore();
+    const { refreshFlag} = useMailWriteModalStore();
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -140,7 +141,7 @@ function MailReceive() {
         setSearchTerm(keyword);
 
         getMailReceiveList(page, filter, keyword);
-    }, [location.search])
+    }, [location.search, refreshFlag])
 
     async function getMailReceiveList(page = 1, filter = "", keyword = "") {
 

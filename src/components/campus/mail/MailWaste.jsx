@@ -20,7 +20,7 @@ import styled from 'styled-components'
 import { deleteMail, deleteMailAll, getMailWaste, getUserSession, updateMailWasteBack } from '../api'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Toast from '../commons/Toast'
-import useModalStore, { useToastStore } from '../commons/modalStore'
+import useModalStore, { useMailWriteModalStore, useToastStore } from '../commons/modalStore'
 import ConfirmModal from '../commons/ConfirmModal'
 
 const MailContainer = styled.div`
@@ -101,6 +101,8 @@ function MailWaste() {
     const navigate = useNavigate();
     const location = useLocation();
     const { showToast } = useToastStore();
+    const { refreshFlag } = useMailWriteModalStore();
+
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -135,7 +137,7 @@ function MailWaste() {
         setSearchTerm(keyword);
 
         getMailWasteList(page, keyword);
-    }, [location.search])
+    }, [location.search, refreshFlag])
 
     async function getMailWasteList(page = 1, keyword = "") {
 
@@ -422,7 +424,7 @@ function MailWaste() {
                                 return (
                                     <PageNumberButton key={page} active={page === pageMaker.page} onClick={() => handlePageChange(page)}>
                                         {/* <PageNumText key={page} active={page === pageMaker.page} style={{ fontWeight: page === pageMaker.page ? 'bold' : 'normal' }}> */}
-                                            {page}
+                                        {page}
                                         {/* </PageNumText> */}
                                     </PageNumberButton>
                                 );

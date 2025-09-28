@@ -284,10 +284,8 @@ function BoardList() {
               <PageText href="#"><img src={pageArrow2} style={{ width: "6px", height: "10px", marginLeft: '10px' }} alt="" /></PageText>
             </PageArrowButton>
             {pageNumbers.map((n) => (
-              <PageNumberButton key={n} onClick={() => goTo(n)}>
-                <PageNumText href="#" style={{ fontWeight: n === page ? 700 : 400, color: n === page ? '#2EC4B6' : undefined }}>
+              <PageNumberButton key={n} active={n === page} onClick={() => goTo(n)}>
                   {n}
-                </PageNumText>
               </PageNumberButton>
             ))}
             <PageArrowButton onClick={goNext}>

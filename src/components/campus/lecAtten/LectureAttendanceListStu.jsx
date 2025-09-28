@@ -8,8 +8,7 @@ import {
     PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText }
     from '../commons/WHComponent'
 import { useNavigate } from "react-router-dom";
-import { useAttendanceChangeStore, useAttendanceModalStore } from "../commons/modalStore";
-import AttendanceModal from './AttendanceModal';
+import { useAttendanceChangeStore, useAttendanceModalStore, useToastStore } from "../commons/modalStore";
 
 const AttenDate = styled.div`
     font-size: 12px;
@@ -28,17 +27,22 @@ const NumberInput = styled.input`
     margin-top: 12px;
 `
 
-
 function LectureAttendanceList() {
     const navigate = useNavigate();
-    const { viewModal } = useAttendanceModalStore();
     const { show } = useAttendanceChangeStore();
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalText, setModalText] = useState("");
+    const { viewModal } = useAttendanceModalStore();   // ✅ store 기반 모달 열기
+    const { showToast } = useToastStore();
+    const [attendanceCode, setAttendanceCode] = useState("");
 
+    // 출석 버튼
+    const handleAttendance = () => {
+      showToast("출석이 완료되었습니다.");
+      setAttendanceCode("");
+    };
+
+    // AttenPass 버튼 → store 모달 열기
     const handlePassClick = () => {
-    setModalText("이의 신청이 반려되었습니다.");
-    setModalOpen(true);
+      viewModal("이의 신청이 반려되었습니다.");
     };
 
   return (
@@ -50,10 +54,19 @@ function LectureAttendanceList() {
                 </FlexDiv>
             </ListHeader>
             <NumberContainer>
-                <Title style={{textAlign:'center', marginTop:'13px'}}>09-26 7주차 출석</Title>
-                <NumberInput placeholder='숫자를 입력해주세요'></NumberInput>
-                <Button style={{width:'84px', height:'30px', lineHeight:'20px', marginLeft:'142px', marginTop:'10px'}}>출석하기</Button>
-            </NumberContainer>
+          <Title style={{textAlign:'center', marginTop:'13px'}}>09-26 7주차 출석</Title>
+          <NumberInput
+            placeholder='숫자를 입력해주세요'
+            value={attendanceCode}
+            onChange={(e) => setAttendanceCode(e.target.value)}
+          />
+          <Button
+            style={{width:'84px', height:'30px', lineHeight:'20px', marginLeft:'142px', marginTop:'10px'}}
+            onClick={handleAttendance}
+          >
+            출석하기
+          </Button>
+        </NumberContainer>
             <WHContainer style={{height:'76px'}}>
                 <div>
                     <FlexDiv>
@@ -183,12 +196,6 @@ function LectureAttendanceList() {
                         </PageArrowButton>
                     </PageNation>
                 </nav>
-                {modalOpen && (
-                <AttendanceModal
-                    text={modalText}        // 보여줄 메시지
-                    onClose={() => setModalOpen(false)}  // 닫기
-                />
-                )}
         </div>
 
     </>

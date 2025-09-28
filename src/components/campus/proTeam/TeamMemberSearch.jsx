@@ -43,6 +43,7 @@ const handleConfirm = () => {
 };
 const handleSearchChange = (e) => {
     setSearchKeyword(e.target.value);
+    console.log(filteredList.map(p => p.picture));
   };
   const filteredList = teamMemberList.filter(prof =>
     prof.mem_name.toLowerCase().includes(searchKeyword.toLowerCase())
@@ -79,7 +80,7 @@ const handleSearchChange = (e) => {
                                        }}
                                        onClick={() => handleSelect(prof)}
                                      >
-                                       <UserImage src={prof.picture} alt='userimg' />
+                                       <UserImage src={`/api/member/getPicture?memId=${prof.mem_id}&v=${Date.now()}`} alt='userimg' />
                                        <UserName>
                                          <UserNameText>{prof.mem_name}</UserNameText>
                                        </UserName>

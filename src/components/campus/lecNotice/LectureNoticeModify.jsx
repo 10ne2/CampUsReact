@@ -1,82 +1,217 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import $ from "jquery";
-window.$ = window.jQuery = $;
-import "summernote/dist/summernote-lite.css";
-import "summernote/dist/summernote-lite.js";
-import axios from "axios";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { clip } from "../img";
+import {
+  getUserSession,
+  getLecNoticeDetail,
+  updateLecNoticeMultipart,
+  deleteLecNotice,
+  downloadLecNoticeFile,
+} from "../api";
+import { FlexDiv } from "../commons/WHComponent";
+import useModalStore, { useToastStore } from "../commons/modalStore";
+import ConfirmModal from "../commons/ConfirmModal";
 
-import { Cancle } from "../img";
-import { updateLecNoticeMultipart } from "../api";
-import { useToastStore } from "../commons/modalStore";
+const MobileShell = styled.div`
+  width: 100vw;
+  padding: 12px 20px 24px;
+  background: #fff;
+`;
 
-// ========== styled-components ==========
 const TopBar = styled.div`
-  height: 56px;
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  box-sizing: border-box;
+  margin: 6px 0 10px;
 `;
-const CloseBtn = styled.button`
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: none;
-  background: url(${Cancle}) center / 24px 24px no-repeat transparent;
-  cursor: pointer;
-  margin-top: 25px;
-  font-size: 0;
-  color: transparent;
+
+const PageTitle = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 10px;
 `;
-const Spacer = styled.div` flex: 1; `;
-const SubmitBtn = styled.button`
-  width: 48px;
+
+const TopActions = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const MutedBtn = styled.button`
+  width: 50px;
   height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: none;
+  background: #bebebe;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const PrimaryBtn = styled.button`
+  width: 50px;
+  height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: none;
   background: #2ec4b6;
   color: #fff;
-  border: 0;
   border-radius: 5px;
-  font-weight: 700;
   cursor: pointer;
-  margin-top: 20px;
 `;
-const Body = styled.div`
-  padding: 16px;
-  box-sizing: border-box;
+
+const PageDivider = styled.div`
+  width: 372px;
+  height: 2px;
+  background: #2ec4b6;
+  opacity: 0.6;
+  border-radius: 2px;
+  margin-bottom: 14px;
 `;
-const TitleInput = styled.input`
-  width: 100%;
+
+const Card = styled.div`
+  background: #fff;
+`;
+
+const CardHead = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
+const CardTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  line-height: 1.4;
+  margin-left: 10px;
+`;
+
+const ViewCount = styled.span`
+  font-size: 13px;
+  color: #98a1a8;
+  margin-right: 10px;
+  width: 70px;
+  text-align: right;
+`;
+
+const DateText = styled.div`
+  font-size: 12px;
+  color: #98a1a8;
+  margin-left: 10px;
+`;
+
+const CardHr = styled.div`
+  width: 372px;
+  height: 1px;
+  background: #d9d9d9;
   border: 0;
-  border-bottom: 1px solid #dcdcdc;
-  padding: 10px 2px;
+  margin: 12px 0 10px;
+`;
+
+const GrayLine = styled.div`
+  width: 372px;
+  height: 1px;
+  background: #d9d9d9;
+  border: 0;
+  margin: 9px auto 14px;
+`;
+
+const BodyText = styled.div`
+  font-size: 13px;
+  color: #212121;
+  line-height: 1.5;
+  white-space: pre-line;
+  margin-left: 10px;
+  margin-bottom: 200px;
+  width: 350px;
+`;
+
+const Attachment = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  margin-top: 16px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 360px;
+`;
+
+const AttachmentIcon = styled.img`
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  object-fit: contain;
+  margin-left: 10px;
+`;
+
+const AttachmentName = styled.div`
+  font-size: 13px;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const CardFooter = styled.div`
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const OutlineBtn = styled.button`
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  border: 1px solid #2ec4b6;
+  background: #fff;
+  color: #2ec4b6;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+`;
+
+const TitleInput = styled.input`
+  width: 350px;
+  padding: 5px;
   font-size: 14px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
   outline: none;
   ::placeholder { color: #bdbdbd; }
 `;
-const EditorWrap = styled.div`
-  margin-top: 16px;
-  .note-editor.note-frame {
-    border: 0;
-    box-shadow: none;
-    font-family: "Noto Sans KR","Noto Sans",sans-serif;
-  }
-  .note-toolbar { border: 0; padding: 6px 0; }
-  .note-statusbar { display: none; }
-  .note-editable {
-    min-height: 305px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
+
+const ContentInput = styled.textarea`
+  width: calc(100% - 20px);
+  min-height: 220px;
+  margin: 8px 10px 0 10px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
 `;
+
 const FileRow = styled.div`
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: 12px;
+  padding: 10px 10px 0 10px;
   border-top: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
-const HiddenFile = styled.input.attrs({ type: "file", id: "lecPdsFile" })`
+
+const HiddenFile = styled.input.attrs({ type: "file" })`
   display: none;
 `;
+
 const FileLabel = styled.label`
   width: 74px;
   height: 25px;
@@ -89,107 +224,302 @@ const FileLabel = styled.label`
   cursor: pointer;
   user-select: none;
   background: #f4f4f4;
-  margin-right: 10px;
 `;
+
 const FileText = styled.span`
   font-size: 12px;
   color: #707070;
 `;
 
-// ========== Component ==========
-export default function LectureNoticeModify({ lecNoticeId }) {
-  const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
+const fmtDate = (v) => {
+  try {
+    const d = new Date(v);
+    if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+    const s = String(v);
+    return s.length >= 10 ? s.slice(0, 10) : s;
+  } catch {
+    return "";
+  }
+};
+
+const cleanFilename = (full) => {
+    if (!full) return "";
+    const idx = full.indexOf("_");
+    return idx >= 0 ? full.substring(idx + 1) : full;
+  };
+
+export default function LectureNoticeDetail() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
+
+  const state = location.state;
+  const user = getUserSession();
+
+  const [item, setItem] = useState(state?.item || null);
+
+  const noticeId =
+    params.lecNoticeId ??
+    params.id ??
+    state?.item?.lecNoticeId ??
+    state?.item?.id ??
+    item?.lecNoticeId ??
+    item?.id ??
+    null;
+
+  const auth = user?.mem_auth || "";
+  const isProfessor = auth.includes("ROLE02") || auth.includes("ROLE_ROLE02");
+
+  const [loading, setLoading] = useState(!state?.item);
+  const [edit, setEdit] = useState(false);
   const [title, setTitle] = useState("");
-  const [html, setHtml] = useState("");
-  const editorRef = useRef(null);
+  const [desc, setDesc] = useState("");
+  const [newFile, setNewFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const stripHtmlTags = (html) => html?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+
+  const qs = new URLSearchParams(location.search);
+  const urlMemId = qs.get("memId") || "";
+  const urlLecId = qs.get("lecId") || qs.get("lec_id") || "";
+
+  const stateMemId = state?.from?.memId;
+  const stateLecId = state?.from?.lecId || state?.from?.lec_id;
   const { showToast } = useToastStore();
 
-  // Summernote 초기화
+  const fallbackLecId =
+    item?.lecId ||
+    localStorage.getItem("selectedLecId") ||
+    "";
+
+  const resolveListQuery = () => {
+    const memId = stateMemId || urlMemId || user?.mem_id || "";
+    const lec_id = stateLecId || urlLecId || fallbackLecId || "";
+    return { memId, lec_id };
+  };
+
   useEffect(() => {
-    const $el = $(editorRef.current);
-    $el.summernote({
-      placeholder: "내용을 입력해주세요.",
-      height: 305,
-      minHeight: 305,
-      toolbar: [
-        ["style", ["bold", "underline", "clear"]],
-        ["para", ["ul", "ol", "paragraph"]],
-        ["insert", ["picture", "link"]],
-        ["view", ["codeview"]],
-      ],
-      callbacks: {
-        onChange: (contents) => setHtml(contents),
-      },
-    });
-
-    return () => {
-      try { $el.summernote("destroy"); } catch (_) { }
+    const fetchDetail = async (id) => {
+      try {
+        setLoading(true);
+        const { data } = await getLecNoticeDetail(id);
+        setItem(data);
+      } catch (e) {
+        console.error("공지 상세 로드 실패:", e);
+      } finally {
+        setLoading(false);
+      }
     };
-  }, []);
+    if (!item && noticeId) fetchDetail(noticeId);
+  }, [noticeId]);
 
-  // ✅ 수정 제출
-  const handleSubmit = async () => {
-    console.log("🚀 handleSubmit 실행됨");
-    const content = $(editorRef.current).summernote("code");
-    const fd = new FormData();
-
-    // 컨트롤러에서 요구하는 이름과 정확히 맞춰야 함
-    fd.append("lecNoticeName", title ?? "");
-    fd.append("lecNoticeDesc", content ?? "");
-    for (let [key, value] of fd.entries()) {
-      console.log(key, value);
+  const goBack = () => {
+    const { memId, lec_id } = resolveListQuery();
+    if (!memId || !lec_id) {
+      navigate(-1);
+      return;
     }
-    // 삭제 옵션 체크박스 같은 UI가 있다면
-    // if (removeFile1Checked) fd.append("removeFile1", "on");
-    // if (removeFile2Checked) fd.append("removeFile2", "on");
+    navigate(`/notice?memId=${encodeURIComponent(memId)}&lec_id=${encodeURIComponent(lec_id)}`, {
+      replace: true,
+      state: state?.from,
+    });
+  };
 
-    // 파일들
-    const fileInput = document.getElementById("lecPdsFile");
-    if (fileInput && fileInput.files.length > 0) {
-      Array.from(fileInput.files).forEach(file => {
-        fd.append("files", file);
-      });
+  // 수정
+  const onClickModify = () => {
+    if (!item) return;
+    setTitle(item.lecNoticeName || "");
+    setDesc(item.lecNoticeDesc || "");
+    setNewFile(null);
+    setEdit(true);
+  };
+
+  const onCancelEdit = () => {
+    setEdit(false);
+    setNewFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const onSaveEdit = async () => {
+    if (!noticeId) {
+      showToast("잘못된 접근입니다(id 없음).");
+      return;
+    }
+    if (!title.trim()) {
+      showToast("제목을 입력해주세요.");
+      return;
     }
 
     try {
-      const res = await updateLecNoticeMultipart(lecNoticeId, fd);
-      if (res.data.ok) {
-        showToast("수정 완료!");
-      } else {
-        showToast("수정 실패: " + res.data.reason);
+      const form = new FormData();
+      form.append("lecNoticeName", title);
+      form.append("lecNoticeDesc", desc);
+      if (newFile) {
+        form.append("files", newFile);
       }
-    } catch (err) {
-      console.error("수정 에러:", err);
+
+      const { data } = await updateLecNoticeMultipart(String(noticeId), form);
+
+      setItem((prev) => ({
+        ...prev,
+        lecNoticeName: data?.lecNoticeName ?? title,
+        lecNoticeDesc: data?.lecNoticeDesc ?? desc,
+        fileName: data?.fileName ?? prev?.fileName,
+        fileDetail: data?.fileDetail ?? prev?.fileDetail,
+      }));
+
+      setEdit(false);
+      showToast("수정되었습니다.");
+    } catch (e) {
+      console.error("공지 수정 실패:", e.response?.data || e);
       showToast("수정에 실패했습니다.");
     }
   };
+
+  const onDelete = async () => {
+    if (!noticeId) {
+      showToast("잘못된 접근입니다(id 없음).");
+      return;
+    }
+    useModalStore.getState().showConfirm(
+      "정말로 삭제하시겠습니까?",
+      async () => {
+        try {
+          await deleteLecNotice(String(noticeId));
+          showToast("삭제되었습니다.");
+          goBack();
+        } catch (e) {
+          console.error("공지 삭제 실패:", e.response?.data || e);
+          showToast("삭제에 실패했습니다.");
+        }
+      });
+  };
+
+  const onDownload = async () => {
+    if (!noticeId) {
+      showToast("잘못된 접근입니다(id 없음).");
+      return;
+    }
+    if (!item?.fileName && !item?.fileDetail) {
+      showToast("첨부파일이 없습니다.");
+      return;
+    }
+    try {
+      const filename = item.fileName || item.fileDetail || "attachment";
+      const blob = await downloadLecNoticeFile(String(noticeId));
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error("첨부 다운로드 실패:", e.response?.data || e);
+      showToast("파일 다운로드에 실패했습니다.");
+    }
+  };
+
+  // 렌더
+  if (!noticeId) {
+    return (
+      <div style={{ padding: 16 }}>
+        잘못된 접근입니다. (공지 ID 없음)
+        <div style={{ marginTop: 12 }}>
+          <button onClick={goBack}>목록으로</button>
+        </div>
+      </div>
+    );
+  }
+  if (loading || !item) return <div style={{ padding: 16 }}>불러오는 중…</div>;
+
   return (
-    <div>
-      <TopBar>
-        <CloseBtn aria-label="닫기" />
-        <Spacer />
-        <SubmitBtn onClick={handleSubmit}>저장</SubmitBtn>
-      </TopBar>
-      <Body>
-        <TitleInput
-          placeholder="제목을 입력해주세요."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <EditorWrap>
-          <div ref={editorRef} />
-        </EditorWrap>
-        <FileRow>
-          <HiddenFile
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              setFileName(f ? f.name : "선택된 파일이 없습니다.");
-            }}
-          />
-          <FileLabel htmlFor="lecPdsFile">파일선택</FileLabel>
-          <FileText>{fileName}</FileText>
-        </FileRow>
-      </Body>
-    </div>
+    <>
+      <MobileShell>
+        <TopBar>
+          <PageTitle>공지사항</PageTitle>
+
+          {isProfessor && !edit && (
+            <TopActions>
+              <MutedBtn onClick={onDelete}>삭제</MutedBtn>
+              <PrimaryBtn onClick={onClickModify}>수정</PrimaryBtn>
+            </TopActions>
+          )}
+          {isProfessor && edit && (
+            <TopActions>
+              <MutedBtn onClick={onCancelEdit}>취소</MutedBtn>
+              <PrimaryBtn onClick={onSaveEdit}>저장</PrimaryBtn>
+            </TopActions>
+          )}
+        </TopBar>
+
+        <PageDivider />
+
+        <Card>
+          <CardHead>
+            {edit ? (
+              <TitleInput
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="제목을 입력해주세요."
+
+              />
+            ) : (
+              <>
+                <FlexDiv>
+                  <div style={{ width: '290px' }}>
+                    <CardTitle>{item.lecNoticeName}</CardTitle>
+                    <DateText>{fmtDate(item.lecNoticeDate)}</DateText>
+                  </div>
+                  <ViewCount>조회수: {item.viewCnt ?? 0}</ViewCount>
+                </FlexDiv>
+              </>
+            )}
+          </CardHead>
+
+          <CardHr />
+
+          {edit ? (
+            <>
+              <ContentInput
+                value={stripHtmlTags(desc)}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="내용을 입력해주세요."
+              />
+              <FileRow>
+                <HiddenFile
+                  ref={fileInputRef}
+                  id="lecNoticeFile"
+                  onChange={(e) => setNewFile(e.target.files?.[0] ?? null)}
+                />
+                <FileLabel htmlFor="lecNoticeFile">파일선택</FileLabel>
+                <FileText>
+                  {newFile
+                    ? newFile.name
+                    : item.fileName || item.fileDetail || "선택된 파일이 없습니다."}
+                </FileText>
+              </FileRow>
+            </>
+          ) : (
+            <>
+              <BodyText>{stripHtmlTags(item.lecNoticeDesc)}</BodyText>
+              {(item.fileName || item.fileDetail) && (
+                <Attachment onClick={onDownload}>
+                  <AttachmentIcon src={clip} />
+                  <AttachmentName>{cleanFilename(item.fileName || item.fileDetail)}</AttachmentName>
+                </Attachment>
+              )}
+            </>
+          )}
+
+          <GrayLine />
+
+          <CardFooter>
+            <OutlineBtn onClick={goBack}>목록</OutlineBtn>
+          </CardFooter>
+        </Card>
+      </MobileShell>
+      <ConfirmModal />
+    </>
   );
 }

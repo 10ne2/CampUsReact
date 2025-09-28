@@ -4,7 +4,7 @@ import { Content, ContentBox, Contents, Header, HeadText, IconBox, LecText } fro
 import { Flex, GrayHr } from '../home/HomeWrapperPro'
 import { Hr } from '../menu/SideMenu'
 import { unRead, read, go, Cancle } from '../img'
-import { useMailModalStore } from '../commons/modalStore'
+import { useMailModalStore, useMailWriteModalStore } from '../commons/modalStore'
 import { Button, RegistButton } from '../commons/WHComponent'
 import { Container } from '../topNav/TopNav'
 import MailNavBar from './MailNavBar'
@@ -51,6 +51,9 @@ function MailDashBoard() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const user = getUserSession();
+    const { refreshFlag } = useMailWriteModalStore();
+
+
 
     function useQuery() {
         return new URLSearchParams(useLocation().search);
@@ -69,7 +72,7 @@ function MailDashBoard() {
 
     useEffect(() => {
         getMailDashBoard();
-    }, [])
+    }, [refreshFlag])
 
     async function getMailDashBoard() {
         try {
@@ -142,7 +145,7 @@ function MailDashBoard() {
                         {loading ? (<p>로딩 중...</p>) : (
                             data?.sendList?.map((sl, idx) =>
                                 <Link to={`/mail/detail/${sl.mail_id}?memId=${user.mem_id}`}>
-                                    <Contents key={idx} style={{ paddingTop: '13px', height:'60px'}}>
+                                    <Contents key={idx} style={{ paddingTop: '13px', height: '60px' }}>
                                         <Content>
                                             <div>
                                                 <LecText>{sl.receiver_name}</LecText>

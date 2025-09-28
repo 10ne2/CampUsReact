@@ -126,7 +126,7 @@ export default function MailWrite() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileName, setFileName] = useState("선택된 파일이 없습니다.");
   const editorRef = useRef(null);
-  const { visible, hideModal } = useMailWriteModalStore();
+  const { visible, hideModal, triggerRefresh } = useMailWriteModalStore();
   const user = getUserSession();
   const { showToast } = useToastStore();
 
@@ -184,6 +184,7 @@ export default function MailWrite() {
           const res = await registMail(formData);
           if (res.data.success) showToast("메일을 보냈습니다.");
           hideModal(); // 모달 닫기
+          triggerRefresh();
           // 필요하다면 상태 초기화
           setReceiver("");
           setTitle("");

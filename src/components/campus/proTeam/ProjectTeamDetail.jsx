@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Container } from "../topNav/TopNav";
 import { Cancle } from "../img";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
-import { useProjectDetailModalStore, useToastStore } from "../commons/modalStore";
+import useModalStore, { useProjectDetailModalStore, useToastStore } from "../commons/modalStore";
 import { ExitButton } from "../lecAtten/AttendanceModal";
 import { getProjectDetail, removeTeam } from "../api";
 import Toast from "../commons/Toast";
@@ -127,6 +127,7 @@ export default function ProjectTeamDetail() {
   const { visible, hideModal, project_id } = useProjectDetailModalStore();
   const [detail, setDetail] = useState(null);
   const { showToast } = useToastStore();
+  const showConfirm = useModalStore((state) => state.showConfirm);
   useEffect(() => {
   if (!project_id) return;
 
@@ -193,16 +194,21 @@ const formatDate = (timestamp) => {
             <Footer>
               <Button
   onClick={() => {
-    removeTeam(detail.team_id)
-      .then(() => {
-        showToast("팀이 삭제되었습니다."); // 여기서 상태 기반 호출
-        hideModal();
-        if (typeof window.refreshProjectTeamList === "function") {
-          window.refreshProjectTeamList();
-        }
-      })
-      .catch(err => console.error(err));
-  }}
+  showConfirm("정말 팀을 삭제하시겠습니까?", async () => {
+    try {
+      await removeTeam(detail.team_id);
+      showToast("팀이 삭제되었습니다.");
+      hideModal();
+
+      if (typeof window.refreshProjectTeamList === "function") {
+        window.refreshProjectTeamList();
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("팀 삭제 실패: 서버 에러 확인");
+    }
+  });
+}}
 >
                 삭제
               </Button>

@@ -12,9 +12,9 @@ import {
   WHContainer, DateBox, Title, Button,
   PageNation, PageArrowButton, PageNumText, PageNumberButton, PageText
 } from "../commons/WHComponent";
-import { 
-  getLecNoticeList, 
-  getUserSession, 
+import {
+  getLecNoticeList,
+  getUserSession,
   changeLecMajor
 } from "../api.js";
 import LectureNoticeRegist from "./LectureNoticeRegist";
@@ -74,6 +74,7 @@ function LectureNoticeList() {
 
   const [showRegist, setShowRegist] = useState(false);
   const { showToast } = useToastStore();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (!showRegist) return;
@@ -114,7 +115,7 @@ function LectureNoticeList() {
         sessionStorage.setItem("lecId", String(lecId));
         localStorage.setItem("selectedLecId", String(lecId));
       }
-    } catch {}
+    } catch { }
   }, [memId, lecId]);
 
   const fmtDate = (v) => {
@@ -176,7 +177,7 @@ function LectureNoticeList() {
       sessionStorage.setItem("memId", String(memId));
       sessionStorage.setItem("lecId", String(lecId));
       localStorage.setItem("selectedLecId", String(lecId));
-    } catch {}
+    } catch { }
   };
 
   const handleRegistClick = async () => {
@@ -304,20 +305,14 @@ function LectureNoticeList() {
               pages.push(i);
             }
             return pages.map((p) => (
-              <PageNumberButton key={p}>
-                <PageNumText
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    load(p);
-                  }}
-                  style={{
-                    fontWeight: p === page ? "bold" : "normal",
-                    textDecoration: p === page ? "underline" : "none",
-                  }}
-                >
-                  {p}
-                </PageNumText>
+              <PageNumberButton key={p} active={currentPage === p}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(p);   // 현재 페이지 변경
+                  load(p);             // 데이터 로딩
+                }}
+              >
+                {p}
               </PageNumberButton>
             ));
           })()}

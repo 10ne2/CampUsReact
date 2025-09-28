@@ -158,9 +158,9 @@ function HomeWrapper() {
                     {loading ? (<p>로딩 중...</p>) : (
                         data?.attendencePercent?.map((ap, idx) =>
                             <Gauge key={idx} style={{ display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
-                                <Gauge style={{ width: `${ap.rate_ok}%`, backgroundColor: '#43CABE', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_ok}%</Gauge>
-                                <Gauge style={{ width: `${ap.rate_late}%`, backgroundColor: '#FFE99A', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_late}%</Gauge>
-                                <Gauge style={{ width: `${ap.rate_no}%`, backgroundColor: '#EF7C7C', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_no}%</Gauge>
+                                <Gauge style={{ width: `${ap.rate_ok}%`, backgroundColor: '#43CABE', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_ok > 0 ? `${ap.rate_ok}%` : null}</Gauge>
+                                <Gauge style={{ width: `${ap.rate_late}%`, backgroundColor: '#FFE99A', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_late > 0 ? `${ap.rate_late}%` : null}</Gauge>
+                                <Gauge style={{ width: `${ap.rate_no}%`, backgroundColor: '#EF7C7C', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}>{ap.rate_no > 0 ? `${ap.rate_no}%` : null}</Gauge>
                                 <Gauge style={{ width: `${ap.rate_none}%`, backgroundColor: '#D9D9D9', borderRadius: '0px', textAlign: 'center', lineHeight: '22px', fontSize: '13px' }}></Gauge>
                             </Gauge>
                         ))

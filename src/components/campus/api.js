@@ -242,9 +242,11 @@ export function getLecNoticeList({
 }
 
 export function getLecNoticeDetail(id, { increaseView = true } = {}) {
-  return axios.get(`/api/lecnotice/${id}`, { params: { increaseView } });
+  return axios.get(`/api/lecnotice/${id}`, {
+    params: { increaseView },
+    withCredentials: true,
+  });
 }
-
 export function createLecNoticeMultipart(formData) {
   return axios.post("/api/lecnotice", formData, {
     headers: { "Content-Type": "multipart/form-data" },

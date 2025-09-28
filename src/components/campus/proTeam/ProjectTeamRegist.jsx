@@ -8,7 +8,7 @@ import { Container } from "../topNav/TopNav";
 import { Button } from "../commons/WHComponent";
 import { RadioButton, RadioLabel, RadioMark, RadioWrap } from "./ProjectTeamModify";
 import { Overlay } from "../proObject/ProjectObjectFeedback";
-import { useProjectTeamRegistModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore } from "../commons/modalStore";
+import useModalStore, { useProjectTeamRegistModalStore, useTeamMemberModalStore, useTeamProfessorModalStore, useTeamSearchModalStore, useToastStore } from "../commons/modalStore";
 import { ExitButton } from "../lecAtten/AttendanceModal";
 import { getUserSession, registerProject } from "../api";
 
@@ -149,11 +149,11 @@ export default function ProjectTeamRegist() {
   const { selectedProfessor } = useTeamProfessorModalStore();
 const { selectedTeamLeader } = useTeamSearchModalStore();
 const { selectedTeamMember } = useTeamMemberModalStore();
-
+const showConfirm = useModalStore((state) => state.showConfirm);
   const professor = selectedProfessor?.mem_name ?? "";
 const leader = selectedTeamLeader?.mem_name ?? "";
 const members = selectedTeamMember?.map(m => m.mem_name) ?? [];
-
+const { showToast } = useToastStore();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [term, setTerm] = useState("1학기");
@@ -167,38 +167,39 @@ const members = selectedTeamMember?.map(m => m.mem_name) ?? [];
   const endRef   = useRef(null);
    
 const handleSubmit = async () => {
-  try {
-    if (!selectedProfessor || !selectedTeamLeader || selectedTeamMember.length === 0) {
-      alert("교수, 팀장, 팀원을 모두 선택해주세요.");
-      return;
-    }
-
-    // 서버가 기대하는 payload 구조
-    const payload = {
-      project_name: projectName,
-      project_desc: content,
-      project_stdate: startDate.toISOString().split("T")[0],
-      project_endate: endDate.toISOString().split("T")[0],
-      profes_id: selectedProfessor.mem_id,
-      samester: term,
-      team_leader: selectedTeamLeader.mem_id,
-      stu_id_list: selectedTeamMember.map(m => m.mem_id)  // 배열로
-    };
-
-    // 프로젝트 + 팀장 + 팀원 모두 한 번에 전송
-    const res = await registerProject(payload);
-    if (typeof window.refreshProjectTeamList === "function") {
-      window.refreshProjectTeamList();
-    }
-    alert("프로젝트 등록 완료!");
-    hideModal();
-
-  } catch (err) {
-    console.error("프로젝트 등록 실패:", err);
-    alert("프로젝트 등록 실패: 서버 에러 확인");
+  if (!selectedProfessor || !selectedTeamLeader || selectedTeamMember.length === 0) {
+    showToast("교수, 팀장, 팀원을 모두 선택해주세요.");
+    return;
   }
-};
 
+  showConfirm("팀을 등록하시겠습니까?", async () => {
+    try {
+      const payload = {
+        project_name: projectName,
+        project_desc: content,
+        project_stdate: startDate.toISOString().split("T")[0],
+        project_endate: endDate.toISOString().split("T")[0],
+        profes_id: selectedProfessor.mem_id,
+        samester: term,
+        team_leader: selectedTeamLeader.mem_id,
+        stu_id_list: selectedTeamMember.map(m => m.mem_id), // 배열
+      };
+
+      // 프로젝트 + 팀장 + 팀원 모두 한 번에 전송
+      const res = await registerProject(payload);
+
+      if (typeof window.refreshProjectTeamList === "function") {
+        window.refreshProjectTeamList();
+      }
+
+      showToast("프로젝트 등록 완료!");
+      hideModal();
+    } catch (err) {
+      console.error("프로젝트 등록 실패:", err);
+      showToast("프로젝트 등록 실패: 서버 에러 확인");
+    }
+  });
+};
 const { visible, hideModal } = useProjectTeamRegistModalStore();
 if (!visible) return null;
   return (

@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Cancle, clip } from "../img";
 import { Container } from "../topNav/TopNav";
+import useModalStore, { useToastStore } from "../commons/modalStore";
+import profile10 from "../img/profile/10.jfif";
 
+/* ===== 스타일 정의 ===== */
 const FullModal = styled.div`
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -27,10 +30,7 @@ const BrandDivider = styled.div`
   margin-bottom: 12px;
 `;
 
-/* ===== Post Card ===== */
-const Card = styled.div`
-  background: #fff;
-`;
+const Card = styled.div` background: #fff; `;
 const PostTitle = styled.h2`
   margin: 0 0 8px;
   font-size: 16px;
@@ -51,8 +51,8 @@ const Avatar = styled.div`
   height: 22px;
   border-radius: 50%;
   overflow: hidden;
-  background: #e9eef2 url("https://dummyimage.com/44x44/cccccc/ffffff&text=%20") center/cover no-repeat;
   margin-left: 10px;
+  background: #e9eef2;
 `;
 const Body = styled.div`
   margin: 10px 10px 100px;
@@ -82,10 +82,7 @@ const AttachmentName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const ListBtnWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+const ListBtnWrap = styled.div` display: flex; justify-content: flex-end; `;
 const GhostBtn = styled.button`
   height: 28px;
   padding: 0 12px;
@@ -98,19 +95,14 @@ const GhostBtn = styled.button`
   margin-right: 10px;
 `;
 
-/* ===== Section: 출결 변경 ===== */
-const Section = styled.div`
-  margin-top: 16px;
-`;
+const Section = styled.div` margin-top: 16px; `;
 const SectionHead = styled.div`
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 6px;
   margin-left: 10px;
 `;
-const SectionDivider = styled(BrandDivider)`
-  margin: 0 0 12px;
-`;
+const SectionDivider = styled(BrandDivider)` margin: 0 0 12px; `;
 const Segments = styled.div`
   display: inline-flex;
   gap: 8px;
@@ -128,11 +120,7 @@ const SegBtn = styled.button`
   cursor: pointer;
 `;
 
-/* ===== Custom Select ===== */
-const Field = styled.div`
-  position: relative;
-  margin: 8px 0;
-`;
+const Field = styled.div` position: relative; margin: 8px 0; `;
 const SelectBox = styled.button`
   width: 100%;
   text-align: left;
@@ -147,10 +135,7 @@ const SelectBox = styled.button`
   align-items: center;
   justify-content: space-between;
 `;
-const Caret = styled.span`
-  font-size: 12px;
-  color: #86919a;
-`;
+const Caret = styled.span` font-size: 12px; color: #86919a; `;
 const Menu = styled.ul`
   position: absolute;
   left: 0;
@@ -173,7 +158,6 @@ const Option = styled.li`
   &:hover { background: #f5f7f9; }
 `;
 
-/* ===== Reason / Memo ===== */
 const TextInput = styled.textarea`
   width: 100%;
   min-height: 44px;
@@ -187,12 +171,7 @@ const TextInput = styled.textarea`
   margin-top: 8px;
 `;
 
-/* ===== Submit ===== */
-const SubmitWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-`;
+const SubmitWrap = styled.div` display: flex; justify-content: center; margin-top: 12px; `;
 const SubmitBtn = styled.button`
   width: 100%;
   height: 40px;
@@ -213,20 +192,18 @@ const CardHr = styled.div`
   margin: 15px 0 15px;
 `;
 
-const Meta = styled.div`
-  font-size: 12px;
-  color: #98a1a8;
-`;
+const Meta = styled.div` font-size: 12px; color: #98a1a8; `;
 
-export default function LectureAttendanceModify({
-  onSubmit = (payload) => {}
-}) {
-  const [visible, setVisible] = useState(false); // Modal 보이기 상태
+/* ===== 메인 컴포넌트 ===== */
+export default function LectureAttendanceModify({ onClose, onSubmit }) {
   const [mode, setMode] = useState("modify");
   const [status, setStatus] = useState("결석");
   const [memo, setMemo] = useState("");
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
+
+  const { showConfirm } = useModalStore();
+  const { showToast } = useToastStore();
 
   const statuses = ["출석", "지각", "결석"];
 
@@ -243,15 +220,14 @@ export default function LectureAttendanceModify({
 
   const handleSubmit = () => {
     if (!canSubmit) return;
-    onSubmit({
-      mode,
-      status,
-      reason: memo.trim() || null
+    showConfirm("출석을 변경하시겠습니까?", () => {
+      if (onSubmit) {
+        onSubmit({ mode, status, memo });  // ✅ 부모에 결과 전달
+      }
+      showToast("출석이 변경되었습니다.");
+      onClose();
     });
-    setVisible(false); // 제출 후 Modal 닫기
   };
-
-  if (!visible) return null;
 
   return (
     <FullModal>
@@ -261,7 +237,7 @@ export default function LectureAttendanceModify({
           src={Cancle}
           alt="닫기"
           style={{width:'19px', height:'19px', cursor:'pointer'}}
-          onClick={() => setVisible(false)} // X버튼 클릭 시 Modal 닫기
+          onClick={onClose}
         />
       </Container>
 
@@ -273,19 +249,25 @@ export default function LectureAttendanceModify({
         <Card>
           <PostTitle>[2025-04-11] 출석 문의</PostTitle>
           <MetaRow>
-            <Avatar />
-            <span>권오규</span>
+            <Avatar>
+              <img 
+                src={profile10} 
+                alt="이강석" 
+                style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+              />
+            </Avatar>
+            <span>이강석</span>
             <Meta>ㅣ</Meta>
             <span>2025-08-29 21:49</span>
           </MetaRow>
           <Body>
-            교수님 안녕하세요 자바 프로그래밍 수업을 듣는 권오규 입니다.
-            다음이 아닌 이번 4/11 수업에 예비군 훈련을 다녀와 수업에 참여하지 못했습니다.
-            출석으로 변경 부탁드립니다. 예비군 훈련증 파일 첨부 하였습니다!
+            교수님 안녕하세요 자바 프로그래밍 수업을 듣는 이강석 입니다.
+            이번 4/11 수업에 예비군 훈련을 다녀와 참여하지 못했습니다.
+            출석으로 변경 부탁드립니다. 예비군 훈련증 파일 첨부하였습니다!
           </Body>
           <Attachment>
             <AttachmentIcon src={clip}/>
-            <AttachmentName>권오규 예비군 확인증.pdf</AttachmentName>
+            <AttachmentName>이강석 예비군 확인증.pdf</AttachmentName>
           </Attachment>
           <CardHr/>
           <ListBtnWrap>
@@ -304,35 +286,26 @@ export default function LectureAttendanceModify({
           {mode === "modify" && (
             <>
               <Field ref={menuRef}>
-                <SelectBox type="button" onClick={() => setOpen(v => !v)} aria-haspopup="listbox" aria-expanded={open}>
+                <SelectBox type="button" onClick={() => setOpen(v => !v)}>
                   <span>{status}</span>
                   <Caret>▾</Caret>
                 </SelectBox>
                 {open && (
-                  <Menu role="listbox">
+                  <Menu>
                     {statuses.map((s) => (
-                      <Option key={s} role="option" aria-selected={status === s}
-                        onClick={() => { setStatus(s); setOpen(false); }}>
+                      <Option key={s} onClick={() => { setStatus(s); setOpen(false); }}>
                         {s}
                       </Option>
                     ))}
                   </Menu>
                 )}
               </Field>
-              <TextInput
-                placeholder=""
-                value={memo}
-                onChange={(e) => setMemo(e.target.value)}
-              />
+              <TextInput placeholder="" value={memo} onChange={(e) => setMemo(e.target.value)} />
             </>
           )}
 
           {mode === "reject" && (
-            <TextInput
-              placeholder="거절 사유를 작성해주세요"
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-            />
+            <TextInput placeholder="거절 사유를 작성해주세요" value={memo} onChange={(e) => setMemo(e.target.value)} />
           )}
 
           <SubmitWrap>
